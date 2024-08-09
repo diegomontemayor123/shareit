@@ -1,0 +1,60 @@
+{
+  "expo": {
+    "name": "letsfeast",
+    "slug": "letsfeast",
+    "privacy": "unlisted",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./app/assets/icon.png",
+    "splash": {
+      "image": "./app/assets/logo-blue.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/ddbbdfa2-489f-402a-b188-c0b16b3a838c"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "description": "A marketplace for selling the stuff you don't need anymore.",
+    "notification": {
+      "iosDisplayInForeground": true
+    },
+    "plugins": [
+      "expo-asset",
+      "expo-secure-store",
+      "expo-notifications"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "ddbbdfa2-489f-402a-b188-c0b16b3a838c"
+      },
+      "bugsnag": {
+        "apiKey": "5532ba952085ab4ba20dfeb5e9a80b27"
+      }
+    },
+    "owner": "diegomontemayor",
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "@bugsnag/expo/hooks/post-publish.js",
+          "config": {}
+        }
+      ]
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "android": {}
+  }
+}

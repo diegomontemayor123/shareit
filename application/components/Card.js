@@ -1,0 +1,84 @@
+import React from "react";
+import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import { Image } from 'react-native-expo-image-cache';
+import Text from "./Text";
+import colors from "../config/colors";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Icon from "./Icon";
+
+function Card({ title, subTitle, subTitle2, category, color, imageUrl, onPress, thumbnailUrl }) {
+  return (
+    <TouchableWithoutFeedback onPress={onPress}>
+      <View style={styles.card}>
+        <Image 
+          style={styles.image} 
+          tint="light"
+          preview={{ uri: thumbnailUrl }}
+          uri={imageUrl} 
+        />
+        <View style={styles.detailsContainer}>
+          <View style={styles.titleContainer}>
+          <Text style={styles.title} numberOfLines={1}>
+            {title}
+          </Text>
+          <Icon
+          backgroundColor={color}
+          name={category}
+          size={35}
+        />
+          </View>
+          <View style={styles.subTitleContainer}>
+            <Text style={styles.subTitle} numberOfLines={1}>
+              {subTitle}
+            </Text>
+            <Text style={styles.subTitle2} numberOfLines={1}>
+              {subTitle2}
+            </Text>
+          </View>
+        </View>
+      </View>
+    </TouchableWithoutFeedback>
+  );
+}
+
+const styles = StyleSheet.create({
+  card: {
+    borderRadius: 15,
+    backgroundColor: colors.white,
+    marginBottom: 20,
+    overflow: "hidden",
+  },
+  detailsContainer: {
+    padding: 20,
+  },
+  image: {
+    width: "100%",
+    height: 200,
+  },
+  subTitleContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 0,
+  },
+  titleContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  subTitle: {
+    color: colors.secondary,
+    fontWeight: "bold",
+    flex: 1,
+  },
+  subTitle2: {
+    color: colors.black,
+    textAlign: "right",
+  },
+  title: {
+    marginBottom: 7,
+    fontWeight: "bold",
+  },
+});
+
+export default Card;
