@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { StyleSheet, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { StyleSheet, TouchableWithoutFeedback, Keyboard, ScrollView } from "react-native";
 import * as Yup from "yup";
 import {
   Form,
@@ -62,6 +62,7 @@ function ListingEditScreen() {
   };
 
   return (
+    <ScrollView>
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <Screen style={styles.container}>
       <UploadScreen
@@ -106,11 +107,11 @@ function ListingEditScreen() {
           width="50%"
         />
         <FormField
-          maxLength={255}
+          maxLength={1000}
           multiline
           name="description"
-          numberOfLines={3}
-          placeholder="Instructions"
+          numberOfLines={10}
+          placeholder="Recipe - Please separate each step with a period '.'"
           blurOnSubmit={true}
           onSubmitEditing={Keyboard.dismiss}
         />
@@ -118,6 +119,7 @@ function ListingEditScreen() {
       </Form>
     </Screen>
     </TouchableWithoutFeedback>
+    </ScrollView>
   );
 }
 

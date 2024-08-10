@@ -43,7 +43,11 @@ export const addListing = async (listing, onUploadProgress,user) => {
     });
   };
 
+  export const deleteListing = (id) => client.delete(`${endpoint}/${id}`);
+
+
 export default {
   addListing,
   getListings,
+  deleteListing,
 };

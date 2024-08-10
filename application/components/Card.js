@@ -1,12 +1,12 @@
 import React from "react";
-import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import { View, StyleSheet, TouchableWithoutFeedback, TouchableOpacity } from "react-native";
 import { Image } from 'react-native-expo-image-cache';
 import Text from "./Text";
 import colors from "../config/colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Icon from "./Icon";
 
-function Card({ title, subTitle, subTitle2, category, color, imageUrl, onPress, thumbnailUrl }) {
+function Card({ title, subTitle, subTitle2, category, color, imageUrl, onPress, thumbnailUrl, onDelete, showDeleteButton }) {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.card}>
@@ -16,6 +16,11 @@ function Card({ title, subTitle, subTitle2, category, color, imageUrl, onPress, 
           preview={{ uri: thumbnailUrl }}
           uri={imageUrl} 
         />
+         {showDeleteButton && (
+          <TouchableOpacity onPress={onDelete} style={styles.deleteButton}>
+            <MaterialCommunityIcons name="close-circle" size={30} color={colors.light} />
+          </TouchableOpacity>
+        )}
         <View style={styles.detailsContainer}>
           <View style={styles.titleContainer}>
           <Text style={styles.title} numberOfLines={1}>
@@ -47,6 +52,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     marginBottom: 20,
     overflow: "hidden",
+  },
+  deleteButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    zIndex: 1,
   },
   detailsContainer: {
     padding: 20,

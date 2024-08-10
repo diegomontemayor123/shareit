@@ -1,11 +1,11 @@
 import React from "react";
-import { Alert, Keyboard } from "react-native";
+import { Alert, Keyboard, StyleSheet } from "react-native";
 import * as Notifications from 'expo-notifications';
 import * as Yup from "yup";
 import { Form, FormField, SubmitButton } from ".";
 import messagesApi from "../../api/messages";
 
-function ContactSellerForm({ listing }) {
+function ContactForm({ listing }) {
   const handleSubmit = async ({ message }, { resetForm }) => {
     Keyboard.dismiss();
     
@@ -31,6 +31,7 @@ function ContactSellerForm({ listing }) {
         name="message"
         numberOfLines={3}
         placeholder="Message..."
+        style={styles.messageInput}
       />
       <SubmitButton title="Send Message" />
     </Form>
@@ -41,4 +42,15 @@ const validationSchema = Yup.object().shape({
   message: Yup.string().required().min(1).label("Message"),
 });
 
-export default ContactSellerForm;
+const styles = StyleSheet.create({
+  messageInput: {
+    fontSize: 16, // Ensure consistency with other text components
+    marginTop: 0, // Adjust as needed
+    padding: 0, // Add padding if necessary
+    backgroundColor: '#f0f0f0', // Optional: match design
+    borderRadius: 10, // Optional: match design
+  },
+ 
+});
+
+export default ContactForm;

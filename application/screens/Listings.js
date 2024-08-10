@@ -9,11 +9,13 @@ import routes from "../navigation/routes";
 import Screen from "../components/Screen";
 import AppText from "../components/Text";
 import useApi from "../hooks/useApi";
+import useAuth from "../auth/useAuth";
 
 function Listings({filterFn, errorMessage, emptyMessage, navigation }) {
   const getListingsApi = useApi(listingsApi.getListings);
   const [filteredListings,setFilteredListings]=useState([])
   const [refreshing, setRefreshing] = useState(false); 
+  const { user } = useAuth();
 
   useEffect(() => {
     getListingsApi.request();
@@ -28,6 +30,12 @@ const handleRefresh = async () => {
     setRefreshing(true);  // Start refreshing
     await getListingsApi.request();  // Re-fetch data
     setRefreshing(false);  // End refreshing
+  };
+
+  const handleDelete = async (id) => {
+    const result = await listingsApi.deleteListing(id);
+    if (!result.ok) return alert("Could not delete the listing.");
+    setFilteredListings(filteredListings.filter(listing => listing.id !== id));
   };
 
   return (
@@ -45,7 +53,7 @@ const handleRefresh = async () => {
         data={filteredListings}
         keyExtractor={(listing) => listing.id.toString()}
         renderItem={({ item }) => {
-            
+          const showDeleteButton = item.userEmail === user.email;
           return(
           <Card
             title={item.title}
@@ -56,6 +64,8 @@ const handleRefresh = async () => {
             imageUrl={item.images[0].url}
             onPress={() => navigation.navigate(routes.LISTING_DETAILS, item)}
             thumbnailUrl={item.images[0].thumbnailUrl}
+            onDelete={() => handleDelete(item.id)}
+            showDeleteButton={showDeleteButton}
           />
         )}}
         refreshing={refreshing}  // Pass refreshing state

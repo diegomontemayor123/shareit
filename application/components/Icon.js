@@ -7,13 +7,14 @@ function Icon({
   size = 40,
   backgroundColor = "#000",
   iconColor = "#fff",
+  borderRadius = 10
 }) {
   return (
     <View
       style={{
         width: size,
         height: size,
-        borderRadius: size / 2,
+        borderRadius: borderRadius,
         backgroundColor,
         justifyContent: "center",
         alignItems: "center",

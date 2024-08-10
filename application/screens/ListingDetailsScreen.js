@@ -4,13 +4,12 @@ import {Image} from 'react-native-expo-image-cache'
 import colors from "../config/colors";
 import ListItem from "../components/lists/ListItem";
 import Text from "../components/Text";
-import ContactSellerForm from "../components/forms/Contactsellerform";
+import ContactForm from "../components/forms/Contactform";
 import { Platform } from "react-native";
 import InitialsAvatar from "../components/InitialsAvatar";
 import { useState, useEffect } from "react";
 import listingsApi from "../api/listings";
 import routes from "../navigation/routes";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Icon from "../components/Icon";
 
 
@@ -24,7 +23,7 @@ function ListingDetailsScreen({ route, navigation }) {
  useEffect(()=>{
   const fetchListings= async ()=>{
     const result = await listingsApi.getListings()
- 
+    
     if (result.ok){
       const userListings=result.data.filter(
         (example)=>example.userEmail === listing.userEmail
@@ -37,6 +36,8 @@ function ListingDetailsScreen({ route, navigation }) {
 fetchListings()
 
  },[listing.userEmail])
+
+ const descriptionSteps = listing.description.split('. ').filter(step => step.trim() !== '');
 
 
  return (
@@ -58,8 +59,8 @@ fetchListings()
        <View style={styles.userContainer}>
          <ListItem
            IconComponent={ <InitialsAvatar
-            firstName={listing.userName.split(" ")[0]} // Extract first name
-            lastName={listing.userName.split(" ")[1] || ""} // Extract last name
+            firstName={listing.userName.split(" ")[0]} 
+            lastName={listing.userName.split(" ")[1] || ""} 
             size={55}
           />}
            title={listing.userName}
@@ -67,11 +68,20 @@ fetchListings()
            subTitle={listingCount === 1 ? `${listingCount} Recipe` : `${listingCount} Recipes`}
          />
        </View>
-
+      <Text style={styles.header}>
+        Recipe
+      </Text>
        <View style={styles.description}>
-       <Text >   {listing.description}</Text>
-       </View>
-       <ContactSellerForm listing={listing}/>
+           {descriptionSteps.map((step, index) => (
+             <Text key={index} style={styles.step}>
+              Step {index + 1}. {step.endsWith('.') ? step : `${step}.`}
+             </Text>
+           ))}
+         </View>
+         <Text style={styles.header}>
+        Send Message
+      </Text>
+       <ContactForm listing={listing}/>
      </View>
      </ScrollView>
    </KeyboardAvoidingView>
@@ -83,13 +93,25 @@ const styles = StyleSheet.create({
  detailsContainer: {
    padding: 20,
  },
+ header:{
+  fontWeight: "800",
+  fontSize: 16,
+  marginLeft:20,
+ },
  description:{
-marginVertical: 20,
+marginBottom: 20,
+marginTop: 10,
 backgroundColor: colors.light,
 borderRadius: 25,
 borderColor: colors.dark,
-borderWidth: 0
+borderWidth: 1,
+padding: 5,
  },
+ step: {
+  fontSize: 16,
+  marginVertical: 4,
+  marginLeft: 15
+},
  image: {
    width: "100%",
    height: 300,
