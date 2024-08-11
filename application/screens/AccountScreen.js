@@ -6,7 +6,6 @@ import Icon from "../components/Icon";
 import routes from "../navigation/routes";
 import Screen from "../components/Screen";
 import useAuth from "../auth/useAuth";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import InitialsAvatar from "../components/InitialsAvatar";
 
 const menuItems = [
@@ -38,8 +37,8 @@ const {user, logOut} = useAuth()
           title={user.name}
           subTitle={user.email}
           IconComponent={<InitialsAvatar
-            firstName={user.name.split(" ")[0]} // Extract first name
-            lastName={user.name.split(" ")[1] || ""} // Extract last name
+            firstName={user.name.split(" ")[0]} 
+            lastName={user.name.split(" ")[1] || ""} 
             size={55}
           />}
         />
