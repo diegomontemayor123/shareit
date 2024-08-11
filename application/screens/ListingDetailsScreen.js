@@ -24,7 +24,7 @@ function ListingDetailsScreen({ route, navigation }) {
         <View style={styles.detailsContainer}>
           <ListingHeader
             title={listing.title}
-            price={listing.price}
+            time={listing.time}
             categoryIcon={listing.categoryIcon}
             categoryColor={listing.categoryColor}
             userName={listing.userName}

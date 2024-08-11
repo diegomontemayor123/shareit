@@ -7,14 +7,14 @@ import InitialsAvatar from ".././InitialsAvatar";
 import routes from "../../navigation/routes";
 import colors from "../../config/colors";
 
-function ListingHeader({ title, price, categoryIcon, categoryColor, userName, listingCount, navigation, userEmail }) {
+function ListingHeader({ title, time, categoryIcon, categoryColor, userName, listingCount, navigation, userEmail }) {
   return (
     <View>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>{title}</Text>
         <Icon backgroundColor={categoryColor} name={categoryIcon} size={35} />
       </View>
-      <Text style={styles.price}>~{price} hrs</Text>
+      <Text style={styles.time}>~{time} hrs</Text>
       <View style={styles.userContainer}>
         <ListItem
           IconComponent={
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "500",
   },
-  price: {
+  time: {
     color: colors.secondary,
     fontWeight: "bold",
     fontSize: 20,

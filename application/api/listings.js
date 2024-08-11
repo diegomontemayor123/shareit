@@ -13,7 +13,7 @@ const simulateProgress = () => {
 export const addListing = async (listing, onUploadProgress,user) => {
   const data = new FormData();
   data.append("title", listing.title);
-  data.append("price", listing.price);
+  data.append("time", listing.time);
   data.append("categoryId", listing.category.value);
   data.append("categoryIcon", listing.category.icon)
   data.append("categoryColor", listing.category.backgroundColor)

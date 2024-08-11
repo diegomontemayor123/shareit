@@ -13,7 +13,7 @@ import categories from "../config/categories";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label("Title"),
-  price: Yup.number().required().min(1).max(10000).label("Price"),
+  time: Yup.number().required().min(1).max(10000).label("Time"),
   description: Yup.string().required().label("Description"),
   category: Yup.object().required().nullable().label("Category"),
   images: Yup.array().min(1, "Please select at least one image."),
@@ -36,7 +36,7 @@ function ListingEditScreen() {
       <Form
         initialValues={{
           title: "",
-          price: "",
+          time: "",
           description: "",
           category: null,
           images: [],
@@ -55,7 +55,7 @@ function ListingEditScreen() {
         <FormField
           keyboardType="numeric"
           maxLength={8}
-          name="price"
+          name="time"
           placeholder="Time to Complete"
           width={250}
           blurOnSubmit={true}

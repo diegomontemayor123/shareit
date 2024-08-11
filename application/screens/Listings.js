@@ -57,7 +57,7 @@ const handleRefresh = async () => {
           return(
           <Card
             title={item.title}
-            subTitle={"~"+item.price+" hrs"}
+            subTitle={"~"+item.time+" hrs"}
             subTitle2={item.userName}
             category={item.categoryIcon}
             color={item.categoryColor}
