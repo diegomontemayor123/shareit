@@ -10,12 +10,12 @@ import InitialsAvatar from "../components/InitialsAvatar";
 
 const menuItems = [
   {
-    title: "My Listings",
+    title: "My Recipes",
     icon: {
       name: "format-list-bulleted",
       backgroundColor: colors.primary,
     },
-    targetScreen: routes.MYLISTINGSSCREEN,
+    targetScreen: routes.MYRECIPESSCREEN,
   },
   {
     title: "My Messages",

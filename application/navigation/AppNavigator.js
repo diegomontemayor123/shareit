@@ -2,12 +2,11 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-
 import AccountNavigator from "./AccountNavigator";
 import FeedNavigator from "./FeedNavigator";
-import ListingEditScreen from "../screens/ListingEditScreen";
-import UsersListingsScreen from "../screens/UsersListingsScreen"; // Import UsersListingsScreen
-import NewListingButton from "./NewListingButton";
+import RecipeEditScreen from "../screens/RecipeEditScreen";
+import UsersRecipesScreen from "../screens/UsersRecipesScreen"; 
+import NewRecipeButton from "./NewRecipeButton";
 import routes from "./routes";
 import useNotifications from "../hooks/useNotifications";
 
@@ -20,14 +19,14 @@ const AppNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen 
-        name="Feed" 
+        name="Back" 
         component={Feed} 
         options={{ headerShown: false }} 
       />
       <Stack.Screen 
-        name="Users Listings" 
-        component={UsersListingsScreen} 
-        options={{ title: "User's Listings", headerShown: false}} 
+        name="Users Recipes" 
+        component={UsersRecipesScreen} 
+        options={{ title: "", headerShown: true}} 
       />
     </Stack.Navigator>
   );
@@ -41,16 +40,16 @@ const Feed = () => (
       options={{
         tabBarIcon: ({ color, size }) => (
           <MaterialCommunityIcons name="home" color={color} size={size} />
-        ),
+        ), headerShown: true,
       }}
     />
     <Tab.Screen
       name="Edit"
-      component={ListingEditScreen}
+      component={RecipeEditScreen}
       options={({ navigation }) => ({
         tabBarButton: () => (
-          <NewListingButton
-            onPress={() => navigation.navigate(routes.LISTING_EDIT)}
+          <NewRecipeButton
+            onPress={() => navigation.navigate(routes.RECIPE_EDIT)}
           />
         ),
         tabBarIcon: ({ color, size }) => (

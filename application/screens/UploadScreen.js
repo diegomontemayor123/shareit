@@ -1,22 +1,19 @@
 import React from "react";
-import { View, StyleSheet, Modal, Dimensions } from "react-native";
-import * as Progress from "react-native-progress";
+import { View, StyleSheet, Modal } from "react-native";
 import LottieView from "lottie-react-native";
-import colors from "../config/colors";
 
-
-const { width, height } = Dimensions.get('window');
 
 function UploadScreen({ onDone, progress = 0, visible = false }) {
   return (
     <Modal visible={visible} transparent={true}>
       <View style={styles.container}>
         {progress < 0.99 ? (
-          <Progress.Bar
-            color={colors.primary}
-            progress={progress}
-            width={200}
-          />
+          <LottieView
+          autoPlay
+          loop={true}
+          source={require("../assets/animations/cooking.json")}
+          style={styles.animation}
+        />
         ) : (
           <LottieView
             autoPlay

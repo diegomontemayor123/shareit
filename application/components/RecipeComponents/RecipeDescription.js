@@ -1,9 +1,9 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import Text from '.././Text'
+import Text from '../Text'
 import colors from "../../config/colors";
 
-function ListingDescription({ description }) {
+function RecipeDescription({ description }) {
   const descriptionSteps = description.split('. ').filter(step => step.trim() !== '');
 
   return (
@@ -34,4 +34,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ListingDescription;
+export default RecipeDescription;

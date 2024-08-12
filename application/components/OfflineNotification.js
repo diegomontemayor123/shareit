@@ -16,7 +16,7 @@ function OfflineNotification(props) {
 
    return (
     <View style={styles.container}>
-        <AppText style={styles.text} >No Internet Connection</AppText>
+        <AppText style={styles.text} >Offline</AppText>
        </View>
     );
     return null
@@ -25,7 +25,7 @@ function OfflineNotification(props) {
 const styles = StyleSheet.create({
     
     container:{
-        backgroundColor: colors.primary,
+        backgroundColor: colors.danger,
         height: 50,
         position: 'absolute',
         zIndex:1,

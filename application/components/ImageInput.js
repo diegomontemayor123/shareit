@@ -1,14 +1,8 @@
 import React, { useEffect } from "react";
-import {
-  View,
-  StyleSheet,
-  Image,
-  TouchableWithoutFeedback,
-  Alert,
-} from "react-native";
+import {View, StyleSheet, Image, TouchableWithoutFeedback, Alert,} from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-
+import * as ImageManipulator from "expo-image-manipulator"; // Import ImageManipulator
 import colors from "../config/colors";
 
 function ImageInput({ imageUri, onChangeImage }) {
@@ -36,7 +30,15 @@ function ImageInput({ imageUri, onChangeImage }) {
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         quality: 0.5,
       });
-      if (!result.cancelled) onChangeImage(result.assets[0].uri);
+      
+      if (!result.canceled) {
+        const manipulatedImage = await ImageManipulator.manipulateAsync(
+          result.assets[0].uri,
+          [{ rotate: 0 }], 
+          { compress: 1, format: ImageManipulator.SaveFormat.JPEG }
+        );
+        onChangeImage(manipulatedImage.uri);
+      }
     } catch (error) {
       console.log("Error reading an image", error);
     }

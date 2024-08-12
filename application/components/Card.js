@@ -5,8 +5,9 @@ import Text from "./Text";
 import colors from "../config/colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Icon from "./Icon";
+import RecipeLikes from "./RecipeComponents/RecipeLikes";
 
-function Card({ title, subTitle, subTitle2, category, color, imageUrl, onPress, thumbnailUrl, onDelete, showDeleteButton }) {
+function Card({ title, subTitle, subTitle2, category, color, imageUrl, onPress, thumbnailUrl, onDelete, showDeleteButton, likesCount, addLike }) {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.card}>
@@ -21,6 +22,9 @@ function Card({ title, subTitle, subTitle2, category, color, imageUrl, onPress, 
             <MaterialCommunityIcons name="close-circle" size={30} color={colors.light} />
           </TouchableOpacity>
         )}
+          
+        <RecipeLikes likesCount={likesCount} addLike={addLike}/>
+
         <View style={styles.detailsContainer}>
           <View style={styles.titleContainer}>
           <Text style={styles.title} numberOfLines={1}>

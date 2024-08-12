@@ -7,21 +7,22 @@ import CategoryPickerItem from "../components/CategoryPickerItem";
 import Screen from "../components/Screen";
 import FormImagePicker from "../components/forms/FormImagePicker";
 import UploadScreen from "./UploadScreen";
-import useSubmitListing from "../hooks/useSubmitListing";
+import useSubmitRecipe from "../hooks/useSubmitRecipe";
 import categories from "../config/categories";
+
 
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label("Title"),
-  time: Yup.number().required().min(1).max(10000).label("Time"),
+  time: Yup.number().required().min(0.001).max(10000).label("Time"),
   description: Yup.string().required().label("Description"),
   category: Yup.object().required().nullable().label("Category"),
   images: Yup.array().min(1, "Please select at least one image."),
 });
 
 
-function ListingEditScreen() {
-  const { handleSubmit, uploadVisible, progress, setUploadVisible } = useSubmitListing()
+function RecipeEditScreen({navigation}) {
+  const { handleSubmit, uploadVisible, progress, setUploadVisible } = useSubmitRecipe({navigation})
   
 
   return (
@@ -92,4 +93,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ListingEditScreen;
+export default RecipeEditScreen;

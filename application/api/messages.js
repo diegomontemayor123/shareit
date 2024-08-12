@@ -3,8 +3,8 @@ import client from "./client";
 const endpoint = "/messages";
 
 
-const send =  (message, listingId) => 
-client.post(endpoint,{message,listingId});
+const send =  (message, recipeId) => 
+client.post(endpoint,{message,recipeId});
   
 
 export default {

@@ -1,13 +1,14 @@
 import React from "react";
 import { View, StyleSheet } from "react-native"
-import Text from '.././Text'
-import Icon from ".././Icon";
-import ListItem from ".././lists/ListItem";
-import InitialsAvatar from ".././InitialsAvatar";
+import Text from '../Text'
+import Icon from "../Icon";
+import ListItem from "../lists/ListItem";
+import InitialsAvatar from "../InitialsAvatar";
 import routes from "../../navigation/routes";
 import colors from "../../config/colors";
 
-function ListingHeader({ title, time, categoryIcon, categoryColor, userName, listingCount, navigation, userEmail }) {
+function RecipeHeader({ title, time, categoryIcon, categoryColor, userName="Undefined", recipeCount, navigation, userEmail }) {
+  
   return (
     <View>
       <View style={styles.titleContainer}>
@@ -25,8 +26,8 @@ function ListingHeader({ title, time, categoryIcon, categoryColor, userName, lis
             />
           }
           title={userName}
-          onPress={() => navigation.navigate(routes.USERSLISTINGSSCREEN, { userEmail })}
-          subTitle={listingCount === 1 ? `${listingCount} Recipe` : `${listingCount} Recipes`}
+          onPress={() => navigation.navigate(routes.USERSRECIPESSCREEN, { userEmail })}
+          subTitle={recipeCount === 1 ? `${recipeCount} Recipe` : `${recipeCount} Recipes`}
         />
       </View>
     </View>
@@ -54,4 +55,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ListingHeader;
+export default RecipeHeader;

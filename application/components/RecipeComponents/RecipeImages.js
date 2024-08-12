@@ -2,7 +2,7 @@ import React from "react";
 import { FlatList, StyleSheet } from "react-native";
 import { Image } from 'react-native-expo-image-cache';
 
-function ListingImages({ images, width }) {
+function RecipeImages({ images, width }) {
   return (
     <FlatList
       data={images}
@@ -24,7 +24,8 @@ function ListingImages({ images, width }) {
 const styles = StyleSheet.create({
   image: {
     height: 300,
+ 
   },
 });
 
-export default ListingImages;
+export default RecipeImages;

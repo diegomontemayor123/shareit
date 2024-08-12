@@ -1,4 +1,4 @@
-// components/ActivityIndicator.js
+
 import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
 import LottieView from "lottie-react-native";

@@ -1,15 +1,15 @@
 import React from "react";
 import { Alert, Keyboard, StyleSheet } from "react-native";
-import * as Notifications from 'expo-notifications';
+import colors from "../../config/colors";
 import * as Yup from "yup";
 import { Form, FormField, SubmitButton } from ".";
 import messagesApi from "../../api/messages";
 
-function ContactForm({ listing }) {
+function ContactForm({ recipe }) {
   const handleSubmit = async ({ message }, { resetForm }) => {
     Keyboard.dismiss();
     
-    const result = await messagesApi.send(message, listing.id);
+    const result = await messagesApi.send(message, recipe.id);
 
     if (!result.ok) {
       console.log("Error", result);
@@ -44,11 +44,12 @@ const validationSchema = Yup.object().shape({
 
 const styles = StyleSheet.create({
   messageInput: {
-    fontSize: 16, // Ensure consistency with other text components
-    marginTop: 0, // Adjust as needed
-    padding: 0, // Add padding if necessary
-    backgroundColor: '#f0f0f0', // Optional: match design
-    borderRadius: 10, // Optional: match design
+    fontSize: 16,
+    marginTop: 0,
+    padding: 0,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 10,
+
   },
  
 });
