@@ -1,5 +1,3 @@
-// Storage.js
-
 import * as SecureStore from 'expo-secure-store';
 import {jwtDecode} from 'jwt-decode'; // Correct import
 

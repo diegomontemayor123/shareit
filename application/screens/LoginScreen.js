@@ -17,7 +17,7 @@ import useAuth from "../auth/useAuth";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
-  password: Yup.string().required().min(4).label("Password"),
+  password: Yup.string().required().min(5).label("Password"),
 });
 
 function LoginScreen(props) {
