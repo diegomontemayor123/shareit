@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import recipesApi from "../api/recipes";
 import useAuth from "../auth/useAuth";
 import useLocation from "./useLocation";
 import routes from "../navigation/routes";
+import { Alert } from "react-native";
+
 
 
 
@@ -27,7 +29,7 @@ export default function useSubmitRecipe({navigation}) {
     if (!result.ok) {
       
       setUploadVisible(false);
-      return alert("Could not save the recipe");
+      return Alert.alert("Could not save the recipe");
     }
    
     const { data: recipes } = await recipesApi.getRecipes();
@@ -35,9 +37,10 @@ export default function useSubmitRecipe({navigation}) {
 
     if (!updatedRecipe) {
       setUploadVisible(false);
-      return alert("Could not fetch the updated recipe from the server");
+      return Alert.alert("Could not fetch the updated recipe from the server");
     }
     resetForm();    
+    
     navigation.navigate(routes.RECIPE_DETAILS, updatedRecipe)
 
   }

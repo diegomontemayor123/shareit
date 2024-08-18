@@ -7,12 +7,13 @@ const useAuth = () => {
   const { user, setUser } = useContext(AuthContext);
 
   const logIn = async (authToken) => {
- 
+    
     try {
       if (typeof authToken !== 'string') {
         throw new Error('Auth token must be a string');
       }
       const user = jwtDecode(authToken);
+      
      
       setUser(user);
       await AuthStorage.storeToken(authToken);

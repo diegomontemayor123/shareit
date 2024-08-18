@@ -4,11 +4,7 @@ const endpoint = "/recipes";
 
 const getRecipes = () => client.get(endpoint);
 
-const simulateProgress = () => {
-  return new Promise((resolve) => {
-    setTimeout(resolve, 200); 
-  });
-};
+
 
 export const addRecipe = async (recipe, onUploadProgress,user) => {
   const data = new FormData();
@@ -33,10 +29,17 @@ export const addRecipe = async (recipe, onUploadProgress,user) => {
   if (recipe.location)
     data.append("location", JSON.stringify(recipe.location));
 
-    for (let progress = 0; progress <= 1; progress += 0.1) {
-      await simulateProgress(); 
-      onUploadProgress(progress);
-    }
+    const simulateProgress = () => {
+      return new Promise((resolve) => {
+        setTimeout(resolve, 200); 
+      });
+    };
+
+
+  for (let progress = 0; progress <= 1; progress += 0.1) {
+    await simulateProgress(); 
+    onUploadProgress(progress);
+  }
   
  
     return client.post(endpoint, data, {
