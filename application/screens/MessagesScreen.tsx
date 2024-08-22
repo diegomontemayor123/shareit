@@ -13,13 +13,13 @@ const initialMessages = [
     id: 1,
     title: "Mosh Hamedani",
     description: "Hey! Is this item still available?",
-    image: require("../assets/icon.png"),
+    image: require("../assets/icon2.png"),
   },
   {
     id: 2,
     title: "Mosh Hamedani",
     description: "I'm interested in this item. When will you be able to post it?",
-    image: require("../assets/icon.png"),
+    image: require("../assets/icon2.png"),
   },
 ];
 
@@ -61,7 +61,7 @@ function MessagesScreen(props: any) {
               id: 2,
               title: "T2",
               description: "D2",
-              image: require("../assets/icon.png"),
+              image: require("../assets/icon2.png"),
             },
           ]);
         }}

@@ -10,9 +10,9 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./app/assets/icon.png",
+    "icon": "application/assets/icon2.png",
     "splash": {
-      "image": "./app/assets/logo-blue.png",
+      "image": "application/assets/icon2.png",
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
@@ -44,14 +44,6 @@
       }
     },
     "owner": "diegomontemayor",
-    "hooks": {
-      "postPublish": [
-        {
-          "file": "@bugsnag/expo/hooks/post-publish.js",
-          "config": {}
-        }
-      ]
-    },
     "runtimeVersion": {
       "policy": "appVersion"
     },
