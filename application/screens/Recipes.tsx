@@ -55,7 +55,7 @@ function Recipes({
     <>
       <ActivityIndicator visible={getRecipesApi.loading} />
       <Screen style={styles.screen}>
-        {(getRecipesApi.error || filteredRecipes ? filteredRecipes.length === 0 : null) && (
+        {(getRecipesApi.error || filteredRecipes?filteredRecipes.length === 0 : null) && (
           <>
             <AppText>{getRecipesApi.error ? errorMessage : emptyMessage}</AppText>
             <Button title="Retry" onPress={getRecipesApi.request} />

@@ -53,6 +53,7 @@
     "jest-expo": "^51.0.4",
     "jwt-decode": "^4.0.0",
     "lottie-react-native": "6.7.0",
+    "metro-react-native-babel-preset": "^0.77.0",
     "moment": "^2.30.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -71,7 +72,22 @@
     "yup": "^1.4.0"
   },
   "jest": {
-    "preset": "jest-expo"
+    "preset": "react-native",
+    "testEnvironment": "jsdom",
+    "transformIgnorePatterns": [
+      "node_modules/(?!react-native|@react-native|@react-navigation|@react-native-community|@react-native-async-storage|@react-native-masked-view|@react-native/async-storage|expo-secure-store)"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "babel-jest",
+      "^.+\\.jsx?$": "babel-jest",
+      "^.+\\.(js|ts|tsx)$": "babel-jest"
+    },
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx"
+    ]
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
