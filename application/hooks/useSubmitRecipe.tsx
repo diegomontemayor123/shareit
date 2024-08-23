@@ -5,6 +5,34 @@ import useLocation from "./useLocation";
 import routes from "../navigation/routes";
 import { Alert } from "react-native";
 
+interface Recipe {
+  _id: string;
+  title: string;
+  time: number;
+  categoryId: number;
+  categoryIcon: string;
+  categoryColor: string;
+  description: string;
+  userEmail: string;
+  userName: string;
+  likesCount: number;
+  images: { fileName: string }[];
+  location: {
+    latitude: number;
+    longitude: number;
+  };
+}
+
+interface ApiResponse<T> {
+  ok: boolean;
+  data: T;
+}
+
+interface ApiErrorResponse {
+  ok: false;
+  error: string;
+}
+
 interface Props {
   navigation: any;
 }
@@ -19,31 +47,40 @@ export default function useSubmitRecipe({ navigation }: Props) {
     setProgress(0);
     setUploadVisible(true);
 
-    const result = await recipesApi.addRecipe(
-      { ...recipe, location },
-      (progress: number) => {
-        setProgress(progress);
-      },
-      user
-    );
-    console.log('result' + JSON.stringify(result))
+    try {
+      const result: ApiResponse<Recipe> | ApiErrorResponse = await recipesApi.addRecipe(
+        { ...recipe, location },
+        (progress: number) => {
+          setProgress(progress);
+        },
+        user
+      ) as ApiResponse<Recipe>;
 
-    if (!result.ok) {
+      if (!result.ok) {
+        setUploadVisible(false);
+        resetForm();
+        return Alert.alert("Could not save the recipe");
+      }
+
+      const response: ApiResponse<Recipe[]> = await recipesApi.getRecipes() as ApiResponse<Recipe[]>; // Type assertion
+      const recipes = response.data;
+
+      const updatedRecipe = recipes.find((r) => r._id === result.data._id);
+
+      if (!updatedRecipe) {
+        setUploadVisible(false);
+        resetForm();
+        return Alert.alert("Could not fetch the updated recipe from the server");
+      }
+
+      resetForm();
       setUploadVisible(false);
-      resetForm()
-      return Alert.alert("Could not save the recipe");
-    }
-
-    const { data: recipes } = await recipesApi.getRecipes();
-    const updatedRecipe = recipes.find((r: { id: string }) => r.id === result.data._id);
-
-    if (!updatedRecipe) {
+      navigation.navigate(routes.RECIPE_DETAILS, updatedRecipe);
+    } catch (error) {
       setUploadVisible(false);
-      return Alert.alert("Could not fetch the updated recipe from the server");
+      resetForm();
+      Alert.alert("An unexpected error occurred");
     }
-    resetForm();
-
-    navigation.navigate(routes.RECIPE_DETAILS, updatedRecipe);
   };
 
   return {

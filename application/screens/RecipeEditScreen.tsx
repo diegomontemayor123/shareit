@@ -18,7 +18,7 @@ const validationSchema = Yup.object().shape({
 });
 
 interface RecipeEditScreenProps {
-  navigation: any; 
+  navigation: any;
 }
 
 interface RecipeFormValues {
@@ -26,8 +26,8 @@ interface RecipeFormValues {
   title: string;
   time: string;
   description: string;
-  category: any; 
-  images: any[]; 
+  category: any;
+  images: any[];
 }
 
 function RecipeEditScreen({ navigation }: RecipeEditScreenProps) {
@@ -38,7 +38,6 @@ function RecipeEditScreen({ navigation }: RecipeEditScreenProps) {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Screen style={styles.container}>
           <UploadScreen
-            onDone={() => setUploadVisible(false)}
             progress={progress}
             visible={uploadVisible}
           />
