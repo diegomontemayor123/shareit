@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Alert } from 'react-native';
 import recipesApi from "../api/recipes";
 import useApi from './useApi';
+import useAuth from '../auth/useAuth';
 
 type FilterFn = (recipes: any[]) => any[];
 
@@ -9,14 +10,17 @@ export default function useRecipeActions(filterFn: FilterFn) {
   const getRecipesApi = useApi(recipesApi.getRecipes);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [filteredRecipes, setFilteredRecipes] = useState<any[]>([]);
+  const { user } = useAuth();
 
   useEffect(() => {
     getRecipesApi.request();
   }, []);
 
   useEffect(() => {
-    const filtered = filterFn(getRecipesApi.data);
-    setFilteredRecipes(filtered);
+    if (getRecipesApi.data) {
+      const filtered = filterFn(getRecipesApi.data as any);
+      setFilteredRecipes(filtered);
+    }
   }, [getRecipesApi.data, filterFn]);
 
   const handleRefresh = async () => {
@@ -47,11 +51,18 @@ export default function useRecipeActions(filterFn: FilterFn) {
   };
 
   const handleAddLike = async (id: number) => {
-    const result = await recipesApi.addLike(id);
+    const userEmail = user.email;
+    const result = await recipesApi.addLike(id, userEmail);
+    const data = result.data as any;
+
     if (result.ok) {
-      setFilteredRecipes(filteredRecipes.map(recipe =>
-        recipe.id === id ? { ...recipe, likesCount: recipe.likesCount + 1 } : recipe
-      ));
+      if (data.alreadyLiked) {
+        alert('User already liked this post.');
+      } else {
+        setFilteredRecipes(filteredRecipes.map(recipe =>
+          recipe.id === id ? { ...recipe, likesCount: recipe.likesCount + 1, likerEmails: [...recipe.likerEmails, userEmail] } : recipe
+        ));
+      }
     } else {
       alert('Error adding like.');
     }

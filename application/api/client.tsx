@@ -34,7 +34,7 @@ apiClient.get = async <T, U = T>(
     return response;
   }
 
- 
+
   const cachedData = await cache.get(url);
   if (cachedData) {
     return {

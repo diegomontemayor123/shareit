@@ -7,8 +7,11 @@ export default function useRecipeCount(userEmail: string) {
   useEffect(() => {
     const fetchRecipeCount = async () => {
       const result = await recipesApi.getRecipes();
+
+      const recipes = result.data as any;
+
       if (result.ok) {
-        const userRecipes = result.data.filter((recipe: { userEmail: string }) => recipe.userEmail === userEmail);
+        const userRecipes = recipes.filter((recipe: any) => recipe.userEmail === userEmail);
         setRecipeCount(userRecipes.length);
       } else {
         console.log("Failed to fetch recipe count");

@@ -16,6 +16,7 @@ interface Recipe {
   userEmail: string;
   userName: string;
   likesCount: number;
+  likerEmails: string[];
   images: { fileName: string }[];
   location: {
     latitude: number;
@@ -62,7 +63,7 @@ export default function useSubmitRecipe({ navigation }: Props) {
         return Alert.alert("Could not save the recipe");
       }
 
-      const response: ApiResponse<Recipe[]> = await recipesApi.getRecipes() as ApiResponse<Recipe[]>; // Type assertion
+      const response: ApiResponse<Recipe[]> = await recipesApi.getRecipes() as ApiResponse<Recipe[]>;
       const recipes = response.data;
 
       const updatedRecipe = recipes.find((r) => r._id === result.data._id);
