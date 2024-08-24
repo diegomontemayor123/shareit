@@ -1,5 +1,5 @@
 import React from "react";
-import Recipes from "./Recipes";
+import RecipesScreen from "./RecipesScreen";
 
 function UsersRecipesScreen({ navigation, route }: { navigation: any; route: any }) {
   const { userEmail } = route.params;
@@ -7,7 +7,7 @@ function UsersRecipesScreen({ navigation, route }: { navigation: any; route: any
   const filterUserRecipes = (recipes: any[]) => recipes.filter((recipe) => recipe.userEmail === userEmail);
 
   return (
-    <Recipes
+    <RecipesScreen
       filterFn={filterUserRecipes}
       navigation={navigation}
       errorMessage="Could not retrieve the user's recipes."

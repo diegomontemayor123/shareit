@@ -5,12 +5,12 @@ import colors from "../config/colors";
 
 interface AppButton {
   title: string
-  onPress: ()=>void
+  onPress: () => void
   color?: keyof typeof colors;
 
 }
 
-const AppButton: React.FC<AppButton>= ({ title, onPress, color = "primary" }) =>{
+const AppButton: React.FC<AppButton> = ({ title, onPress, color = "primary" }) => {
   return (
     <TouchableOpacity
       style={[styles.button, { backgroundColor: colors[color] }]}
@@ -23,7 +23,6 @@ const AppButton: React.FC<AppButton>= ({ title, onPress, color = "primary" }) =>
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: colors.primary,
     borderRadius: 25,
     justifyContent: "center",
     alignItems: "center",

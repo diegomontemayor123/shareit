@@ -11,7 +11,7 @@ const NewRecipeButton: React.FC<NewRecipeButtonProps> = ({ onPress }) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.container}>
-        <MaterialCommunityIcons name="plus-circle" color={colors.white} size={40} />
+        <MaterialCommunityIcons name="chef-hat" color={colors.white} size={40} />
       </View>
     </TouchableOpacity>
   );

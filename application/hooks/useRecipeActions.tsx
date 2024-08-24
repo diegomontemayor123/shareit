@@ -57,7 +57,7 @@ export default function useRecipeActions(filterFn: FilterFn) {
 
     if (result.ok) {
       if (data.alreadyLiked) {
-        alert('User already liked this post.');
+
       } else {
         setFilteredRecipes(filteredRecipes.map(recipe =>
           recipe.id === id ? { ...recipe, likesCount: recipe.likesCount + 1, likerEmails: [...recipe.likerEmails, userEmail] } : recipe

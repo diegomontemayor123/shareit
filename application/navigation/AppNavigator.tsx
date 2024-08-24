@@ -44,7 +44,7 @@ const Feed: React.FC = () => (
           <NewRecipeButton onPress={() => navigation.navigate(routes.RECIPE_EDIT)} />
         ),
         tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons name="plus-circle" color={color} size={size} />
+          <MaterialCommunityIcons name="chef-hat" color={color} size={size} />
         ),
       })}
     />

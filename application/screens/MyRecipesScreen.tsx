@@ -1,5 +1,5 @@
 import React from "react";
-import Recipes from "./Recipes";
+import RecipesScreen from "./RecipesScreen";
 import useAuth from "../auth/useAuth";
 
 function MyRecipesScreen({ navigation }: any) {
@@ -10,7 +10,7 @@ function MyRecipesScreen({ navigation }: any) {
   };
 
   return (
-    <Recipes
+    <RecipesScreen
       filterFn={filterMyRecipes}
       navigation={navigation}
       errorMessage="Could not retrieve your recipes."
