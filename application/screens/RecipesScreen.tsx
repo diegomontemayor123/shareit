@@ -30,9 +30,10 @@ interface RecipesProps {
   errorMessage: string;
   emptyMessage: string;
   navigation: any;
+  onCategoryChange: any
 }
 
-function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation }: RecipesProps) {
+function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCategoryChange }: RecipesProps) {
   const { handleAddLike, handleDelete, handleRefresh, refreshing, filteredRecipes } = useRecipeActions(filterFn);
   const getRecipesApi = useApi(recipesApi.getRecipes);
   const { user } = useAuth();
@@ -50,7 +51,9 @@ function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation }: Rec
       if (selectedSort.label === "Likes") {
         sortedRecipes.sort((a, b) => b.likesCount - a.likesCount);
       } else {
-        sortedRecipes.sort((a, b) => b.ObjectId - a.ObjectId);
+        sortedRecipes.sort((a, b) => {
+          return b.id.localeCompare(a.id)
+        });
       }
     }
     return sortedRecipes;
@@ -70,13 +73,12 @@ function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation }: Rec
         <SorterFilter
           onCategoryFilterChange={
             (categoryFilter: any) => {
-              setSelectedCategoryFilter(categoryFilter)
-              console.log('filter' + JSON.stringify(categoryFilter.label))
+              setSelectedCategoryFilter(selectedCategoryFilter)
+              onCategoryChange(categoryFilter)
             }}
           onSortChange={
             (sort: any) => {
               setSelectedSort(sort)
-              console.log('sort' + JSON.stringify(sort.label))
             }} />
 
         <FlatList
