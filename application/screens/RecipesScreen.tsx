@@ -56,6 +56,11 @@ function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCat
         });
       }
     }
+    else {
+      sortedRecipes.sort((a, b) => {
+        return b.id.localeCompare(a.id)
+      })
+    }
     return sortedRecipes;
   };
 

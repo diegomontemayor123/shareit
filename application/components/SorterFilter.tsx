@@ -6,6 +6,7 @@ import categories from "../config/categories";
 import feedSorts from "../config/feedSorts";
 import CategoryPickerItem from "./CategoryPickerItem";
 import Screen from "./Screen";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 
 interface SorterFilter {
@@ -16,7 +17,6 @@ interface SorterFilter {
 
 const SorterFilter: React.FC<SorterFilter> = ({ color = "medium", onCategoryFilterChange, onSortChange }) => {
 
-
     const [titleSort, setTitleSort] = useState<string>('Sort')
     const [titleFilter, setTitleFilter] = useState<string>('Filter Categories')
     const [showSorts, setShowSorts] = useState<boolean>(false)
@@ -26,17 +26,17 @@ const SorterFilter: React.FC<SorterFilter> = ({ color = "medium", onCategoryFilt
 
     useEffect(() => {
         if (selectedSort) {
-            setTitleSort(`Sorted by ${selectedSort.label}`);
+            setTitleSort(`Sort: ${selectedSort.label}`);
         } else {
-            setTitleSort('Sorted by Latest');
+            setTitleSort('Sort: Latest');
         }
     }, [selectedSort]);
 
     useEffect(() => {
         if (selectedCategory) {
-            setTitleFilter(`Filtered by ${selectedCategory.label}`);
+            setTitleFilter(`${selectedCategory.label}`);
         } else {
-            setTitleFilter('Filter Categories');
+            setTitleFilter('Filter Cuisine');
         }
     }, [selectedCategory]);
 
@@ -44,20 +44,20 @@ const SorterFilter: React.FC<SorterFilter> = ({ color = "medium", onCategoryFilt
         <View style={styles.container}>
             <TouchableOpacity
                 style={[styles.button, { backgroundColor: colors[color] }]}
-                onPress={() => {
-                    setShowSorts(true)
-                }}
-            >
+                onPress={() => { setShowSorts(true) }}>
                 <Text style={styles.text}>{titleSort}</Text>
             </TouchableOpacity>
+
             <TouchableOpacity
                 style={[styles.button, { backgroundColor: colors[color] }]}
-                onPress={() => {
-                    setShowCategories(true)
-                }}
-            >
+                onPress={() => { setShowCategories(true) }}>
                 <Text style={styles.text}>{titleFilter}</Text>
             </TouchableOpacity>
+
+            {selectedCategory &&
+                (<TouchableOpacity onPress={() => { setSelectedCategory(null), onCategoryFilterChange(null) }} style={styles.deleteButton}>
+                    <MaterialCommunityIcons name="close-circle" size={22} color={colors.light} />
+                </TouchableOpacity>)}
 
             <Modal visible={showCategories} animationType="slide"><Screen>
                 <Button title="Back" onPress={() => setShowCategories(false)} />
@@ -90,16 +90,13 @@ const SorterFilter: React.FC<SorterFilter> = ({ color = "medium", onCategoryFilt
                                 onSortChange(item)
                             }} />)} />
             </Screen></Modal>
-
-        </View>
-
-    );
+        </View>)
 }
 
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        width: "50%"
+        width: "45%"
     },
     button: {
         borderRadius: 25,
@@ -108,10 +105,15 @@ const styles = StyleSheet.create({
         padding: 2,
         width: "100%",
         marginBottom: 8,
+        marginHorizontal: "5%",
     },
     text: {
         color: colors.white,
-        fontSize: 18,
+        fontSize: 17,
+    },
+    deleteButton: {
+        top: "0.5%",
+        right: "102%"
     },
 });
 
