@@ -61,8 +61,7 @@ export default function useRecipeActions(filterFn: FilterFn) {
           recipe.id === id ? { ...recipe, likesCount: recipe.likesCount - 1, likerEmails: [...recipe.likerEmails, userEmail] } : recipe))
       } else {
         setFilteredRecipes(filteredRecipes.map(recipe =>
-          recipe.id === id ? { ...recipe, likesCount: recipe.likesCount + 1, likerEmails: [...recipe.likerEmails, userEmail] } : recipe
-        ));
+          recipe.id === id ? { ...recipe, likesCount: recipe.likesCount + 1, likerEmails: [...recipe.likerEmails, userEmail] } : recipe));
       }
     } else {
       alert('Error adding like.');
