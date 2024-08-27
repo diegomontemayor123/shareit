@@ -31,7 +31,7 @@ interface RecipeFormValues {
 }
 
 function RecipeEditScreen({ navigation }: RecipeEditScreenProps) {
-  const { handleSubmit, uploadVisible, progress, setUploadVisible } = useSubmitRecipe({ navigation });
+  const { handleSubmit, uploadVisible, progress } = useSubmitRecipe({ navigation });
 
   return (
     <ScrollView>

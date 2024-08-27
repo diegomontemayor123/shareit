@@ -9,10 +9,13 @@ interface ContactFormProps {
     id: number;
   };
 }
-
 interface FormValues {
   message?: string
 }
+
+const validationSchema = Yup.object().shape({
+  message: Yup.string().required().min(1).label("Message"),
+});
 
 const ContactForm: React.FC<ContactFormProps> = ({ recipe }) => {
   const handleSubmit = async (
@@ -21,13 +24,12 @@ const ContactForm: React.FC<ContactFormProps> = ({ recipe }) => {
   ) => {
     Keyboard.dismiss();
 
-    const result = await messagesApi.send(message ?? "", recipe.id);
+    const result = await messagesApi.sendMessage(message ?? "", recipe.id);
 
     if (!result.ok) {
       console.log("Error", result);
       return Alert.alert("Error", "Could not send the message to the seller.");
     }
-
     resetForm();
   };
 
@@ -49,10 +51,6 @@ const ContactForm: React.FC<ContactFormProps> = ({ recipe }) => {
     </Form>
   );
 };
-
-const validationSchema = Yup.object().shape({
-  message: Yup.string().required().min(1).label("Message"),
-});
 
 const styles = StyleSheet.create({
   messageInput: {

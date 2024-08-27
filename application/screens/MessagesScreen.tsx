@@ -1,49 +1,44 @@
-import React, { useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import React, { useState, useEffect } from "react";
+import { FlatList } from "react-native";
 import InitialsAvatar from "../components/InitialsAvatar";
 import Screen from "../components/Screen";
-import {
-  ListItem,
-  ListItemDeleteAction,
-  ListItemSeparator,
-} from "../components/lists";
-
-const initialMessages = [
-  {
-    id: 1,
-    title: "Mosh Hamedani",
-    description: "Hey! Is this item still available?",
-    image: require("../assets/icon2.png"),
-  },
-  {
-    id: 2,
-    title: "Mosh Hamedani",
-    description: "I'm interested in this item. When will you be able to post it?",
-    image: require("../assets/icon2.png"),
-  },
-];
+import { ListItem, ListItemDeleteAction, ListItemSeparator } from "../components/lists";
+import messagesApi from "../api/messages";
+import useAuth from "../auth/useAuth";
+import useApi from "../hooks/useApi";
 
 function MessagesScreen(props: any) {
-  const [messages, setMessages] = useState(initialMessages);
+  const { user } = useAuth()
+  const getMessagesApi = useApi(messagesApi.getMessagesForUser)
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      const result = await getMessagesApi.request(user.email)
+      if (result.ok) setMessages(result.data)
+    }
+    fetchMessages()
+  }, [user.email])
+
+  const [messages, setMessages] = useState();
   const [refreshing, setRefreshing] = useState(false);
 
   const handleDelete = (message: any) => {
-    setMessages(messages.filter((m) => m.id !== message.id));
+    //setMessages(messages.filter((m) => m.ObjectId !== message.ObjectId));
   };
 
   return (
     <Screen>
       <FlatList
         data={messages}
-        keyExtractor={(message) => message.id.toString()}
+        keyExtractor={(message) => message.ObjectId}
         renderItem={({ item }) => (
           <ListItem
-            title={item.title}
-            subTitle={item.description}
+            title={item.fromUser.name}
+            subTitle={item.content}
             IconComponent={
               <InitialsAvatar
-                firstName={item.title.split(" ")[0]}
-                lastName={item.title.split(" ")[1] || ""}
+                firstName={item.fromUser.name.split(" ")[0]}
+                lastName={item.fromUser.name.split(" ")[1] || ""}
                 size={55}
               />
             }
@@ -56,20 +51,11 @@ function MessagesScreen(props: any) {
         ItemSeparatorComponent={ListItemSeparator}
         refreshing={refreshing}
         onRefresh={() => {
-          setMessages([
-            {
-              id: 2,
-              title: "T2",
-              description: "D2",
-              image: require("../assets/icon2.png"),
-            },
-          ]);
-        }}
-      />
-    </Screen>
-  );
+          setRefreshing(true)
+          //Need to call new messages
+          setRefreshing(false)
+        }} /></Screen>
+  )
 }
-
-const styles = StyleSheet.create({});
 
 export default MessagesScreen;
