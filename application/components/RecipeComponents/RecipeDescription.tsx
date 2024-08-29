@@ -23,12 +23,11 @@ const RecipeDescription: React.FC<RecipeDescriptionProps> = ({ description }) =>
 
 const styles = StyleSheet.create({
   description: {
-    marginBottom: 20,
-    marginTop: 10,
+    marginBottom: 10,
+    marginTop: 0,
     backgroundColor: colors.light,
-    borderRadius: 25,
+    borderRadius: 10,
     borderColor: colors.dark,
-    borderWidth: 1,
     padding: 5,
   },
   step: {

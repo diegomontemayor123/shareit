@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import { View, StyleSheet, Image, TouchableWithoutFeedback, Alert } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import * as ImageManipulator from "expo-image-manipulator"; 
+import * as ImageManipulator from "expo-image-manipulator";
 import colors from "../config/colors";
 
 
 interface ImageInputProps {
-  imageUri?: string ;
+  imageUri?: string;
   onChangeImage: (uri: string | null) => void;
 }
 
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     backgroundColor: colors.light,
-    borderRadius: 15,
+    borderRadius: 10,
     height: 100,
     justifyContent: "center",
     marginVertical: 10,

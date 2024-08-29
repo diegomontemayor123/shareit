@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
         width: "45%"
     },
     button: {
-        borderRadius: 25,
+        borderRadius: 10,
         justifyContent: "center",
         alignItems: "center",
         padding: 2,

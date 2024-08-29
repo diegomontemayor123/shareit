@@ -3,9 +3,12 @@ import { View, StyleSheet, KeyboardAvoidingView, ScrollView, Platform, Dimension
 import RecipeImages from "../components/RecipeComponents/RecipeImages";
 import RecipeHeader from "../components/RecipeComponents/RecipeHeader";
 import RecipeDescription from "../components/RecipeComponents/RecipeDescription";
-import ContactForm from '../components/forms/Contactform'
 import useRecipeCount from "../hooks/useRecipeCount";
 import Text from '../components/AppText'
+import Button from '../components/Button'
+import messagesApi from '../api/messages'
+import { Alert } from "react-native";
+import routes from "../navigation/routes";
 
 const { width } = Dimensions.get('window');
 
@@ -31,10 +34,16 @@ function RecipeDetailsScreen({ route, navigation }: any) {
             navigation={navigation}
             userEmail={recipe.userEmail}
           />
+
           <Text style={styles.header}>Recipe</Text>
           <RecipeDescription description={recipe.description} />
-          <Text style={styles.header}>Send Message</Text>
-          <ContactForm recipe={recipe} />
+          <Button title="Message" onPress={async () => {
+            const result = await messagesApi.sendMessage(null, recipe._id);
+            console.log('result ' + JSON.stringify(result.data))
+            if (!result.ok) { return Alert.alert("Error", "Could not send the message.") }
+            navigation.navigate(routes.CHATSCREEN, result.data)
+          }
+          } />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

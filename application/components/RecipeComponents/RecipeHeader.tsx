@@ -34,7 +34,7 @@ const RecipeHeader: React.FC<RecipeHeaderProps> = ({
       <Icon backgroundColor={categoryColor} name={categoryIcon} size={35} />
     </View>
     <Text style={styles.time}>~{time} hrs</Text>
-    <View style={styles.userContainer}>
+    <View>
       <ListItem
         IconComponent={
           <InitialsAvatar
@@ -64,11 +64,7 @@ const styles = StyleSheet.create({
   time: {
     color: colors.secondary,
     fontWeight: "bold",
-    fontSize: 20,
-    marginVertical: 10,
-  },
-  userContainer: {
-    marginVertical: 0,
+    fontSize: 18,
   },
 });
 

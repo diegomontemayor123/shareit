@@ -29,7 +29,7 @@ export default function useRecipeActions(filterFn: FilterFn) {
     setRefreshing(false);
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: string) => {
     Alert.alert("Delete", "Are you sure you want to delete this recipe?", [
       {
         text: "Yes",

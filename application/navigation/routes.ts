@@ -6,4 +6,5 @@ export default Object.freeze({
   REGISTER: "Register",
   MYRECIPESSCREEN: "My Recipes",
   USERSRECIPESSCREEN: "Users Recipes",
+  CHATSCREEN: "Chat",
 });

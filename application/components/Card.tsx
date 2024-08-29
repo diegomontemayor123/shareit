@@ -7,7 +7,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Icon from "./Icon";
 import RecipeLikes from "./RecipeComponents/RecipeLikes";
 
-interface CardProps{
+interface CardProps {
   title: string
   subTitle?: string
   subTitle2?: string
@@ -19,37 +19,37 @@ interface CardProps{
   onDelete?: () => void
   showDeleteButton: boolean
   likesCount: number
-  addLike: ()=>void
+  addLike: () => void
 }
 
-const Card: React.FC<CardProps> = ({ title, subTitle, subTitle2, category, color, imageUrl, onPress, thumbnailUrl, onDelete, showDeleteButton, likesCount, addLike }) =>{
+const Card: React.FC<CardProps> = ({ title, subTitle, subTitle2, category, color, imageUrl, onPress, thumbnailUrl, onDelete, showDeleteButton, likesCount, addLike }) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.card}>
-        <Image 
-          style={styles.image} 
+        <Image
+          style={styles.image}
           tint="light"
           preview={{ uri: thumbnailUrl }}
-          uri={imageUrl} 
+          uri={imageUrl}
         />
-         {showDeleteButton && (
+        {showDeleteButton && (
           <TouchableOpacity onPress={onDelete} style={styles.deleteButton}>
             <MaterialCommunityIcons name="close-circle" size={30} color={colors.light} />
           </TouchableOpacity>
         )}
-          
-        <RecipeLikes likesCount={likesCount} addLike={addLike}/>
+
+        <RecipeLikes likesCount={likesCount} addLike={addLike} />
 
         <View style={styles.detailsContainer}>
           <View style={styles.titleContainer}>
-          <Text style={styles.title} numberOfLines={1}>
-            {title}
-          </Text>
-          <Icon
-          backgroundColor={color}
-          name={category}
-          size={35}
-        />
+            <Text style={styles.title} numberOfLines={1}>
+              {title}
+            </Text>
+            <Icon
+              backgroundColor={color}
+              name={category}
+              size={35}
+            />
           </View>
           <View style={styles.subTitleContainer}>
             <Text style={styles.subTitle} numberOfLines={1}>
@@ -67,7 +67,7 @@ const Card: React.FC<CardProps> = ({ title, subTitle, subTitle2, category, color
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 15,
+    borderRadius: 10,
     backgroundColor: colors.white,
     marginBottom: 20,
     overflow: "hidden",

@@ -80,7 +80,7 @@ export const addRecipe = async (
   });
 };
 
-export const deleteRecipe = (id: number) => client.delete(`${endpoint}/${id}`);
+export const deleteRecipe = (id: string) => client.delete(`${endpoint}/${id}`);
 
 export const addLike = (id: number, userEmail: string) =>
   client.post(`${endpoint}/${id}/like`, { userEmail });

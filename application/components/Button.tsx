@@ -23,12 +23,12 @@ const AppButton: React.FC<AppButton> = ({ title, onPress, color = "primary" }) =
 
 const styles = StyleSheet.create({
   button: {
-    borderRadius: 25,
+    borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
-    padding: 15,
+    padding: 10,
     width: "100%",
-    marginVertical: 10,
+    marginVertical: 5,
   },
   text: {
     color: colors.white,

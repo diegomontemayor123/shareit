@@ -1,14 +1,8 @@
 import React, { useState } from "react";
 import { StyleSheet, Image, TouchableWithoutFeedback, Keyboard } from "react-native";
 import * as Yup from "yup";
-
 import Screen from "../components/Screen";
-import {
-  ErrorMessage,
-  Form,
-  FormField,
-  SubmitButton,
-} from "../components/forms";
+import { ErrorMessage, Form, FormField, SubmitButton, } from "../components/forms";
 import authApi from "../api/auth";
 import useAuth from "../auth/useAuth";
 
@@ -27,7 +21,7 @@ function LoginScreen() {
   const [loginFailed, setLoginFailed] = useState(false);
 
   const handleSubmit = async ({ email, password }: FormValues) => {
-    if (!email || !password){return setLoginFailed(true)}
+    if (!email || !password) { return setLoginFailed(true) }
     const result = await authApi.login(email, password);
     if (!result.ok) return setLoginFailed(true);
 
