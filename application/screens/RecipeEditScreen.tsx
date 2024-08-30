@@ -11,7 +11,8 @@ import categories from "../config/categories";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label("Title"),
-  time: Yup.number().required().min(0.001).max(10000).label("Time"),
+  time: Yup.number().required().min(1, "Please input at least one minute.").max(10000).label("Time"),
+  ingredients: Yup.string().required().label("Ingredients"),
   description: Yup.string().required().label("Description"),
   category: Yup.object().required().nullable().label("Category"),
   images: Yup.array().min(1, "Please select at least one image."),
@@ -25,6 +26,7 @@ interface RecipeFormValues {
   name?: string
   title: string;
   time: string;
+  ingredients: string;
   description: string;
   category: any;
   images: any[];
@@ -45,6 +47,7 @@ function RecipeEditScreen({ navigation }: RecipeEditScreenProps) {
             initialValues={{
               title: "",
               time: "",
+              ingredients: "",
               description: "",
               category: null,
               images: [],
@@ -64,7 +67,7 @@ function RecipeEditScreen({ navigation }: RecipeEditScreenProps) {
               keyboardType="numeric"
               maxLength={8}
               name="time"
-              placeholder="Time to Complete"
+              placeholder="Minutes - time to complete"
               width={250}
               blurOnSubmit
               onSubmitEditing={Keyboard.dismiss}
@@ -76,6 +79,15 @@ function RecipeEditScreen({ navigation }: RecipeEditScreenProps) {
               PickerItemComponent={CategoryPickerItem}
               placeholder="Cuisine"
               width="50%"
+            />
+            <FormField
+              maxLength={1000}
+              multiline
+              name="ingredients"
+              numberOfLines={10}
+              placeholder="Ingredients - Please separate each ingredient with a period '.'"
+              blurOnSubmit
+              onSubmitEditing={Keyboard.dismiss}
             />
             <FormField
               maxLength={1000}

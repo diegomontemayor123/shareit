@@ -3,6 +3,7 @@ import { GiftedChat, IMessage } from 'react-native-gifted-chat';
 import useAuth from '../auth/useAuth';
 import messagesApi from "../api/messages";
 import { Alert } from 'react-native';
+import { View } from 'react-native';
 
 const ChatScreen = ({ route }: any) => {
     const convo = route.params
@@ -33,13 +34,15 @@ const ChatScreen = ({ route }: any) => {
     };
 
     return (
-        <GiftedChat
-            messages={messages.sort((a, b) => Number(b.createdAt) - Number(a.createdAt))}
-            onSend={onSend}
-            user={{
-                _id: 1,
-            }}
-        />
+        <View style={{ flex: 1, paddingBottom: 25 }}>
+            <GiftedChat
+                messages={messages.sort((a, b) => Number(b.createdAt) - Number(a.createdAt))}
+                onSend={onSend}
+                user={{
+                    _id: 1,
+                }}
+            />
+        </View>
     );
 };
 

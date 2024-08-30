@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View, FlatList } from "react-native";
-import { ListItem, ListItemSeparator } from "../components/lists";
+import { ListItem } from "../components/lists";
 import colors from "../config/colors";
 import Icon from "../components/Icon";
 import routes from "../navigation/routes";
@@ -10,15 +10,7 @@ import InitialsAvatar from "../components/InitialsAvatar";
 
 const menuItems = [
   {
-    title: "My Recipes",
-    icon: {
-      name: "format-list-bulleted",
-      backgroundColor: colors.primary,
-    },
-    targetScreen: routes.MYRECIPESSCREEN,
-  },
-  {
-    title: "My Messages",
+    title: "Messages",
     icon: {
       name: "email",
       backgroundColor: colors.secondary,
@@ -34,13 +26,13 @@ function AccountScreen({ navigation }: any) {
     <Screen style={styles.screen}>
       <View style={styles.container}>
         <ListItem
-          title={user.name}
-          subTitle={user.email}
+          title={user.email}
+          subTitle="Edit User Info"
           IconComponent={
             <InitialsAvatar
               firstName={user.name.split(" ")[0]}
               lastName={user.name.split(" ")[1] || ""}
-              size={55}
+              size={40}
             />
           }
         />
@@ -49,7 +41,6 @@ function AccountScreen({ navigation }: any) {
         <FlatList
           data={menuItems}
           keyExtractor={(menuItem) => menuItem.title}
-          ItemSeparatorComponent={ListItemSeparator}
           renderItem={({ item }) => (
             <ListItem
               title={item.title}
@@ -64,11 +55,13 @@ function AccountScreen({ navigation }: any) {
           )}
         />
       </View>
-      <ListItem
-        title="Log Out"
-        IconComponent={<Icon name="logout" backgroundColor="red" />}
-        onPress={() => logOut()}
-      />
+      <View style={styles.container}>
+        <ListItem
+          title="Logout"
+          IconComponent={<Icon name="logout" backgroundColor="red" />}
+          onPress={() => logOut()}
+        />
+      </View>
     </Screen>
   );
 }
@@ -78,7 +71,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.light,
   },
   container: {
-    marginVertical: 20,
+    marginTop: 20,
   },
 });
 

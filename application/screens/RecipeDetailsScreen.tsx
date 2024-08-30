@@ -24,6 +24,7 @@ function RecipeDetailsScreen({ route, navigation }: any) {
       <ScrollView>
         <RecipeImages images={recipe.images} width={width} />
         <View style={styles.detailsContainer}>
+
           <RecipeHeader
             title={recipe.title}
             time={recipe.time}
@@ -34,9 +35,6 @@ function RecipeDetailsScreen({ route, navigation }: any) {
             navigation={navigation}
             userEmail={recipe.userEmail}
           />
-
-          <Text style={styles.header}>Recipe</Text>
-          <RecipeDescription description={recipe.description} />
           <Button title="Message" onPress={async () => {
             const result = await messagesApi.sendMessage(null, recipe._id);
             console.log('result ' + JSON.stringify(result.data))
@@ -44,6 +42,12 @@ function RecipeDetailsScreen({ route, navigation }: any) {
             navigation.navigate(routes.CHATSCREEN, result.data)
           }
           } />
+
+          <Text style={styles.header}>Ingredients</Text>
+          <RecipeDescription description={recipe.ingredients} isIngredient />
+          <Text style={styles.header}>Recipe</Text>
+          <RecipeDescription description={recipe.description} />
+
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -52,12 +56,13 @@ function RecipeDetailsScreen({ route, navigation }: any) {
 
 const styles = StyleSheet.create({
   detailsContainer: {
-    padding: 20,
+    padding: 15,
   },
   header: {
     fontWeight: "800",
     fontSize: 16,
-    marginLeft: 20,
+    marginLeft: 10,
+    marginTop: 10
   },
 });
 

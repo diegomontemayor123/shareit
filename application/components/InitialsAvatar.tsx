@@ -15,10 +15,12 @@ const InitialsAvatar: React.FC<InitialsAvatarProps> = ({ firstName, lastName, si
     <View
       style={[
         styles.avatar,
-        { width: size, height: size, borderRadius: size / 2 } as ViewStyle,
+        { width: size, height: size, borderRadius: size / 4 } as ViewStyle,
       ]}
     >
-      <Text style={styles.initials}>{initials}</Text>
+      <Text style={[styles.initials, { fontSize: size / 2.5 } as TextStyle]}>
+        {initials}
+      </Text>
     </View>
   );
 };
@@ -30,7 +32,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.medium,
   } as ViewStyle,
   initials: {
-    fontSize: 20,
     color: "#fff",
     fontWeight: "bold",
   } as TextStyle,

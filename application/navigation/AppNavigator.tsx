@@ -9,6 +9,9 @@ import UsersRecipesScreen from "../screens/UsersRecipesScreen";
 import NewRecipeButton from "./NewRecipeButton";
 import routes from "./routes";
 import useNotifications from "../hooks/useNotifications";
+import ChatScreen from "../screens/ChatScreen";
+import MyRecipesScreen from "../screens/MyRecipesScreen";
+import SearchScreen from "../screens/SearchScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -20,6 +23,7 @@ const AppNavigator: React.FC = () => {
     <Stack.Navigator>
       <Stack.Screen name="Back" component={Feed} options={{ headerShown: false }} />
       <Stack.Screen name="Users Recipes" component={UsersRecipesScreen} options={{ title: "", headerShown: true }} />
+      <Stack.Screen name="Chat" component={ChatScreen} options={{ title: "Chat", headerShown: true, }} />
     </Stack.Navigator>
   );
 };
@@ -27,11 +31,21 @@ const AppNavigator: React.FC = () => {
 const Feed: React.FC = () => (
   <Tab.Navigator>
     <Tab.Screen
-      name="Home"
+      name="Feed"
       component={FeedNavigator}
       options={{
         tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons name="home" color={color} size={size} />
+          <MaterialCommunityIcons name="view-list-outline" color={color} size={size} />
+        ),
+        headerShown: true,
+      }}
+    />
+    <Tab.Screen
+      name="Search"
+      component={SearchScreen}
+      options={{
+        tabBarIcon: ({ color, size }) => (
+          <MaterialCommunityIcons name="magnify" color={color} size={size} />
         ),
         headerShown: true,
       }}
@@ -48,8 +62,19 @@ const Feed: React.FC = () => (
         ),
       })}
     />
+
     <Tab.Screen
-      name="My Account"
+      name="My Recipes"
+      component={MyRecipesScreen}
+      options={{
+        tabBarIcon: ({ color, size }) => (
+          <MaterialCommunityIcons name="notebook" color={color} size={size} />
+        ),
+        headerShown: true,
+      }}
+    />
+    <Tab.Screen
+      name="Profile"
       component={AccountNavigator}
       options={{
         headerShown: false,

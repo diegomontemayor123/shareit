@@ -12,19 +12,15 @@ interface ListItemProps {
   IconComponent?: React.ReactNode;
   onPress?: () => void;
   renderRightActions?: () => React.ReactNode;
+  containerPadding?: number
+  containerMarginVert?: number
 }
 
-const ListItem: React.FC<ListItemProps> = ({
-  title,
-  subTitle,
-  image,
-  IconComponent,
-  onPress,
-  renderRightActions,
+const ListItem: React.FC<ListItemProps> = ({ title, subTitle, image, IconComponent, onPress, renderRightActions, containerPadding = 10, containerMarginVert = 0,
 }) => (
   <Swipeable renderRightActions={renderRightActions}>
     <TouchableHighlight underlayColor={colors.light} onPress={onPress}>
-      <View style={styles.container}>
+      <View style={[styles.container, { padding: containerPadding }, { marginVertical: containerMarginVert }]}>
         {IconComponent}
         {image && <Image style={styles.image} source={image} />}
         <View style={styles.detailsContainer}>
@@ -47,7 +43,6 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     flexDirection: "row",
-    padding: 15,
     backgroundColor: colors.white,
   },
   detailsContainer: {

@@ -8,6 +8,7 @@ interface Recipe {
     icon: string;
     backgroundColor: string;
   };
+  ingredients: string
   description: string;
   user: {
     email: string;
@@ -46,6 +47,7 @@ export const addRecipe = async (
   data.append("categoryId", recipe.category.value);
   data.append("categoryIcon", recipe.category.icon)
   data.append("categoryColor", recipe.category.backgroundColor)
+  data.append("ingredients", recipe.ingredients)
   data.append("description", recipe.description);
   data.append("userEmail", user.email)
   data.append("userName", user.name)

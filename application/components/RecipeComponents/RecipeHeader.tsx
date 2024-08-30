@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import Text from '../AppText';
 import Icon from "../Icon";
-import ListItem from "../lists/ListItem";
+import { ListItem } from "../lists";
 import InitialsAvatar from "../InitialsAvatar";
 import routes from "../../navigation/routes";
 import colors from "../../config/colors";
@@ -28,12 +28,12 @@ const RecipeHeader: React.FC<RecipeHeaderProps> = ({
   navigation,
   userEmail,
 }) => (
-  <View>
+  <>
     <View style={styles.titleContainer}>
       <Text style={styles.title}>{title}</Text>
       <Icon backgroundColor={categoryColor} name={categoryIcon} size={35} />
     </View>
-    <Text style={styles.time}>~{time} hrs</Text>
+    <Text style={styles.time}>~{time} min</Text>
     <View>
       <ListItem
         IconComponent={
@@ -46,9 +46,11 @@ const RecipeHeader: React.FC<RecipeHeaderProps> = ({
         title={userName}
         onPress={() => navigation.navigate(routes.USERSRECIPESSCREEN, { userEmail })}
         subTitle={recipeCount === 1 ? `${recipeCount} Recipe` : `${recipeCount} Recipes`}
+        containerPadding={0}
+        containerMarginVert={10}
       />
     </View>
-  </View>
+  </>
 );
 
 const styles = StyleSheet.create({
