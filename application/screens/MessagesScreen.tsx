@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FlatList } from "react-native";
-import InitialsAvatar from "../components/InitialsAvatar";
+import Avatar from "../components/Avatar";
 import Screen from "../components/Screen";
 import { ListItem, ListItemDeleteAction, ListItemSeparator } from "../components/lists";
 import messagesApi from "../api/messages";
@@ -11,7 +11,10 @@ import { useFocusEffect } from '@react-navigation/native';
 
 interface Message {
   _id: string;
-  fromUser: { name: string; email: string };
+  fromUserEmail: string
+  fromUserName: string
+  toUserEmail: string
+  toUserName: string
   recipeName: string;
   content: string;
   recipeId: string
@@ -23,8 +26,12 @@ function MessagesScreen({ navigation }: any) {
 
   const fetchMessages = async () => {
     const result = await getMessagesApi.request(user.email)
+
     if (result.ok) {
-      setMessages(result.data)
+      const sortedMessages = result.data.sort((a: any, b: any) =>
+        Math.max(...b.content.map((c: any) => c.createdAt)) - Math.max(...a.content.map((c: any) => c.createdAt))
+      );
+      setMessages(sortedMessages)
     }
   }
 
@@ -54,27 +61,31 @@ function MessagesScreen({ navigation }: any) {
     <Screen>
       <FlatList
         data={messages}
-        keyExtractor={(message) => `${message.fromUser}-${message.recipeId}`}
-        renderItem={({ item }) => (
-          <ListItem
-            title={item.fromUser.name}
-            subTitle={item.recipeName + " Recipe"}
-            IconComponent={
-              <InitialsAvatar
-                firstName={item.fromUser.name.split(" ")[0]}
-                lastName={item.fromUser.name.split(" ")[1] || ""}
-                size={55}
-              />
-            }
-            onPress={() => {
-              //console.log('item' + JSON.stringify(item))
-              navigation.navigate(routes.CHATSCREEN, item)
-            }}
-            renderRightActions={() => (
-              <ListItemDeleteAction onPress={() => handleDelete(item._id)} />
-            )}
-          />
-        )}
+        keyExtractor={(message) => `${message.fromUserEmail}-${message.recipeId}`}
+        renderItem={({ item }) => {
+
+          const usedName = item.fromUserEmail == user.email ? item.toUserName : item.fromUserName
+
+          return (
+            <ListItem
+              title={usedName}
+              subTitle={item.recipeName + " Recipe"}
+              IconComponent={
+                <Avatar
+                  firstName={usedName.split(" ")[0]}
+                  lastName={usedName.split(" ")[1] || ""}
+                  size={55}
+                />
+              }
+              onPress={() => {
+                navigation.navigate(routes.CHATSCREEN, item)
+              }}
+              renderRightActions={() => (
+                <ListItemDeleteAction onPress={() => handleDelete(item._id)} />
+              )}
+            />
+          )
+        }}
         ItemSeparatorComponent={ListItemSeparator}
         refreshing={refreshing}
         onRefresh={() => {

@@ -9,12 +9,15 @@ import Button from '../components/Button'
 import messagesApi from '../api/messages'
 import { Alert } from "react-native";
 import routes from "../navigation/routes";
+import useAuth from "../auth/useAuth";
 
 const { width } = Dimensions.get('window');
+
 
 function RecipeDetailsScreen({ route, navigation }: any) {
   const recipe = route.params;
   const recipeCount = useRecipeCount(recipe.userEmail);
+  const { user } = useAuth()
 
   return (
     <KeyboardAvoidingView
@@ -31,13 +34,14 @@ function RecipeDetailsScreen({ route, navigation }: any) {
             categoryIcon={recipe.categoryIcon}
             categoryColor={recipe.categoryColor}
             userName={recipe.userName}
+            userEmail={recipe.userEmail}
+            userImages={recipe.userImages}
             recipeCount={recipeCount}
             navigation={navigation}
-            userEmail={recipe.userEmail}
           />
           <Button title="Message" onPress={async () => {
-            const result = await messagesApi.sendMessage(null, recipe._id);
-            console.log('result ' + JSON.stringify(result.data))
+            const result = await messagesApi.sendMessage(null, recipe._id, user.email, recipe.userEmail);
+            console.log("Error", result);
             if (!result.ok) { return Alert.alert("Error", "Could not send the message.") }
             navigation.navigate(routes.CHATSCREEN, result.data)
           }

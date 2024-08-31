@@ -72,11 +72,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: colors.light,
     borderRadius: 10,
-    height: 100,
+    height: 80,
     justifyContent: "center",
     marginVertical: 10,
     overflow: "hidden",
-    width: 100,
+    width: 80,
   },
   image: {
     height: "100%",

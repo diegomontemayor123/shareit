@@ -8,11 +8,13 @@ import useAuth from "../auth/useAuth";
 import authApi from "../api/auth";
 import ActivityIndicator from "../components/ActivityIndicator";
 import useApi from "../hooks/useApi";
+import FormImagePicker from "../components/forms/FormImagePicker";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required().label("Name"),
   email: Yup.string().required().email().label("Email"),
   password: Yup.string().required().min(5).label("Password"),
+  images: Yup.array().max(1, "Only one image allowed."),
 });
 
 function RegisterScreen() {
@@ -21,7 +23,7 @@ function RegisterScreen() {
   const auth = useAuth();
   const [error, setError] = useState<string | undefined>();
 
-  const handleSubmit = async (userInfo: { name?: string; email?: string; password?: string }) => {
+  const handleSubmit = async (userInfo: { name?: string; email?: string; password?: string; images?: any[] }) => {
     const result = await registerApi.request(userInfo);
 
     if (!result.ok) {
@@ -44,6 +46,7 @@ function RegisterScreen() {
             onSubmit={handleSubmit}
             validationSchema={validationSchema}
           >
+            <FormImagePicker name="images" multipleImages={false} />
             <ErrorMessage error={error} visible={!!error} />
             <FormField
               autoCorrect={false}

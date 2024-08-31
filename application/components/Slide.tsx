@@ -7,7 +7,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Icon from "./Icon";
 import RecipeLikes from "./RecipeComponents/RecipeLikes";
 
-interface CardProps {
+interface SlideProps {
   title: string
   subTitle?: string
   subTitle2?: string
@@ -22,10 +22,10 @@ interface CardProps {
   addLike: () => void
 }
 
-const Card: React.FC<CardProps> = ({ title, subTitle, subTitle2, category, color, imageUrl, onPress, thumbnailUrl, onDelete, showDeleteButton, likesCount, addLike }) => {
+const Slide: React.FC<SlideProps> = ({ title, subTitle, subTitle2, category, color, imageUrl, onPress, thumbnailUrl, onDelete, showDeleteButton, likesCount, addLike }) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
-      <View style={styles.card}>
+      <View style={styles.Slide}>
         <Image
           style={styles.image}
           tint="light"
@@ -66,7 +66,7 @@ const Card: React.FC<CardProps> = ({ title, subTitle, subTitle2, category, color
 }
 
 const styles = StyleSheet.create({
-  card: {
+  Slide: {
     borderRadius: 10,
     backgroundColor: colors.white,
     marginBottom: 20,
@@ -111,4 +111,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Card;
+export default Slide;

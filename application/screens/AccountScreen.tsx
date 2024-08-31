@@ -6,7 +6,7 @@ import Icon from "../components/Icon";
 import routes from "../navigation/routes";
 import Screen from "../components/Screen";
 import useAuth from "../auth/useAuth";
-import InitialsAvatar from "../components/InitialsAvatar";
+import Avatar from "../components/Avatar";
 
 const menuItems = [
   {
@@ -29,10 +29,12 @@ function AccountScreen({ navigation }: any) {
           title={user.email}
           subTitle="Edit User Info"
           IconComponent={
-            <InitialsAvatar
+            <Avatar
               firstName={user.name.split(" ")[0]}
               lastName={user.name.split(" ")[1] || ""}
               size={40}
+              imageUrl={user.images ? user.images.url : null}
+              thumbnailUrl={user.images ? user.images.thumbnailUrl : null}
             />
           }
         />

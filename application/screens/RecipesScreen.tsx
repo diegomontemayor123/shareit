@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text } from "react-native";
 import ActivityIndicator from "../components/ActivityIndicator";
 import Button from "../components/Button";
-import Card from "../components/Card";
+import Slide from "../components/Slide";
 import colors from "../config/colors";
 import recipesApi from "../api/recipes";
 import routes from "../navigation/routes";
@@ -92,15 +92,15 @@ function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCat
           renderItem={({ item }) => {
             const showDeleteButton = item.userEmail === user.email;
             return (
-              <Card
+              <Slide
                 title={item.title}
                 subTitle={`~${item.time} hrs`}
                 subTitle2={item.userName}
                 category={item.categoryIcon}
                 color={item.categoryColor}
                 imageUrl={item.images[0].url}
-                onPress={() => navigation.navigate(routes.RECIPE_DETAILS, item)}
                 thumbnailUrl={item.images[0].thumbnailUrl}
+                onPress={() => navigation.navigate(routes.RECIPE_DETAILS, item)}
                 onDelete={() => handleDelete(item.id)}
                 showDeleteButton={showDeleteButton}
                 addLike={() => handleAddLike(item.id)}

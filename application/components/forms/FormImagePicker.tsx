@@ -5,15 +5,16 @@ import ImageInputList from "../ImageInputList";
 
 interface FormImagePickerProps {
   name: string;
+  multipleImages?: boolean
 }
 
-const FormImagePicker: React.FC<FormImagePickerProps> = ({ name }) => {
+const FormImagePicker: React.FC<FormImagePickerProps> = ({ name, multipleImages = true }) => {
   const { errors, setFieldValue, touched, values } = useFormikContext<Record<string, string[]>>();
   const imageUris = values[name] || [];
 
   const handleAdd = (uri: string | null) => {
     if (uri) {
-      setFieldValue(name, [...imageUris, uri]);
+      multipleImages ? setFieldValue(name, [...imageUris, uri]) : setFieldValue(name, [uri]);
     }
   };
 

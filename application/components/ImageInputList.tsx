@@ -1,5 +1,5 @@
 import React, { useRef, RefObject } from "react";
-import { View, StyleSheet, ScrollView, StyleProp, ViewStyle } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import ImageInput from "./ImageInput";
 
 interface ImageInputListProps {

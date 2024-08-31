@@ -3,7 +3,7 @@ import { View, StyleSheet } from "react-native";
 import Text from '../AppText';
 import Icon from "../Icon";
 import { ListItem } from "../lists";
-import InitialsAvatar from "../InitialsAvatar";
+import Avatar from "../Avatar";
 import routes from "../../navigation/routes";
 import colors from "../../config/colors";
 
@@ -16,7 +16,10 @@ interface RecipeHeaderProps {
   recipeCount: number;
   navigation: any;
   userEmail: string;
+  userImages: any
 }
+
+
 
 const RecipeHeader: React.FC<RecipeHeaderProps> = ({
   title,
@@ -27,7 +30,9 @@ const RecipeHeader: React.FC<RecipeHeaderProps> = ({
   recipeCount,
   navigation,
   userEmail,
+  userImages
 }) => (
+
   <>
     <View style={styles.titleContainer}>
       <Text style={styles.title}>{title}</Text>
@@ -37,10 +42,12 @@ const RecipeHeader: React.FC<RecipeHeaderProps> = ({
     <View>
       <ListItem
         IconComponent={
-          <InitialsAvatar
+          <Avatar
             firstName={userName.split(" ")[0]}
             lastName={userName.split(" ")[1] || ""}
             size={55}
+            imageUrl={userImages[0] ? userImages[0].url : null}
+            thumbnailUrl={userImages[0] ? userImages[0].thumbnailUrl : null}
           />
         }
         title={userName}
