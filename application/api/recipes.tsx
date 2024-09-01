@@ -27,6 +27,7 @@ interface Recipe {
 interface User {
   email: string;
   name: string;
+  _id: string
 }
 
 type OnUploadProgress = (progress: number) => void;
@@ -51,6 +52,7 @@ export const addRecipe = async (
   data.append("description", recipe.description);
   data.append("userEmail", user.email)
   data.append("userName", user.name)
+  data.append("userId", user._id)
   data.append("likesCount", (recipe.likesCount || 0).toString())
   data.append("likerEmails", JSON.stringify(recipe.likerEmails || []))
 

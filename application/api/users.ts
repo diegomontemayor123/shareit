@@ -34,6 +34,11 @@ const getUserbyEmail = async (email: string) => {
   return result.data
 }
 
+const getUserbyId = async (_id: string) => {
+  const result: any = await client.get(`${endpoint}?_id=${_id}`)
+  return result.data
+}
+
 export {
-  register, getUserbyEmail
+  register, getUserbyEmail, getUserbyId
 };

@@ -8,13 +8,13 @@ import useAuth from "../auth/useAuth";
 import useApi from "../hooks/useApi";
 import routes from "../navigation/routes";
 import { useFocusEffect } from '@react-navigation/native';
-import { getUserbyEmail } from "../api/users";
+import { getUserbyId } from "../api/users";
 
 interface Message {
   _id: string;
-  fromUserEmail: string;
+  fromUserId: string;
   fromUserName: string;
-  toUserEmail: string;
+  toUserId: string;
   toUserName: string;
   recipeName: string;
   content: string;
@@ -24,6 +24,7 @@ interface Message {
 interface User {
   email: string;
   name: string;
+  _id: string
   images: {
     url: string;
     thumbnailUrl: string;
@@ -39,7 +40,7 @@ function MessagesScreen({ navigation }: any) {
   const [refreshing, setRefreshing] = useState(false);
 
   const fetchMessages = async () => {
-    const result = await getMessagesApi.request(user.email);
+    const result = await getMessagesApi.request(user._id);
 
     if (result.ok) {
       const sortedMessages = result.data.sort((a: any, b: any) =>
@@ -47,16 +48,16 @@ function MessagesScreen({ navigation }: any) {
       );
       setMessages(sortedMessages);
 
-      const userEmails = new Set<string>();
+      const userIds = new Set<string>();
       sortedMessages.forEach((message: Message) => {
-        userEmails.add(message.fromUserEmail);
-        userEmails.add(message.toUserEmail);
+        userIds.add(message.fromUserId);
+        userIds.add(message.toUserId);
       });
 
       const details: { [key: string]: User } = {};
-      for (const email of userEmails) {
-        const userData = await getUserbyEmail(email);
-        details[email] = userData;
+      for (const _id of userIds) {
+        const userData = await getUserbyId(_id);
+        details[_id] = userData;
       }
       setUserDetails(details);
     }
@@ -66,7 +67,7 @@ function MessagesScreen({ navigation }: any) {
     React.useCallback(() => {
       fetchMessages();
 
-    }, [])
+    }, [messages])
   );
 
   const handleDelete = async (_id: string) => {
@@ -86,11 +87,11 @@ function MessagesScreen({ navigation }: any) {
     <Screen>
       <FlatList
         data={messages}
-        keyExtractor={(message) => `${message.fromUserEmail}-${message.recipeId}`}
+        keyExtractor={(message) => `${message.fromUserId}-${message.recipeId}`}
         renderItem={({ item }) => {
-          const email = item.fromUserEmail === user.email ? item.toUserEmail : item.fromUserEmail;
-          const displayName = email === item.fromUserEmail ? item.fromUserName : item.toUserName;
-          const displayUser = userDetails[email] || { images: { url: null, thumbnailUrl: null } };
+          const _id = item.fromUserId === user.email ? item.toUserId : item.fromUserId;
+          const displayName = _id === item.fromUserId ? item.fromUserName : item.toUserName;
+          const displayUser = userDetails[_id] || { images: { url: null, thumbnailUrl: null } };
 
           return (
             <ListItem

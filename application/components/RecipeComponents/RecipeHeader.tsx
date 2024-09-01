@@ -6,7 +6,7 @@ import { ListItem } from "../lists";
 import Avatar from "../Avatar";
 import routes from "../../navigation/routes";
 import colors from "../../config/colors";
-import { getUserbyEmail } from "../../api/users"
+import { getUserbyId } from "../../api/users"
 
 
 interface RecipeHeaderProps {
@@ -18,6 +18,7 @@ interface RecipeHeaderProps {
   recipeCount: number;
   navigation: any;
   userEmail: string;
+  userId: string
 }
 
 const RecipeHeader: React.FC<RecipeHeaderProps> = ({
@@ -29,18 +30,20 @@ const RecipeHeader: React.FC<RecipeHeaderProps> = ({
   recipeCount,
   navigation,
   userEmail,
+  userId
 
 }) => {
   const [displayImage, setDisplayImage] = useState<{ url: string | null, thumbnailUrl: string | null } | null>(null);
 
   useEffect(() => {
     const fetchImages = async () => {
-      const result = await getUserbyEmail(userEmail)
-      console.log('result ' + JSON.stringify(result))
+      const result = await getUserbyId(userId)
+      console.log('result' + JSON.stringify(result) + ' id ' + userId)
+
       setDisplayImage({ url: result.images?.url || null, thumbnailUrl: result.images?.thumbnailUrl || null })
     }
     fetchImages()
-  }, [])
+  }, [userId])
 
 
   return (

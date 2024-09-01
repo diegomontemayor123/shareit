@@ -12,6 +12,8 @@ import useApi from "../hooks/useApi";
 import useAuth from "../auth/useAuth";
 import useRecipeActions from "../hooks/useRecipeActions";
 import SorterFilter from "../components/SorterFilter";
+import { getUserbyId } from "../api/users";
+
 
 interface Recipe {
   id: number;
@@ -40,6 +42,25 @@ function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCat
 
   const [selectedSort, setSelectedSort] = useState<any>()
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<any>()
+
+  const [users, setUsers] = useState<{ [_id: string]: string }>({});
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const _ids = filteredRecipes.map((recipe) => recipe.userId);
+      const userFetches = _ids.map(_id => getUserbyId(_id));
+      const usersData = await Promise.all(userFetches);
+
+
+      const usersMap: { [_id: string]: string } = {};
+      usersData.forEach((userData, index) => {
+        usersMap[_ids[index]] = userData.name;
+      });
+      setUsers(usersMap);
+    };
+    if (filteredRecipes.length > 0) {
+      fetchUsers();
+    }
+  }, [filteredRecipes])
 
   useEffect(() => {
     getRecipesApi.request();
@@ -91,11 +112,12 @@ function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCat
           keyExtractor={(recipe) => recipe.id.toString()}
           renderItem={({ item }) => {
             const showDeleteButton = item.userEmail === user.email;
+            const userName = users[item.userId]
             return (
               <Slide
                 title={item.title}
                 subTitle={`~${item.time} hrs`}
-                subTitle2={item.userName}
+                subTitle2={userName}
                 category={item.categoryIcon}
                 color={item.categoryColor}
                 imageUrl={item.images[0].url}

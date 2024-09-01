@@ -23,7 +23,6 @@ function UserEditScreen() {
   useEffect(() => {
     const fetchUser = async () => {
       const result = await getUserbyEmail(user.email)
-      console.log('result ' + JSON.stringify(result))
       setCurrentUser(result)
     }
     fetchUser()

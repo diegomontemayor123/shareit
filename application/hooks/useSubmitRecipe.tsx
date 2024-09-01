@@ -15,6 +15,7 @@ interface Recipe {
   description: string;
   userEmail: string;
   userName: string;
+  userId: string
   likesCount: number;
   likerEmails: string[];
   images: { fileName: string }[];

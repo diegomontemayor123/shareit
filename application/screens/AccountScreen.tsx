@@ -8,7 +8,7 @@ import routes from "../navigation/routes";
 import Screen from "../components/Screen";
 import useAuth from "../auth/useAuth";
 import Avatar from "../components/Avatar";
-import { getUserbyEmail } from "../api/users"
+import { getUserbyEmail, getUserbyId } from "../api/users"
 
 const menuItems = [
   {
@@ -27,7 +27,7 @@ function AccountScreen({ navigation }: any) {
 
   useEffect(() => {
     const fetchImages = async () => {
-      const result = await getUserbyEmail(user.email)
+      const result = await getUserbyId(user._id)
       setDisplayImage({ url: result.images?.url || null, thumbnailUrl: result.images?.thumbnailUrl || null })
     }
     fetchImages()

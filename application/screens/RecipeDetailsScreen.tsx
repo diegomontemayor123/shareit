@@ -10,6 +10,8 @@ import messagesApi from '../api/messages'
 import { Alert } from "react-native";
 import routes from "../navigation/routes";
 import useAuth from "../auth/useAuth";
+import { useState, useEffect } from "react";
+import { getUserbyId } from "../api/users";
 
 const { width } = Dimensions.get('window');
 
@@ -17,6 +19,16 @@ function RecipeDetailsScreen({ route, navigation }: any) {
   const recipe = route.params;
   const recipeCount = useRecipeCount(recipe.userEmail);
   const { user } = useAuth()
+
+  const [recipeUser, setRecipeUser] = useState<{ [_id: string]: string }>({});
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const userData = await getUserbyId(recipe.userId);
+      setRecipeUser(userData);
+    };
+    fetchUsers();
+    console.log('userdata' + JSON.stringify(recipeUser))
+  }, [recipe])
 
   return (
     <KeyboardAvoidingView
@@ -32,13 +44,14 @@ function RecipeDetailsScreen({ route, navigation }: any) {
             time={recipe.time}
             categoryIcon={recipe.categoryIcon}
             categoryColor={recipe.categoryColor}
-            userName={recipe.userName}
-            userEmail={recipe.userEmail}
+            userName={recipeUser.name ? recipeUser.name : "..."}
+            userEmail={recipeUser.email}
+            userId={recipeUser._id}
             recipeCount={recipeCount}
             navigation={navigation}
           />
           <Button title="Message" onPress={async () => {
-            const result = await messagesApi.sendMessage(null, recipe._id, user.email, recipe.userEmail);
+            const result = await messagesApi.sendMessage(null, recipe._id, user._id, recipeUser._id);
             console.log("Error", result);
             if (!result.ok) { return Alert.alert("Error", "Could not send the message.") }
             navigation.navigate(routes.CHATSCREEN, result.data)
