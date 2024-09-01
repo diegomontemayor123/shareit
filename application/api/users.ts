@@ -7,6 +7,7 @@ interface UserInfo {
   images: string[]
 }
 
+const endpoint = "/users";
 
 const register = async (userInfo: UserInfo) => {
   const data = new FormData();
@@ -24,11 +25,15 @@ const register = async (userInfo: UserInfo) => {
     );
   }
 
-  return client.post("/users", data, {
+  return client.post(endpoint, data, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
 };
+const getUserbyEmail = async (email: string) => {
+  const result: any = await client.get(`${endpoint}?email=${email}`)
+  return result.data
+}
 
-export default {
-  register,
+export {
+  register, getUserbyEmail
 };

@@ -13,7 +13,6 @@ import useAuth from "../auth/useAuth";
 
 const { width } = Dimensions.get('window');
 
-
 function RecipeDetailsScreen({ route, navigation }: any) {
   const recipe = route.params;
   const recipeCount = useRecipeCount(recipe.userEmail);
@@ -35,7 +34,6 @@ function RecipeDetailsScreen({ route, navigation }: any) {
             categoryColor={recipe.categoryColor}
             userName={recipe.userName}
             userEmail={recipe.userEmail}
-            userImages={recipe.userImages}
             recipeCount={recipeCount}
             navigation={navigation}
           />
@@ -46,12 +44,10 @@ function RecipeDetailsScreen({ route, navigation }: any) {
             navigation.navigate(routes.CHATSCREEN, result.data)
           }
           } />
-
           <Text style={styles.header}>Ingredients</Text>
           <RecipeDescription description={recipe.ingredients} isIngredient />
           <Text style={styles.header}>Recipe</Text>
           <RecipeDescription description={recipe.description} />
-
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

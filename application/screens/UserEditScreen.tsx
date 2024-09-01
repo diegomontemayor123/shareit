@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, TouchableWithoutFeedback, Keyboard } from "react-native";
 import * as Yup from "yup";
 import Screen from "../components/Screen";
@@ -9,6 +9,7 @@ import authApi from "../api/auth";
 import ActivityIndicator from "../components/ActivityIndicator";
 import useApi from "../hooks/useApi";
 import FormImagePicker from "../components/forms/FormImagePicker";
+import { getUserbyEmail } from "../api/users";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required().label("Name"),
@@ -17,20 +18,32 @@ const validationSchema = Yup.object().shape({
   images: Yup.array().max(1, "Only one image allowed."),
 });
 
-function RegisterScreen() {
-  const registerApi = useApi(register);
+function UserEditScreen() {
+  const [currentUser, setCurrentUser] = useState<any>(null)
+  useEffect(() => {
+    const fetchUser = async () => {
+      const result = await getUserbyEmail(user.email)
+      console.log('result ' + JSON.stringify(result))
+      setCurrentUser(result)
+    }
+    fetchUser()
+  }, [])
+
+
   const loginApi = useApi(authApi.login);
-  const auth = useAuth();
+  const { auth, user }: any = useAuth();
   const [error, setError] = useState<string | undefined>();
 
-  const handleSubmit = async (userInfo: { name?: string; email?: string; password?: string; images?: any[] }) => {
-    const result = await registerApi.request(userInfo);
 
-    if (!result.ok) {
-      if (result.data) setError(result.data.error);
-      else setError("An unexpected error occurred.");
-      return;
-    }
+  //const registerApi = useApi(register);
+  const handleSubmit = async (userInfo: { name?: string; email?: string; password?: string; images?: any[] }) => {
+    //const result = await registerApi.request(userInfo);
+
+    // if (!result.ok) {
+    //  if (result.data) setError(result.data.error);
+    //  else setError("An unexpected error occurred.");
+    //  return;
+    //}
 
     const { data: authToken } = await loginApi.request(userInfo.email, userInfo.password);
     auth.logIn(authToken);
@@ -39,20 +52,24 @@ function RegisterScreen() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <>
-        <ActivityIndicator visible={registerApi.loading || loginApi.loading} />
+        <ActivityIndicator /*visible={registerApi.loading || loginApi.loading}*/ />
         <Screen style={styles.container}>
           <Form
             initialValues={{ name: "", email: "", password: "" }}
             onSubmit={handleSubmit}
             validationSchema={validationSchema}
           >
-            <FormImagePicker name="images" multipleImages={false} />
+            <FormImagePicker
+              name="images"
+              multipleImages={false}
+              placeholderThumbnailUrl={currentUser?.images.thumbnailUrl || null}
+              placeholderUrl={currentUser?.images.url || null} />
             <ErrorMessage error={error} visible={!!error} />
             <FormField
               autoCorrect={false}
               icon="account"
               name="name"
-              placeholder="Name"
+              placeholder={currentUser?.name || "name"}
               blurOnSubmit
               onSubmitEditing={Keyboard.dismiss}
             />
@@ -62,7 +79,7 @@ function RegisterScreen() {
               icon="email"
               keyboardType="email-address"
               name="email"
-              placeholder="Email"
+              placeholder={currentUser?.email || "email"}
               textContentType="emailAddress"
               blurOnSubmit
               onSubmitEditing={Keyboard.dismiss}
@@ -72,13 +89,13 @@ function RegisterScreen() {
               autoCorrect={false}
               icon="lock"
               name="password"
-              placeholder="Password"
+              placeholder="**********"
               secureTextEntry
               textContentType="password"
               blurOnSubmit
               onSubmitEditing={Keyboard.dismiss}
             />
-            <SubmitButton title="Register" />
+            <SubmitButton title="Edit User" />
           </Form>
         </Screen>
       </>
@@ -92,4 +109,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegisterScreen;
+export default UserEditScreen;

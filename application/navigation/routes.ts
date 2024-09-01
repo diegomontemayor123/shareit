@@ -4,6 +4,7 @@ export default Object.freeze({
   LOGIN: "Login",
   MESSAGES: "Messages",
   REGISTER: "Register",
+  USER_EDIT: "User Edit",
   MYRECIPESSCREEN: "My Recipes",
   USERSRECIPESSCREEN: "Users Recipes",
   CHATSCREEN: "Chat",

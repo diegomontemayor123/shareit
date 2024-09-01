@@ -7,10 +7,7 @@ import { View } from 'react-native';
 
 const ChatScreen = ({ route }: any) => {
     const convo = route.params
-    console.log('convo' + JSON.stringify(convo))
     const { user } = useAuth()
-
-
 
     const formatMessagesForGiftedChat = (messages: any[]): IMessage[] => {
         return messages.map(message => ({

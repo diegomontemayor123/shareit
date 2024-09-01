@@ -3,7 +3,7 @@ import { ImageBackground, StyleSheet, View, Image, Text } from "react-native";
 import Button from "../components/Button";
 import routes from "../navigation/routes";
 
-function WelcomeScreen({ navigation }: { navigation: any }) {
+function EnterScreen({ navigation }: { navigation: any }) {
   return (
     <ImageBackground
       blurRadius={10}
@@ -56,4 +56,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WelcomeScreen;
+export default EnterScreen;

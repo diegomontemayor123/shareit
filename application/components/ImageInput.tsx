@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, StyleSheet, Image, TouchableWithoutFeedback, Alert } from "react-native";
+import { View, StyleSheet, Image, TouchableWithoutFeedback, Alert, Text } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import * as ImageManipulator from "expo-image-manipulator";
@@ -54,11 +54,14 @@ const ImageInput: React.FC<ImageInputProps> = ({ imageUri, onChangeImage }) => {
     <TouchableWithoutFeedback onPress={handlePress}>
       <View style={styles.container}>
         {!imageUri ? (
-          <MaterialCommunityIcons
-            color={colors.medium}
-            name="camera"
-            size={40}
-          />
+          <>
+            <MaterialCommunityIcons
+              color={colors.medium}
+              name="plus-circle"
+              size={40}
+            />
+            <Text style={styles.text}>Edit Photos</Text>
+          </>
         ) : (
           <Image source={{ uri: imageUri }} style={styles.image} />
         )}
@@ -82,6 +85,12 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
   },
+  text: {
+    color: colors.medium,
+    textAlign: "center",
+    marginTop: 3
+
+  }
 });
 
 export default ImageInput;

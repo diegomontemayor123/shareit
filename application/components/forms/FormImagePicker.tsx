@@ -6,9 +6,11 @@ import ImageInputList from "../ImageInputList";
 interface FormImagePickerProps {
   name: string;
   multipleImages?: boolean
+  placeholderUrl?: string;
+  placeholderThumbnailUrl?: string
 }
 
-const FormImagePicker: React.FC<FormImagePickerProps> = ({ name, multipleImages = true }) => {
+const FormImagePicker: React.FC<FormImagePickerProps> = ({ name, multipleImages = true, placeholderUrl, placeholderThumbnailUrl }) => {
   const { errors, setFieldValue, touched, values } = useFormikContext<Record<string, string[]>>();
   const imageUris = values[name] || [];
 
@@ -33,6 +35,9 @@ const FormImagePicker: React.FC<FormImagePickerProps> = ({ name, multipleImages 
         imageUris={imageUris}
         onAddImage={handleAdd}
         onRemoveImage={handleRemove}
+        placeholderUrl={placeholderUrl}
+        placeholderThumbnailUrl={placeholderThumbnailUrl}
+
       />
       <ErrorMessage error={errors[name] as string} visible={Boolean(touched[name])} />
     </>
