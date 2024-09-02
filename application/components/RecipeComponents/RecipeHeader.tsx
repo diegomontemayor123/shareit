@@ -14,11 +14,10 @@ interface RecipeHeaderProps {
   time: number;
   categoryIcon: string;
   categoryColor: string;
-  userName: string;
   recipeCount: number;
   navigation: any;
-  userEmail: string;
   userId: string
+
 }
 
 const RecipeHeader: React.FC<RecipeHeaderProps> = ({
@@ -26,21 +25,17 @@ const RecipeHeader: React.FC<RecipeHeaderProps> = ({
   time,
   categoryIcon,
   categoryColor,
-  userName = "Undefined",
   recipeCount,
   navigation,
-  userEmail,
-  userId
+  userId,
+
 
 }) => {
-  const [displayImage, setDisplayImage] = useState<{ url: string | null, thumbnailUrl: string | null } | null>(null);
-
+  const [recipeUser, setRecipeUser] = useState({ _id: "", name: "", images: { url: null, thumbnailUrl: null } })
   useEffect(() => {
     const fetchImages = async () => {
       const result = await getUserbyId(userId)
-      console.log('result' + JSON.stringify(result) + ' id ' + userId)
-
-      setDisplayImage({ url: result.images?.url || null, thumbnailUrl: result.images?.thumbnailUrl || null })
+      setRecipeUser(result)
     }
     fetchImages()
   }, [userId])
@@ -57,15 +52,15 @@ const RecipeHeader: React.FC<RecipeHeaderProps> = ({
         <ListItem
           IconComponent={
             <Avatar
-              firstName={userName.split(" ")[0]}
-              lastName={userName.split(" ")[1] || ""}
+              firstName={recipeUser.name.split(" ")[0]}
+              lastName={recipeUser.name.split(" ")[1] || ""}
               size={55}
-              imageUrl={displayImage?.url || null}
-              thumbnailUrl={displayImage?.thumbnailUrl || null}
+              imageUrl={recipeUser.images?.url || null}
+              thumbnailUrl={recipeUser.images?.thumbnailUrl || null}
             />
           }
-          title={userName}
-          onPress={() => navigation.navigate(routes.USERSRECIPESSCREEN, { userEmail })}
+          title={recipeUser.name}
+          onPress={() => navigation.navigate(routes.USERSRECIPESSCREEN, { userId: recipeUser._id })}
           subTitle={recipeCount === 1 ? `${recipeCount} Recipe` : `${recipeCount} Recipes`}
           containerPadding={0}
           containerMarginVert={10}

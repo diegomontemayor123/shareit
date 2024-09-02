@@ -13,11 +13,9 @@ interface Recipe {
   categoryIcon: string;
   categoryColor: string;
   description: string;
-  userEmail: string;
-  userName: string;
   userId: string
   likesCount: number;
-  likerEmails: string[];
+  likerIds: string[];
   images: { fileName: string }[];
   location: {
     latitude: number;
@@ -61,6 +59,7 @@ export default function useSubmitRecipe({ navigation }: Props) {
       if (!result.ok) {
         setUploadVisible(false);
         resetForm();
+        console.log('Error: ' + JSON.stringify(result))
         return Alert.alert("Could not save the recipe");
       }
 

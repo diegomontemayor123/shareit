@@ -19,11 +19,9 @@ interface Recipe {
   id: number;
   title: string;
   time: string;
-  userName: string;
   categoryIcon: string;
   categoryColor: string;
   images: { url: string; thumbnailUrl: string }[];
-  userEmail: string;
   likesCount: number;
 }
 
@@ -33,9 +31,10 @@ interface RecipesProps {
   emptyMessage: string;
   navigation: any;
   onCategoryChange: any
+  onUsersChange?: (users: any) => void;
 }
 
-function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCategoryChange }: RecipesProps) {
+function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCategoryChange, onUsersChange }: RecipesProps) {
   const { handleAddLike, handleDelete, handleRefresh, refreshing, filteredRecipes } = useRecipeActions(filterFn);
   const getRecipesApi = useApi(recipesApi.getRecipes);
   const { user } = useAuth();
@@ -49,13 +48,12 @@ function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCat
       const _ids = filteredRecipes.map((recipe) => recipe.userId);
       const userFetches = _ids.map(_id => getUserbyId(_id));
       const usersData = await Promise.all(userFetches);
-
-
       const usersMap: { [_id: string]: string } = {};
       usersData.forEach((userData, index) => {
         usersMap[_ids[index]] = userData.name;
       });
       setUsers(usersMap);
+      onUsersChange ? onUsersChange(usersMap) : null
     };
     if (filteredRecipes.length > 0) {
       fetchUsers();

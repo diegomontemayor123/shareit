@@ -1,32 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import colors from "../config/colors";
 import RecipesScreen from "./RecipesScreen";
-import { useState } from "react";
+
 import { Searchbar } from 'react-native-paper';
 
 function SearchScreen({ navigation }: any) {
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
+  const [users, setUsers] = useState<any>(null)
 
   const handleCategoryChange = (category: any) => {
     setSelectedCategory(category);
   };
-
   const handleSearchChange = (query: any) => {
     setSearch(query);
   };
 
 
   const filterSearch = (recipes: any) => {
+
+    let matchedUserId: string | undefined;
+    if (users) {
+      matchedUserId = Object.keys(users).find((userId) =>
+        users[userId].toLowerCase().includes(search.toLowerCase())
+      );
+    }
+
     return recipes.filter((recipe: any) =>
       selectedCategory
-        ? recipe.categoryId == selectedCategory.value && (recipe.title.toLowerCase().includes(search.toLowerCase()) ||
-          recipe.userName.toLowerCase().includes(search.toLowerCase()))
+        ? recipe.categoryId == selectedCategory.value
+        && (recipe.title.toLowerCase().includes(search.toLowerCase()) ||
+          recipe.userId.toLowerCase() === matchedUserId)
         : (recipe.title.toLowerCase().includes(search.toLowerCase()) ||
-          recipe.userName.toLowerCase().includes(search.toLowerCase())))
+          recipe.userId.toLowerCase() === matchedUserId))
   }
-
 
   return (
     <>
@@ -42,6 +50,7 @@ function SearchScreen({ navigation }: any) {
         errorMessage="Couldn't retrieve the recipes."
         emptyMessage="No recipes available."
         onCategoryChange={handleCategoryChange}
+        onUsersChange={(usersMap) => { setUsers(usersMap) }}
       />}
     </>
   );

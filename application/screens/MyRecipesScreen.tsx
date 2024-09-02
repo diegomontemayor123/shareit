@@ -12,7 +12,7 @@ function MyRecipesScreen({ navigation }: any) {
 
 
   const filterMyRecipes = (recipes: any[]) => {
-    return recipes.filter((recipe) => selectedCategory ? recipe.userEmail === user.email && recipe.categoryId == selectedCategory.value : recipe.userEmail === user.email);
+    return recipes.filter((recipe) => selectedCategory ? recipe.userId === user._id && recipe.categoryId == selectedCategory.value : recipe.userId === user._id);
   };
 
   return (

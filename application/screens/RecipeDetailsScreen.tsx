@@ -27,7 +27,6 @@ function RecipeDetailsScreen({ route, navigation }: any) {
       setRecipeUser(userData);
     };
     fetchUsers();
-    console.log('userdata' + JSON.stringify(recipeUser))
   }, [recipe])
 
   return (
@@ -44,9 +43,7 @@ function RecipeDetailsScreen({ route, navigation }: any) {
             time={recipe.time}
             categoryIcon={recipe.categoryIcon}
             categoryColor={recipe.categoryColor}
-            userName={recipeUser.name ? recipeUser.name : "..."}
-            userEmail={recipeUser.email}
-            userId={recipeUser._id}
+            userId={recipe.userId}
             recipeCount={recipeCount}
             navigation={navigation}
           />

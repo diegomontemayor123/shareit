@@ -15,7 +15,7 @@ interface Recipe {
     name: string;
   };
   likesCount?: number;
-  likerEmails?: string[]
+  likerIds?: string[]
   userEmail: string;
   images: string[];
   location?: {
@@ -50,11 +50,9 @@ export const addRecipe = async (
   data.append("categoryColor", recipe.category.backgroundColor)
   data.append("ingredients", recipe.ingredients)
   data.append("description", recipe.description);
-  data.append("userEmail", user.email)
-  data.append("userName", user.name)
   data.append("userId", user._id)
   data.append("likesCount", (recipe.likesCount || 0).toString())
-  data.append("likerEmails", JSON.stringify(recipe.likerEmails || []))
+  data.append("likerIds", JSON.stringify(recipe.likerIds || []))
 
   recipe.images.forEach((image, index) =>
     data.append("images", {

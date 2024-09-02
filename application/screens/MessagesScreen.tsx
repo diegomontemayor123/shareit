@@ -13,9 +13,7 @@ import { getUserbyId } from "../api/users";
 interface Message {
   _id: string;
   fromUserId: string;
-  fromUserName: string;
   toUserId: string;
-  toUserName: string;
   recipeName: string;
   content: string;
   recipeId: string;
@@ -90,17 +88,16 @@ function MessagesScreen({ navigation }: any) {
         keyExtractor={(message) => `${message.fromUserId}-${message.recipeId}`}
         renderItem={({ item }) => {
           const _id = item.fromUserId === user.email ? item.toUserId : item.fromUserId;
-          const displayName = _id === item.fromUserId ? item.fromUserName : item.toUserName;
-          const displayUser = userDetails[_id] || { images: { url: null, thumbnailUrl: null } };
+          const displayUser = userDetails[_id] || { name: '', images: { url: null, thumbnailUrl: null } };
 
           return (
             <ListItem
-              title={displayName}
+              title={displayUser.name}
               subTitle={`${item.recipeName} Recipe`}
               IconComponent={
                 <Avatar
-                  firstName={displayName.split(" ")[0]}
-                  lastName={displayName.split(" ")[1] || ""}
+                  firstName={displayUser.name.split(" ")[0]}
+                  lastName={displayUser.name.split(" ")[1] || ""}
                   size={55}
                   imageUrl={displayUser.images?.url || null}
                   thumbnailUrl={displayUser.images?.thumbnailUrl || null}
