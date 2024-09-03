@@ -17,7 +17,7 @@ const { width } = Dimensions.get('window');
 
 function RecipeDetailsScreen({ route, navigation }: any) {
   const recipe = route.params;
-  const recipeCount = useRecipeCount(recipe.userEmail);
+  const recipeCount = useRecipeCount(recipe.userId);
   const { user } = useAuth()
 
   const [recipeUser, setRecipeUser] = useState<{ [_id: string]: string }>({});
@@ -40,7 +40,7 @@ function RecipeDetailsScreen({ route, navigation }: any) {
 
           <RecipeHeader
             title={recipe.title}
-            time={recipe.time}
+            timeToComplete={recipe.timeToComplete}
             categoryIcon={recipe.categoryIcon}
             categoryColor={recipe.categoryColor}
             userId={recipe.userId}

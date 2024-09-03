@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View, Modal, Button, FlatList } from "react-native";
 import colors from "../config/colors";
 import { useState, useEffect } from "react";
-import categories from "../config/categories";
+import { categories } from "../config/categories";
 import feedSorts from "../config/feedSorts";
 import CategoryPickerItem from "./CategoryPickerItem";
 import Screen from "./Screen";

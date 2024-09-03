@@ -2,7 +2,7 @@ import client from "./client";
 
 interface Recipe {
   title: string;
-  time: string;
+  timeToComplete: string;
   category: {
     value: string;
     icon: string;
@@ -16,7 +16,6 @@ interface Recipe {
   };
   likesCount?: number;
   likerIds?: string[]
-  userEmail: string;
   images: string[];
   location?: {
     latitude: number;
@@ -44,7 +43,7 @@ export const addRecipe = async (
 
   const data = new FormData();
   data.append("title", recipe.title);
-  data.append("time", recipe.time);
+  data.append("timeToComplete", recipe.timeToComplete);
   data.append("categoryId", recipe.category.value);
   data.append("categoryIcon", recipe.category.icon)
   data.append("categoryColor", recipe.category.backgroundColor)
@@ -70,8 +69,6 @@ export const addRecipe = async (
       setTimeout(resolve, 200);
     });
   };
-
-
   for (let progress = 0; progress <= 1; progress += 0.1) {
     await simulateProgress();
     onUploadProgress(progress);
@@ -82,17 +79,51 @@ export const addRecipe = async (
   });
 };
 
+const editRecipe = async (recipeId: string, newRecipeInfo: Recipe, onUploadProgress: OnUploadProgress,) => {
+  const data = new FormData();
+  data.append("title", newRecipeInfo.title);
+  data.append("timeToComplete", newRecipeInfo.timeToComplete);
+  data.append("categoryId", newRecipeInfo.category.value == null ? "" : newRecipeInfo.category.value);
+  data.append("categoryIcon", newRecipeInfo.category.icon == null ? "" : newRecipeInfo.category.icon)
+  data.append("categoryColor", newRecipeInfo.category.backgroundColor == null ? "" : newRecipeInfo.category.backgroundColor)
+  data.append("ingredients", newRecipeInfo.ingredients)
+  data.append("description", newRecipeInfo.description);
+
+  if (newRecipeInfo.images) {
+    newRecipeInfo.images.forEach((image, index) =>
+      data.append("images", {
+        name: `image${index}`,
+        type: "image/jpeg",
+        uri: image,
+      } as any)
+    );
+  }
+
+  const simulateProgress = () => {
+    return new Promise((resolve) => {
+      setTimeout(resolve, 200);
+    });
+  };
+  for (let progress = 0; progress <= 1; progress += 0.1) {
+    await simulateProgress();
+    onUploadProgress(progress);
+  }
+
+  client.post(`${endpoint}/${recipeId}`, data, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+};
+
+
 export const deleteRecipe = (id: string) => client.delete(`${endpoint}/${id}`);
 
-export const addLike = (id: number, userEmail: string) =>
-  client.post(`${endpoint}/${id}/like`, { userEmail });
-
-
-
+export const addLike = (id: number, userId: string) =>
+  client.post(`${endpoint}/${id}/like`, { userId });
 
 export default {
   addRecipe,
   getRecipes,
   deleteRecipe,
-  addLike
+  addLike,
+  editRecipe
 };

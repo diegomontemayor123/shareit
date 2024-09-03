@@ -8,27 +8,24 @@ import routes from "../../navigation/routes";
 import colors from "../../config/colors";
 import { getUserbyId } from "../../api/users"
 
-
 interface RecipeHeaderProps {
   title: string;
-  time: number;
+  timeToComplete: number;
   categoryIcon: string;
   categoryColor: string;
   recipeCount: number;
   navigation: any;
   userId: string
-
 }
 
 const RecipeHeader: React.FC<RecipeHeaderProps> = ({
   title,
-  time,
+  timeToComplete,
   categoryIcon,
   categoryColor,
   recipeCount,
   navigation,
   userId,
-
 
 }) => {
   const [recipeUser, setRecipeUser] = useState({ _id: "", name: "", images: { url: null, thumbnailUrl: null } })
@@ -47,7 +44,7 @@ const RecipeHeader: React.FC<RecipeHeaderProps> = ({
         <Text style={styles.title}>{title}</Text>
         <Icon backgroundColor={categoryColor} name={categoryIcon} size={35} />
       </View>
-      <Text style={styles.time}>~{time} min</Text>
+      <Text style={styles.timeToComplete}>~{timeToComplete} min</Text>
       <View>
         <ListItem
           IconComponent={
@@ -80,7 +77,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "500",
   },
-  time: {
+  timeToComplete: {
     color: colors.secondary,
     fontWeight: "bold",
     fontSize: 18,

@@ -8,7 +8,7 @@ import routes from "../navigation/routes";
 import Screen from "../components/Screen";
 import useAuth from "../auth/useAuth";
 import Avatar from "../components/Avatar";
-import { getUserbyEmail, getUserbyId } from "../api/users"
+import { getUserbyId } from "../api/users"
 
 const menuItems = [
   {
@@ -23,30 +23,30 @@ const menuItems = [
 
 function AccountScreen({ navigation }: any) {
   const { user, logOut } = useAuth();
-  const [displayImage, setDisplayImage] = useState<{ url: string | null, thumbnailUrl: string | null } | null>(null);
+  const [newUser, setNewUser] = useState<any>(user);
 
   useEffect(() => {
     const fetchImages = async () => {
       const result = await getUserbyId(user._id)
-      setDisplayImage({ url: result.images?.url || null, thumbnailUrl: result.images?.thumbnailUrl || null })
+      setNewUser(result)
     }
     fetchImages()
-  }, [])
+  }, [newUser])
 
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
         <ListItem
-          title={user.email}
+          title={newUser.name}
           subTitle="Edit User Info"
           onPress={() => navigation.navigate(routes.USER_EDIT)}
           IconComponent={
             <Avatar
-              firstName={user.name.split(" ")[0]}
-              lastName={user.name.split(" ")[1] || ""}
+              firstName={newUser.name.split(" ")[0]}
+              lastName={newUser.name.split(" ")[1] || ""}
               size={40}
-              imageUrl={displayImage?.url || null}
-              thumbnailUrl={displayImage?.thumbnailUrl || null}
+              imageUrl={newUser.images?.url || null}
+              thumbnailUrl={newUser.images?.thumbnailUrl || null}
             />
           }
         />

@@ -3,14 +3,14 @@ import RecipesScreen from "./RecipesScreen";
 import { useState } from "react";
 
 function UsersRecipesScreen({ navigation, route }: { navigation: any; route: any }) {
-  const { userEmail } = route.params;
+  const { userId } = route.params;
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const handleCategoryChange = (category: any) => {
     setSelectedCategory(category);
   };
 
 
-  const filterUserRecipes = (recipes: any[]) => recipes.filter((recipe) => selectedCategory ? recipe.userEmail === userEmail && recipe.categoryId == selectedCategory.value : recipe.userEmail === userEmail);
+  const filterUserRecipes = (recipes: any[]) => recipes.filter((recipe) => selectedCategory ? recipe.userId === userId && recipe.categoryId == selectedCategory.value : recipe.userId === userId);
 
   return (
     <RecipesScreen

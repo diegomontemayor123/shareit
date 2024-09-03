@@ -17,4 +17,9 @@ const categories: Category[] = [
   { backgroundColor: "#778ca3", icon: "food-variant", label: "Other", value: 9 },
 ];
 
-export default categories;
+const getCategoryLabelByValue = (value: number | null) => {
+  const category = categories.find(cat => cat.value === value);
+  return category ? category.label : null;
+};
+
+export { categories, getCategoryLabelByValue };

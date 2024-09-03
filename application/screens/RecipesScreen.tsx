@@ -13,12 +13,13 @@ import useAuth from "../auth/useAuth";
 import useRecipeActions from "../hooks/useRecipeActions";
 import SorterFilter from "../components/SorterFilter";
 import { getUserbyId } from "../api/users";
+import { useFocusEffect } from '@react-navigation/native';
 
 
 interface Recipe {
   id: number;
   title: string;
-  time: string;
+  timeToComplete: string;
   categoryIcon: string;
   categoryColor: string;
   images: { url: string; thumbnailUrl: string }[];
@@ -35,7 +36,7 @@ interface RecipesProps {
 }
 
 function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCategoryChange, onUsersChange }: RecipesProps) {
-  const { handleAddLike, handleDelete, handleRefresh, refreshing, filteredRecipes } = useRecipeActions(filterFn);
+  const { handleAddLike, handleChange, handleRefresh, refreshing, filteredRecipes } = useRecipeActions(filterFn);
   const getRecipesApi = useApi(recipesApi.getRecipes);
   const { user } = useAuth();
 
@@ -43,26 +44,31 @@ function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCat
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<any>()
 
   const [users, setUsers] = useState<{ [_id: string]: string }>({});
+
+  const fetchUsers = async () => {
+    const _ids = filteredRecipes.map((recipe) => recipe.userId);
+    const userFetches = _ids.map(_id => getUserbyId(_id));
+    const usersData = await Promise.all(userFetches);
+    const usersMap: { [_id: string]: string } = {};
+    usersData.forEach((userData, index) => {
+      usersMap[_ids[index]] = userData.name;
+    });
+    setUsers(usersMap);
+    onUsersChange ? onUsersChange(usersMap) : null
+  };
+
   useEffect(() => {
-    const fetchUsers = async () => {
-      const _ids = filteredRecipes.map((recipe) => recipe.userId);
-      const userFetches = _ids.map(_id => getUserbyId(_id));
-      const usersData = await Promise.all(userFetches);
-      const usersMap: { [_id: string]: string } = {};
-      usersData.forEach((userData, index) => {
-        usersMap[_ids[index]] = userData.name;
-      });
-      setUsers(usersMap);
-      onUsersChange ? onUsersChange(usersMap) : null
-    };
     if (filteredRecipes.length > 0) {
       fetchUsers();
     }
   }, [filteredRecipes])
 
-  useEffect(() => {
-    getRecipesApi.request();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      getRecipesApi.request();
+      handleRefresh()
+    }, [])
+  );
 
   const getSortedRecipes = () => {
     let sortedRecipes = [...filteredRecipes];
@@ -109,19 +115,19 @@ function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCat
           data={getSortedRecipes()}
           keyExtractor={(recipe) => recipe.id.toString()}
           renderItem={({ item }) => {
-            const showDeleteButton = item.userEmail === user.email;
+            const showDeleteButton = item.userId === user._id;
             const userName = users[item.userId]
             return (
               <Slide
                 title={item.title}
-                subTitle={`~${item.time} hrs`}
+                subTitle={`~${item.timeToComplete} min`}
                 subTitle2={userName}
                 category={item.categoryIcon}
                 color={item.categoryColor}
                 imageUrl={item.images[0].url}
                 thumbnailUrl={item.images[0].thumbnailUrl}
                 onPress={() => navigation.navigate(routes.RECIPE_DETAILS, item)}
-                onDelete={() => handleDelete(item.id)}
+                onChange={() => handleChange(item, navigation)}
                 showDeleteButton={showDeleteButton}
                 addLike={() => handleAddLike(item.id)}
                 likesCount={item.likesCount}

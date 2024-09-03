@@ -87,7 +87,7 @@ function MessagesScreen({ navigation }: any) {
         data={messages}
         keyExtractor={(message) => `${message.fromUserId}-${message.recipeId}`}
         renderItem={({ item }) => {
-          const _id = item.fromUserId === user.email ? item.toUserId : item.fromUserId;
+          const _id = item.fromUserId === user._id ? item.toUserId : item.fromUserId;
           const displayUser = userDetails[_id] || { name: '', images: { url: null, thumbnailUrl: null } };
 
           return (

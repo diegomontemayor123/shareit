@@ -6,12 +6,12 @@ import * as ImageManipulator from "expo-image-manipulator";
 import colors from "../config/colors";
 
 
-interface ImageInputProps {
+interface ImageSelectorProps {
   imageUri?: string;
   onChangeImage: (uri: string | null) => void;
 }
 
-const ImageInput: React.FC<ImageInputProps> = ({ imageUri, onChangeImage }) => {
+const ImageSelector: React.FC<ImageSelectorProps> = ({ imageUri, onChangeImage }) => {
   useEffect(() => {
     requestPermission();
   }, []);
@@ -57,10 +57,10 @@ const ImageInput: React.FC<ImageInputProps> = ({ imageUri, onChangeImage }) => {
           <>
             <MaterialCommunityIcons
               color={colors.medium}
-              name="plus-circle"
-              size={40}
+              name="camera-plus-outline"
+              size={35}
             />
-            <Text style={styles.text}>Edit Photos</Text>
+            <Text style={styles.text}>Edit</Text>
           </>
         ) : (
           <Image source={{ uri: imageUri }} style={styles.image} />
@@ -73,7 +73,7 @@ const ImageInput: React.FC<ImageInputProps> = ({ imageUri, onChangeImage }) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    backgroundColor: colors.light,
+    backgroundColor: colors.white,
     borderRadius: 10,
     height: 80,
     justifyContent: "center",
@@ -93,4 +93,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ImageInput;
+export default ImageSelector;

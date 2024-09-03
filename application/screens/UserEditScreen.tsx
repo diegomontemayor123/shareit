@@ -3,55 +3,51 @@ import { StyleSheet, TouchableWithoutFeedback, Keyboard } from "react-native";
 import * as Yup from "yup";
 import Screen from "../components/Screen";
 import { ErrorMessage, Form, FormField, SubmitButton } from "../components/forms";
-import { register } from "../api/users";
 import useAuth from "../auth/useAuth";
-import authApi from "../api/auth";
 import ActivityIndicator from "../components/ActivityIndicator";
-import useApi from "../hooks/useApi";
 import FormImagePicker from "../components/forms/FormImagePicker";
-import { getUserbyEmail } from "../api/users";
+import { getUserbyId, editUser } from "../api/users";
+import useApi from "../hooks/useApi";
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required().label("Name"),
-  email: Yup.string().required().email().label("Email"),
-  password: Yup.string().required().min(5).label("Password"),
+  name: Yup.string().optional().label("Name"),
+  email: Yup.string().optional().email().label("Email"),
+  password: Yup.string().optional().min(5).label("Password"),
   images: Yup.array().max(1, "Only one image allowed."),
 });
 
-function UserEditScreen() {
+function UserEditScreen({ navigation }: any) {
   const [currentUser, setCurrentUser] = useState<any>(null)
   useEffect(() => {
     const fetchUser = async () => {
-      const result = await getUserbyEmail(user.email)
+      const result = await getUserbyId(user._id)
+      console.log('result ' + JSON.stringify(result))
       setCurrentUser(result)
     }
     fetchUser()
   }, [])
 
-
-  const loginApi = useApi(authApi.login);
-  const { auth, user }: any = useAuth();
+  const editApi = useApi(editUser);
+  const { user }: any = useAuth();
   const [error, setError] = useState<string | undefined>();
+  const handleSubmit = async (newUserInfo: { name?: string; email?: string; password?: string; images?: any[] }, { resetForm }: { resetForm: () => void }) => {
+    const result = await editApi.request(user._id, newUserInfo)
 
-
-  //const registerApi = useApi(register);
-  const handleSubmit = async (userInfo: { name?: string; email?: string; password?: string; images?: any[] }) => {
-    //const result = await registerApi.request(userInfo);
-
-    // if (!result.ok) {
-    //  if (result.data) setError(result.data.error);
-    //  else setError("An unexpected error occurred.");
-    //  return;
-    //}
-
-    const { data: authToken } = await loginApi.request(userInfo.email, userInfo.password);
-    auth.logIn(authToken);
+    if (!result.ok) {
+      if (result.data) setError(result.data.error);
+      else setError("An unexpected error occurred.");
+      return;
+    }
+    else {
+      resetForm()
+      navigation.goBack()
+    }
   };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <>
-        <ActivityIndicator /*visible={registerApi.loading || loginApi.loading}*/ />
+        <ActivityIndicator visible={editApi.loading} />
         <Screen style={styles.container}>
           <Form
             initialValues={{ name: "", email: "", password: "" }}
@@ -61,8 +57,7 @@ function UserEditScreen() {
             <FormImagePicker
               name="images"
               multipleImages={false}
-              placeholderThumbnailUrl={currentUser?.images.thumbnailUrl || null}
-              placeholderUrl={currentUser?.images.url || null} />
+              placeholderUrls={[currentUser?.images.url] || null} />
             <ErrorMessage error={error} visible={!!error} />
             <FormField
               autoCorrect={false}

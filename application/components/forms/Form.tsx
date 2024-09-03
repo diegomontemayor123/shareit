@@ -11,7 +11,7 @@ interface RegisterFormValues {
 
 interface AppFormProps {
   initialValues: RegisterFormValues;
-  onSubmit: (values: RegisterFormValues, formikHelpers: FormikHelpers<RegisterFormValues>) => void | Promise<any>;
+  onSubmit: any
   validationSchema: any;
   children: React.ReactNode;
 }

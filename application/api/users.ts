@@ -24,15 +24,32 @@ const register = async (userInfo: UserInfo) => {
       } as any)
     );
   }
-
   return client.post(endpoint, data, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
 };
-const getUserbyEmail = async (email: string) => {
-  const result: any = await client.get(`${endpoint}?email=${email}`)
-  return result.data
-}
+
+const editUser = async (userId: string, newUserInfo: UserInfo) => {
+  const data = new FormData();
+  data.append("name", newUserInfo.name);
+  data.append("email", newUserInfo.email);
+  data.append("password", newUserInfo.password);
+
+  if (newUserInfo.images) {
+    newUserInfo.images.forEach((image, index) =>
+      data.append("images", {
+        name: `image${index}`,
+        type: "image/jpeg",
+        uri: image,
+      } as any)
+    );
+  }
+
+  return client.post(`${endpoint}/${userId}`, data, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+};
+
 
 const getUserbyId = async (_id: string) => {
   const result: any = await client.get(`${endpoint}?_id=${_id}`)
@@ -40,5 +57,5 @@ const getUserbyId = async (_id: string) => {
 }
 
 export {
-  register, getUserbyEmail, getUserbyId
+  register, getUserbyId, editUser
 };

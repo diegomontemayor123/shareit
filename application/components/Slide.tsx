@@ -16,13 +16,13 @@ interface SlideProps {
   imageUrl: string
   onPress: () => void
   thumbnailUrl: string
-  onDelete?: () => void
+  onChange?: () => void
   showDeleteButton: boolean
   likesCount: number
   addLike: () => void
 }
 
-const Slide: React.FC<SlideProps> = ({ title, subTitle, subTitle2, category, color, imageUrl, onPress, thumbnailUrl, onDelete, showDeleteButton, likesCount, addLike }) => {
+const Slide: React.FC<SlideProps> = ({ title, subTitle, subTitle2, category, color, imageUrl, onPress, thumbnailUrl, onChange, showDeleteButton, likesCount, addLike }) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.Slide}>
@@ -33,8 +33,8 @@ const Slide: React.FC<SlideProps> = ({ title, subTitle, subTitle2, category, col
           uri={imageUrl}
         />
         {showDeleteButton && (
-          <TouchableOpacity onPress={onDelete} style={styles.deleteButton}>
-            <MaterialCommunityIcons name="close-circle" size={30} color={colors.light} />
+          <TouchableOpacity onPress={onChange} style={styles.Button}>
+            <MaterialCommunityIcons name="cog" size={30} color={colors.light} />
           </TouchableOpacity>
         )}
 
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     overflow: "hidden",
   },
-  deleteButton: {
+  Button: {
     position: 'absolute',
     top: 10,
     right: 10,

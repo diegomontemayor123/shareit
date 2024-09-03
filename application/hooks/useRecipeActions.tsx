@@ -3,6 +3,7 @@ import { Alert } from 'react-native';
 import recipesApi from "../api/recipes";
 import useApi from './useApi';
 import useAuth from '../auth/useAuth';
+import routes from '../navigation/routes';
 
 type FilterFn = (recipes: any[]) => any[];
 
@@ -29,39 +30,48 @@ export default function useRecipeActions(filterFn: FilterFn) {
     setRefreshing(false);
   };
 
-  const handleDelete = (id: string) => {
-    Alert.alert("Delete", "Are you sure you want to delete this recipe?", [
+  const handleChange = (item: any, navigation: any) => {
+    Alert.alert("Edit Recipe", "How would you like to change this recipe?", [
       {
-        text: "Yes",
+        text: "Edit Recipe",
         onPress: async () => {
           try {
-            const result = await recipesApi.deleteRecipe(id);
-            if (!result.ok) {
-              alert("Could not delete the recipe.");
-              return;
-            }
-            setFilteredRecipes(filteredRecipes.filter(recipe => recipe.id !== id));
+            navigation.navigate(routes.RECIPE_EDIT, item)
           } catch (error) {
             alert("An unexpected error occurred.");
           }
         },
       },
-      { text: "No" },
+      {
+        text: "Delete",
+        onPress: async () => {
+          try {
+            const result = await recipesApi.deleteRecipe(item.id);
+            if (!result.ok) {
+              alert("Could not delete the recipe.");
+              return;
+            }
+            setFilteredRecipes(filteredRecipes.filter(recipe => recipe.id !== item.id));
+          } catch (error) {
+            alert("An unexpected error occurred.");
+          }
+        },
+      },
+      { text: "Cancel" }
     ]);
   };
 
   const handleAddLike = async (id: number) => {
-    const userEmail = user.email;
-    const result = await recipesApi.addLike(id, userEmail);
+    const result = await recipesApi.addLike(id, user._id);
     const data = result.data as any;
 
     if (result.ok) {
       if (data.alreadyLiked) {
         setFilteredRecipes(filteredRecipes.map(recipe =>
-          recipe.id === id ? { ...recipe, likesCount: recipe.likesCount - 1, likerIds: [...recipe.likerIds, userEmail] } : recipe))
+          recipe.id === id ? { ...recipe, likesCount: recipe.likesCount - 1, likerIds: [...recipe.likerIds, user._id] } : recipe))
       } else {
         setFilteredRecipes(filteredRecipes.map(recipe =>
-          recipe.id === id ? { ...recipe, likesCount: recipe.likesCount + 1, likerIds: [...recipe.likerIds, userEmail] } : recipe));
+          recipe.id === id ? { ...recipe, likesCount: recipe.likesCount + 1, likerIds: [...recipe.likerIds, user._id] } : recipe));
       }
     } else {
       alert('Error adding like.');
@@ -70,7 +80,7 @@ export default function useRecipeActions(filterFn: FilterFn) {
 
   return {
     handleAddLike,
-    handleDelete,
+    handleChange,
     handleRefresh,
     refreshing,
     filteredRecipes,
