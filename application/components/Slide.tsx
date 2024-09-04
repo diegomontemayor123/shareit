@@ -20,14 +20,15 @@ interface SlideProps {
   showDeleteButton: boolean
   likesCount: number
   addLike: () => void
+  profilePage: boolean
 }
 
-const Slide: React.FC<SlideProps> = ({ title, subTitle, subTitle2, category, color, imageUrl, onPress, thumbnailUrl, onChange, showDeleteButton, likesCount, addLike }) => {
+const Slide: React.FC<SlideProps> = ({ title, subTitle, subTitle2, category, color, imageUrl, onPress, thumbnailUrl, onChange, showDeleteButton, likesCount, addLike, profilePage }) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.Slide}>
         <Image
-          style={styles.image}
+          style={profilePage ? styles.profileImage : styles.image}
           tint="light"
           preview={{ uri: thumbnailUrl }}
           uri={imageUrl}
@@ -40,7 +41,7 @@ const Slide: React.FC<SlideProps> = ({ title, subTitle, subTitle2, category, col
 
         <RecipeLikes likesCount={likesCount} addLike={addLike} />
 
-        <View style={styles.detailsContainer}>
+        <View style={profilePage ? styles.profileDetails : styles.detailsContainer}>
           <View style={styles.titleContainer}>
             <Text style={styles.title} numberOfLines={1}>
               {title}
@@ -51,14 +52,14 @@ const Slide: React.FC<SlideProps> = ({ title, subTitle, subTitle2, category, col
               size={35}
             />
           </View>
-          <View style={styles.subTitleContainer}>
+          {!profilePage && <View style={styles.subTitleContainer}>
             <Text style={styles.subTitle} numberOfLines={1}>
               {subTitle}
             </Text>
             <Text style={styles.subTitle2} numberOfLines={1}>
               {subTitle2}
             </Text>
-          </View>
+          </View>}
         </View>
       </View>
     </TouchableWithoutFeedback>
@@ -81,9 +82,16 @@ const styles = StyleSheet.create({
   detailsContainer: {
     padding: 20,
   },
+  profileDetails: {
+    padding: 10,
+  },
   image: {
     width: "100%",
     height: 200,
+  },
+  profileImage: {
+    width: "100%",
+    height: 150,
   },
   subTitleContainer: {
     flexDirection: "row",

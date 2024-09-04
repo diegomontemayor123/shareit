@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Image, TouchableHighlight } from "react-native";
+import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import Text from "../AppText";
@@ -12,32 +12,52 @@ interface ListItemProps {
   IconComponent?: React.ReactNode;
   onPress?: () => void;
   renderRightActions?: () => React.ReactNode;
-  containerPadding?: number
-  containerMarginVert?: number
+  containerPadding?: number;
+  containerMarginVert?: number;
 }
 
-const ListItem: React.FC<ListItemProps> = ({ title, subTitle, image, IconComponent, onPress, renderRightActions, containerPadding = 10, containerMarginVert = 0,
-}) => (
-  <Swipeable renderRightActions={renderRightActions}>
-    <TouchableHighlight underlayColor={colors.light} onPress={onPress}>
-      <View style={[styles.container, { padding: containerPadding }, { marginVertical: containerMarginVert }]}>
-        {IconComponent}
-        {image && <Image style={styles.image} source={image} />}
-        <View style={styles.detailsContainer}>
-          <Text style={styles.title} numberOfLines={1}>
-            {title}
+const ListItem: React.FC<ListItemProps> = ({
+  title,
+  subTitle,
+  image,
+  IconComponent,
+  onPress,
+  renderRightActions,
+  containerPadding = 10,
+  containerMarginVert = 0,
+}) => {
+
+  const content = (
+    <TouchableOpacity
+      activeOpacity={0.7}
+      onPress={onPress}
+      style={[styles.container, { padding: containerPadding }, { marginVertical: containerMarginVert }]}
+    >
+      {IconComponent}
+      {image && <Image style={styles.image} source={image} />}
+      <View style={styles.detailsContainer}>
+        <Text style={styles.title} numberOfLines={1}>
+          {title}
+        </Text>
+        {subTitle && (
+          <Text style={styles.subTitle} numberOfLines={2}>
+            {subTitle}
           </Text>
-          {subTitle && (
-            <Text style={styles.subTitle} numberOfLines={2}>
-              {subTitle}
-            </Text>
-          )}
-        </View>
-        <MaterialCommunityIcons color={colors.medium} name="chevron-right" size={25} />
+        )}
       </View>
-    </TouchableHighlight>
-  </Swipeable>
-);
+      <MaterialCommunityIcons color={colors.medium} name="chevron-right" size={25} />
+    </TouchableOpacity>
+  );
+
+
+  return renderRightActions ? (
+    <Swipeable renderRightActions={renderRightActions}>
+      {content}
+    </Swipeable>
+  ) : (
+    content
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

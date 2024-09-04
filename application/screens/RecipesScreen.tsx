@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, Text } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import ActivityIndicator from "../components/ActivityIndicator";
 import Button from "../components/Button";
 import Slide from "../components/Slide";
@@ -33,9 +33,10 @@ interface RecipesProps {
   navigation: any;
   onCategoryChange: any
   onUsersChange?: (users: any) => void;
+  profilePage?: boolean
 }
 
-function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCategoryChange, onUsersChange }: RecipesProps) {
+function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCategoryChange, onUsersChange, profilePage = false }: RecipesProps) {
   const { handleAddLike, handleChange, handleRefresh, refreshing, filteredRecipes } = useRecipeActions(filterFn);
   const getRecipesApi = useApi(recipesApi.getRecipes);
   const { user } = useAuth();
@@ -112,26 +113,30 @@ function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCat
             }} />
 
         <FlatList
+          numColumns={profilePage ? 2 : 1}
           data={getSortedRecipes()}
           keyExtractor={(recipe) => recipe.id.toString()}
           renderItem={({ item }) => {
             const showDeleteButton = item.userId === user._id;
             const userName = users[item.userId]
             return (
-              <Slide
-                title={item.title}
-                subTitle={`~${item.timeToComplete} min`}
-                subTitle2={userName}
-                category={item.categoryIcon}
-                color={item.categoryColor}
-                imageUrl={item.images[0].url}
-                thumbnailUrl={item.images[0].thumbnailUrl}
-                onPress={() => navigation.navigate(routes.RECIPE_DETAILS, item)}
-                onChange={() => handleChange(item, navigation)}
-                showDeleteButton={showDeleteButton}
-                addLike={() => handleAddLike(item.id)}
-                likesCount={item.likesCount}
-              />
+              <View style={profilePage ? styles.slideContainer : null}>
+                <Slide
+                  profilePage={profilePage}
+                  title={item.title}
+                  subTitle={`~${item.timeToComplete} min`}
+                  subTitle2={userName}
+                  category={item.categoryIcon}
+                  color={item.categoryColor}
+                  imageUrl={item.images[0].url}
+                  thumbnailUrl={item.images[0].thumbnailUrl}
+                  onPress={() => navigation.navigate(routes.RECIPE_DETAILS, item)}
+                  onChange={() => handleChange(item, navigation)}
+                  showDeleteButton={showDeleteButton}
+                  addLike={() => handleAddLike(item.id)}
+                  likesCount={item.likesCount}
+                />
+              </View>
             );
           }}
           refreshing={refreshing}
@@ -146,6 +151,10 @@ const styles = StyleSheet.create({
   screen: {
     padding: 8,
     backgroundColor: colors.light,
+  },
+  slideContainer: {
+    flex: 1,
+    margin: 8,
   },
 });
 

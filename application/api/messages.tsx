@@ -2,8 +2,8 @@ import client from "./client";
 
 const endpoint = "/messages";
 
-const sendMessage = (message: string | null, recipeId: number, fromUserId: string, toUserId: string) =>
-  client.post(endpoint, { message, recipeId, fromUserId, toUserId });
+const sendMessage = (message: string | null, fromUserId: string, toUserId: string) =>
+  client.post(endpoint, { message, fromUserId, toUserId });
 
 const getMessagesForUser = (user: any) =>
   client.get(endpoint, { user });

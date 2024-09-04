@@ -8,9 +8,9 @@ const Stack = createStackNavigator();
 
 const AuthNavigator: React.FC = () => (
   <Stack.Navigator>
-    <Stack.Screen name="Enter" component={EnterScreen} options={{ headerShown: false }} />
-    <Stack.Screen name="Login" component={LoginScreen} />
-    <Stack.Screen name="Register" component={RegisterScreen} />
+    <Stack.Screen name="Enter" component={EnterScreen} options={{ headerShown: false, title: "Back" }} />
+    <Stack.Screen name="Login" component={LoginScreen} options={{ title: "" }} />
+    <Stack.Screen name="Register" component={RegisterScreen} options={{ title: "" }} />
   </Stack.Navigator>
 );
 

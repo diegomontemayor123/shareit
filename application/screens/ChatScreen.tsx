@@ -25,7 +25,7 @@ const ChatScreen = ({ route }: any) => {
         setMessages(previousMessages => {
             return GiftedChat.append(previousMessages, newMessages)
         });
-        const result = await messagesApi.sendMessage(newMessages[0].text, convo.recipeId, convo.fromUserId, convo.toUserId);
+        const result = await messagesApi.sendMessage(newMessages[0].text, convo.fromUserId, convo.toUserId);
         if (!result.ok) {
             console.log("Error", result);
             return Alert.alert("Error", "Could not send the message.");

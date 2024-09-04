@@ -5,26 +5,6 @@ import useLocation from "./useLocation";
 import routes from "../navigation/routes";
 import { Alert } from "react-native";
 
-interface Recipe {
-  _id: string;
-  title: string;
-  timeToComplete: number;
-  categoryId: number;
-  categoryIcon: string;
-  categoryColor: string;
-  description: string;
-  userId: string
-  likesCount: number;
-  likerIds: string[];
-  images: { fileName: string }[];
-  location: {
-    latitude: number;
-    longitude: number;
-  };
-}
-
-
-
 interface Props {
   navigation: any;
 }
@@ -40,25 +20,21 @@ export default function useSubmitRecipe({ navigation }: Props) {
     try {
       let result: any
       if (recipeId) {
-        result = await recipesApi.editRecipe(recipeId, { ...recipe, location }, (progress: number) => { setProgress(progress) }) as any
+        await recipesApi.editRecipe(recipeId, { ...recipe, location },
+          (progress: number) => { setProgress(progress) }) as any
       } else {
         result = await recipesApi.addRecipe({ ...recipe, location },
           (progress: number) => { setProgress(progress) }, user) as any
-      }
-      if (result && !result.ok) {
-        setUploadVisible(false);
-        resetForm();
-        return Alert.alert("Could not save the recipe");
       }
       resetForm();
       setUploadVisible(false);
       const response: any = await recipesApi.getRecipes() as any
       const updatedRecipe = response.data.find((r: any) => r._id === (recipeId || result.data._id));
+
       if (!updatedRecipe) {
         return Alert.alert("Could not fetch the updated recipe from the server");
       }
-
-      navigation.navigate(routes.RECIPE_DETAILS, result);
+      navigation.navigate(routes.RECIPE_DETAILS, updatedRecipe);
     } catch (error) {
       setUploadVisible(false);
       resetForm();
@@ -66,6 +42,7 @@ export default function useSubmitRecipe({ navigation }: Props) {
       Alert.alert("An unexpected error occurred");
     }
   };
+
   return {
     handleSubmit,
     uploadVisible,
