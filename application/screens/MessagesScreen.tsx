@@ -15,7 +15,7 @@ interface Message {
   fromUserId: string;
   toUserId: string;
   recipeName: string;
-  content: string;
+  content: any
   recipeId: string;
 }
 
@@ -93,7 +93,7 @@ function MessagesScreen({ navigation }: any) {
           return (
             <ListItem
               title={displayUser.name}
-              subTitle={`${item.recipeName} Recipe`}
+              subTitle={`${item.content[item.content.length - 1].text.substring(0, 30)}...`}
               IconComponent={
                 <Avatar
                   firstName={displayUser.name.split(" ")[0]}

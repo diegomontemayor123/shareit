@@ -17,13 +17,13 @@ interface SlideProps {
   onPress: () => void
   thumbnailUrl: string
   onChange?: () => void
-  showDeleteButton: boolean
+  showSave: boolean
   likesCount: number
   addLike: () => void
   profilePage: boolean
 }
 
-const Slide: React.FC<SlideProps> = ({ title, subTitle, subTitle2, category, color, imageUrl, onPress, thumbnailUrl, onChange, showDeleteButton, likesCount, addLike, profilePage }) => {
+const Slide: React.FC<SlideProps> = ({ title, subTitle, subTitle2, category, color, imageUrl, onPress, thumbnailUrl, onChange, showSave, likesCount, addLike, profilePage }) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.Slide}>
@@ -33,15 +33,15 @@ const Slide: React.FC<SlideProps> = ({ title, subTitle, subTitle2, category, col
           preview={{ uri: thumbnailUrl }}
           uri={imageUrl}
         />
-        {showDeleteButton && (
+        {showSave && (
           <TouchableOpacity onPress={onChange} style={styles.Button}>
-            <MaterialCommunityIcons name="cog" size={30} color={colors.light} />
+            <MaterialCommunityIcons name="bookmark" size={30} color={colors.light} />
           </TouchableOpacity>
         )}
 
         <RecipeLikes likesCount={likesCount} addLike={addLike} />
 
-        <View style={profilePage ? styles.profileDetails : styles.detailsContainer}>
+        <View style={styles.detailsContainer}>
           <View style={styles.titleContainer}>
             <Text style={styles.title} numberOfLines={1}>
               {title}
@@ -80,9 +80,6 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   detailsContainer: {
-    padding: 20,
-  },
-  profileDetails: {
     padding: 10,
   },
   image: {

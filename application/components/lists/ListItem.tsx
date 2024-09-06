@@ -14,6 +14,9 @@ interface ListItemProps {
   renderRightActions?: () => React.ReactNode;
   containerPadding?: number;
   containerMarginVert?: number;
+  icon1?: any
+  icon2?: any
+  icon2Function?: any
 }
 
 const ListItem: React.FC<ListItemProps> = ({
@@ -25,6 +28,10 @@ const ListItem: React.FC<ListItemProps> = ({
   renderRightActions,
   containerPadding = 10,
   containerMarginVert = 0,
+  icon1,
+  icon2,
+  icon2Function,
+
 }) => {
 
   const content = (
@@ -45,7 +52,16 @@ const ListItem: React.FC<ListItemProps> = ({
           </Text>
         )}
       </View>
-      <MaterialCommunityIcons color={colors.medium} name="chevron-right" size={25} />
+      {icon2 &&
+        <TouchableOpacity onPress={icon2Function} style={{ marginRight: 10 }}>
+          <MaterialCommunityIcons color={colors.medium} name={icon2} size={35} />
+        </TouchableOpacity>
+      }
+      {icon1 ?
+        <MaterialCommunityIcons color={colors.medium} name={icon1} size={35} />
+        : <MaterialCommunityIcons color={colors.medium} name="chevron-right" size={35} />
+      }
+
     </TouchableOpacity>
   );
 
@@ -63,7 +79,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     flexDirection: "row",
-    backgroundColor: colors.white,
+    backgroundColor: colors.light,
   },
   detailsContainer: {
     flex: 1,

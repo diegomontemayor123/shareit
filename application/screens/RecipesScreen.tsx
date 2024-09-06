@@ -37,7 +37,7 @@ interface RecipesProps {
 }
 
 function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCategoryChange, onUsersChange, profilePage = false }: RecipesProps) {
-  const { handleAddLike, handleChange, handleRefresh, refreshing, filteredRecipes } = useRecipeActions(filterFn);
+  const { handleAddLike, handleRefresh, refreshing, filteredRecipes } = useRecipeActions(filterFn);
   const getRecipesApi = useApi(recipesApi.getRecipes);
   const { user } = useAuth();
 
@@ -117,7 +117,7 @@ function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCat
           data={getSortedRecipes()}
           keyExtractor={(recipe) => recipe.id.toString()}
           renderItem={({ item }) => {
-            const showDeleteButton = item.userId === user._id;
+            const showSave = true
             const userName = users[item.userId]
             return (
               <View style={profilePage ? styles.slideContainer : null}>
@@ -131,8 +131,8 @@ function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCat
                   imageUrl={item.images[0].url}
                   thumbnailUrl={item.images[0].thumbnailUrl}
                   onPress={() => navigation.navigate(routes.RECIPE_DETAILS, item)}
-                  onChange={() => handleChange(item, navigation)}
-                  showDeleteButton={showDeleteButton}
+                  onChange={() => console.log('placeholder')}
+                  showSave={showSave}
                   addLike={() => handleAddLike(item.id)}
                   likesCount={item.likesCount}
                 />

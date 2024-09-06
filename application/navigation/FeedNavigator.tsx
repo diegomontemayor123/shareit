@@ -11,6 +11,7 @@ const FeedNavigator: React.FC = () => (
     <Stack.Screen name="Recipes" component={AllRecipesScreen} />
     <Stack.Screen name="RecipeDetails" component={RecipeDetailsScreen} />
     <Stack.Screen name="Users Recipes" component={UsersRecipesScreen} />
+
   </Stack.Navigator>
 );
 

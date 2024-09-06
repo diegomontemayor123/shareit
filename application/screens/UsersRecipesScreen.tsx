@@ -33,31 +33,29 @@ function UsersRecipesScreen({ navigation, route }: { navigation: any; route: any
   return (
 
     <>
-      <View style={styles.container}>
-        <ListItem
-          title={profileUser.name}
-          subTitle={"Message " + profileUser.name}
-          onPress={
-            async () => {
-              const result = await messagesApi.sendMessage(null, user._id, profileUser._id) as any;
-              console.log("Error", result);
-              if (!result.ok) { return Alert.alert("Error", "Could not send the message.") }
-              navigation.navigate('Profile', {
-                screen: routes.CHATSCREEN, params: { ...result.data } as any,
-              })
-            }}
-
-          IconComponent={
-            <Avatar
-              firstName={profileUser.name ? profileUser.name.split(" ")[0] : ""}
-              lastName={profileUser.name ? profileUser.name.split(" ")[1] || "" : ""}
-              size={40}
-              imageUrl={profileUser.images?.url || null}
-              thumbnailUrl={profileUser.images?.thumbnailUrl || null}
-            />
-          }
-        />
-      </View>
+      <ListItem
+        title={profileUser.name}
+        subTitle={""}
+        icon1="email"
+        onPress={
+          async () => {
+            const result = await messagesApi.sendMessage(null, user._id, profileUser._id) as any;
+            console.log("Error", result);
+            if (!result.ok) { return Alert.alert("Error", "Could not send the message.") }
+            navigation.navigate(
+              routes.CHATSCREEN, { ...result.data } as any,
+            )
+          }}
+        IconComponent={
+          <Avatar
+            firstName={profileUser.name ? profileUser.name.split(" ")[0] : ""}
+            lastName={profileUser.name ? profileUser.name.split(" ")[1] || "" : ""}
+            size={40}
+            imageUrl={profileUser.images?.url || null}
+            thumbnailUrl={profileUser.images?.thumbnailUrl || null}
+          />
+        }
+      />
       <RecipesScreen
         filterFn={filterUserRecipes}
         profilePage={true}
@@ -70,11 +68,6 @@ function UsersRecipesScreen({ navigation, route }: { navigation: any; route: any
   );
 }
 
-const styles = StyleSheet.create({
 
-  container: {
-    marginTop: 20,
-  },
-});
 
 export default UsersRecipesScreen;

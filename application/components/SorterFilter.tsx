@@ -7,6 +7,7 @@ import feedSorts from "../config/feedSorts";
 import CategoryPickerItem from "./CategoryPickerItem";
 import Screen from "./Screen";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 
 interface SorterFilter {
@@ -15,7 +16,7 @@ interface SorterFilter {
     onCategoryFilterChange: (categoryFilter: any) => void;
 }
 
-const SorterFilter: React.FC<SorterFilter> = ({ color = "medium", onCategoryFilterChange, onSortChange }) => {
+const SorterFilter: React.FC<SorterFilter> = ({ color = "white", onCategoryFilterChange, onSortChange }) => {
 
     const [titleSort, setTitleSort] = useState<string>('Sort')
     const [titleFilter, setTitleFilter] = useState<string>('Filter Categories')
@@ -43,13 +44,13 @@ const SorterFilter: React.FC<SorterFilter> = ({ color = "medium", onCategoryFilt
     return (
         <View style={styles.container}>
             <TouchableOpacity
-                style={[styles.button, { backgroundColor: colors[color] }]}
+                style={[styles.button, { backgroundColor: colors[color], borderWidth: 1 }]}
                 onPress={() => { setShowSorts(true) }}>
                 <Text style={styles.text}>{titleSort}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-                style={[styles.button, { backgroundColor: colors[color] }]}
+                style={[styles.button, { backgroundColor: colors[color], borderWidth: 1 }]}
                 onPress={() => { setShowCategories(true) }}>
                 <Text style={styles.text}>{titleFilter}</Text>
             </TouchableOpacity>
@@ -60,7 +61,11 @@ const SorterFilter: React.FC<SorterFilter> = ({ color = "medium", onCategoryFilt
                 </TouchableOpacity>)}
 
             <Modal visible={showCategories} animationType="slide"><Screen>
-                <Button title="Back" onPress={() => setShowCategories(false)} />
+                <View style={{ padding: 15 }}>
+                    <TouchableWithoutFeedback onPress={() => setShowCategories(false)}>
+                        <MaterialCommunityIcons name="close" size={30} />
+                    </TouchableWithoutFeedback>
+                </View>
                 <FlatList
                     data={categories}
                     keyExtractor={(category) => category.value.toString()}
@@ -76,7 +81,11 @@ const SorterFilter: React.FC<SorterFilter> = ({ color = "medium", onCategoryFilt
             </Screen></Modal>
 
             <Modal visible={showSorts} animationType="slide"><Screen>
-                <Button title="Back" onPress={() => setShowSorts(false)} />
+                <View style={{ padding: 15 }}>
+                    <TouchableWithoutFeedback onPress={() => setShowSorts(false)}>
+                        <MaterialCommunityIcons name="close" size={30} />
+                    </TouchableWithoutFeedback>
+                </View>
                 <FlatList
                     data={feedSorts}
                     keyExtractor={(filter) => filter.value.toString()}
@@ -108,7 +117,7 @@ const styles = StyleSheet.create({
         marginHorizontal: "5%",
     },
     text: {
-        color: colors.white,
+        color: colors.medium,
         fontSize: 17,
     },
     deleteButton: {

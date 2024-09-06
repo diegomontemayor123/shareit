@@ -1,7 +1,8 @@
 import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createBottomTabNavigator, } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import AccountNavigator from "./AccountNavigator";
+import ChatScreen from "../screens/ChatScreen";
 import FeedNavigator from "./FeedNavigator";
 import RecipeEditScreen from "../screens/RecipeEditScreen";
 import NewRecipeButton from "./NewRecipeButton";
@@ -9,16 +10,31 @@ import routes from "./routes";
 import useNotifications from "../hooks/useNotifications";
 import MyRecipesScreen from "../screens/MyRecipesScreen";
 import SearchScreen from "../screens/SearchScreen";
-import { Button } from "react-native";
+import ProfileNavigator from "./ProfileNavigator";
+import { HeaderLeftButton, HeaderRightButton } from "../components/HeaderButtons";
+import colors from "../config/colors";
 
 const Tab = createBottomTabNavigator();
 
-const HeaderRightButton = ({ navigation }: any) => (
-  <Button title="Account" onPress={() => navigation.navigate('Profile', { screen: 'Account' })} />
+
+const Stack = createStackNavigator();
+
+const AppNavigator: React.FC = () => (
+  <Stack.Navigator>
+    <Stack.Screen name="MainTab" component={MainTab} options={{
+      title: "Back", headerShown: false
+    }} />
+    <Stack.Screen name="Chat" component={ChatScreen}
+      options={({ navigation }) => ({
+        title: "Chat",
+        headerStyle: { backgroundColor: colors.light },
+        headerRight: () => <HeaderRightButton navigation={navigation} />
+      })} />
+
+  </Stack.Navigator>
 );
 
-
-const AppNavigator: React.FC = () => {
+const MainTab: React.FC = () => {
   useNotifications();
 
   return (
@@ -33,7 +49,9 @@ const AppNavigator: React.FC = () => {
           headerShown: true,
           title: "",
           tabBarLabel: "Feed",
+          headerStyle: { backgroundColor: colors.light },
           headerRight: () => <HeaderRightButton navigation={navigation} />,
+          headerLeft: () => <HeaderLeftButton navigation={navigation} />,
         })}
       />
       <Tab.Screen
@@ -46,7 +64,9 @@ const AppNavigator: React.FC = () => {
           headerShown: true,
           title: "",
           tabBarLabel: "Search",
+          headerStyle: { backgroundColor: colors.light },
           headerRight: () => <HeaderRightButton navigation={navigation} />,
+          headerLeft: () => <HeaderLeftButton navigation={navigation} />,
         })}
       />
       <Tab.Screen
@@ -73,18 +93,24 @@ const AppNavigator: React.FC = () => {
           headerShown: true,
           title: "",
           tabBarLabel: "Cookbook",
+          headerStyle: { backgroundColor: colors.light },
           headerRight: () => <HeaderRightButton navigation={navigation} />,
+          headerLeft: () => <HeaderLeftButton navigation={navigation} />,
         })}
       />
       <Tab.Screen
         name="Profile"
-        component={AccountNavigator}
+        component={ProfileNavigator}
         options={({ navigation }) => ({
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
-          headerShown: false,
-
+          headerShown: true,
+          title: "",
+          tabBarLabel: "Profile",
+          headerStyle: { backgroundColor: colors.light },
+          headerRight: () => <HeaderRightButton navigation={navigation} />,
+          headerLeft: () => <HeaderLeftButton navigation={navigation} />,
         })}
       />
     </Tab.Navigator>

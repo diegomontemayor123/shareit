@@ -71,7 +71,11 @@ const AppPicker: React.FC<AppPickerProps> = ({
       </TouchableWithoutFeedback>
       <Modal visible={modalVisible} animationType="slide">
         <Screen style={{}}>
-          <Button title="Back" onPress={() => setModalVisible(false)} />
+          <View style={{ padding: 15 }}>
+            <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+              <MaterialCommunityIcons name="close" size={30} />
+            </TouchableWithoutFeedback>
+          </View>
           <FlatList
             data={items}
             keyExtractor={(item) => item.value.toString()}

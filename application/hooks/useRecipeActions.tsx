@@ -30,36 +30,7 @@ export default function useRecipeActions(filterFn: FilterFn) {
     setRefreshing(false);
   };
 
-  const handleChange = (item: any, navigation: any) => {
-    Alert.alert("Edit Recipe", "How would you like to change this recipe?", [
-      {
-        text: "Edit Recipe",
-        onPress: async () => {
-          try {
-            navigation.navigate(routes.RECIPE_EDIT, item)
-          } catch (error) {
-            alert("An unexpected error occurred.");
-          }
-        },
-      },
-      {
-        text: "Delete",
-        onPress: async () => {
-          try {
-            const result = await recipesApi.deleteRecipe(item.id);
-            if (!result.ok) {
-              alert("Could not delete the recipe.");
-              return;
-            }
-            setFilteredRecipes(filteredRecipes.filter(recipe => recipe.id !== item.id));
-          } catch (error) {
-            alert("An unexpected error occurred.");
-          }
-        },
-      },
-      { text: "Cancel" }
-    ]);
-  };
+
 
   const handleAddLike = async (id: number) => {
     const result = await recipesApi.addLike(id, user._id);
@@ -80,7 +51,6 @@ export default function useRecipeActions(filterFn: FilterFn) {
 
   return {
     handleAddLike,
-    handleChange,
     handleRefresh,
     refreshing,
     filteredRecipes,
