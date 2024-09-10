@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { StyleSheet, Image, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { StyleSheet, Image, TouchableWithoutFeedback, Keyboard, Text } from "react-native";
 import * as Yup from "yup";
 import Screen from "../components/Screen";
 import { ErrorMessage, Form, FormField, SubmitButton, } from "../components/forms";
 import authApi from "../api/auth";
 import useAuth from "../auth/useAuth";
+import colors from "../config/colors";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
@@ -67,6 +68,7 @@ function LoginScreen() {
           />
           <SubmitButton title="Login" />
         </Form>
+        <Text style={styles.text}>Please e-mail diegomontemayor.f@gmail.com with any inquiries, concerns, or suggestions.</Text>
       </Screen>
     </TouchableWithoutFeedback>
   );
@@ -83,6 +85,12 @@ const styles = StyleSheet.create({
     marginTop: 170,
     marginBottom: 20,
   },
+  text: {
+    textAlign: "center",
+    fontSize: 12,
+    color: colors.primary,
+
+  }
 });
 
 export default LoginScreen;

@@ -8,16 +8,16 @@ import { Alert } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { getUserbyId } from "../api/users";
 
-function MyRecipesScreen({ navigation }: any) {
+function MyCookBook({ navigation }: any) {
   const { user, logOut } = useAuth();
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
+
   const handleCategoryChange = (category: any) => {
     setSelectedCategory(category);
   };
   const filterMyRecipes = (recipes: any[]) => {
-    return recipes.filter((recipe) => selectedCategory ? recipe.userId === user._id && recipe.categoryId == selectedCategory.value : recipe.userId === user._id);
+    return recipes.filter((recipe) => selectedCategory ? recipe.bookmarkIds.includes(user._id) && recipe.categoryId == selectedCategory.value : recipe.bookmarkIds.includes(user._id));
   };
-
   const [profileUser, setProfileUser] = useState<any>(user)
   useFocusEffect(
     React.useCallback(() => {
@@ -61,11 +61,11 @@ function MyRecipesScreen({ navigation }: any) {
         profilePage={true}
         navigation={navigation}
         errorMessage="Could not retrieve your recipes."
-        emptyMessage="You don't have any recipes yet."
+        emptyMessage="You don't have any bookmarked recipes."
         onCategoryChange={handleCategoryChange}
       />
     </>
   );
 }
 
-export default MyRecipesScreen;
+export default MyCookBook

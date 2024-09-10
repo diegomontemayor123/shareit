@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
-import routes from "../navigation/routes";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../config/colors";
 
@@ -17,7 +16,7 @@ const HeaderLeftButton: React.FC<any> = ({ navigation }: any) => {
 const HeaderRightButton: React.FC<any> = ({ navigation }: any) => {
     return (
         <TouchableOpacity style={styles.button}
-            onPress={() => navigation.navigate("Profile", { screen: routes.MESSAGES })}>
+            onPress={() => navigation.navigate("Profile", { screen: "Messages" })}>
             <MaterialCommunityIcons name="send" size={30} color={colors.primary} />
 
         </TouchableOpacity>

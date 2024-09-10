@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { StyleSheet, TouchableWithoutFeedback, Keyboard, Text } from "react-native";
 import * as Yup from "yup";
 import Screen from "../components/Screen";
 import { ErrorMessage, Form, FormField, SubmitButton } from "../components/forms";
@@ -9,6 +9,7 @@ import authApi from "../api/auth";
 import ActivityIndicator from "../components/ActivityIndicator";
 import useApi from "../hooks/useApi";
 import FormImagePicker from "../components/forms/FormImagePicker";
+import colors from "../config/colors";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required().label("Name"),
@@ -80,6 +81,7 @@ function RegisterScreen() {
             />
             <SubmitButton title="Register" />
           </Form>
+          <Text style={styles.text}>Please e-mail diegomontemayor.f@gmail.com with any questions.</Text>
         </Screen>
       </>
     </TouchableWithoutFeedback>
@@ -90,6 +92,12 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
   },
+  text: {
+    textAlign: "center",
+    fontSize: 12,
+    color: colors.primary,
+
+  }
 });
 
 export default RegisterScreen;

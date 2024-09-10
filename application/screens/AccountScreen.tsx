@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { ListItem } from "../components/lists";
 import colors from "../config/colors";
 import Icon from "../components/Icon";
-import routes from "../navigation/routes";
 import Screen from "../components/Screen";
 import useAuth from "../auth/useAuth";
 import Avatar from "../components/Avatar";
@@ -17,7 +16,7 @@ const menuItems = [
       name: "email",
       backgroundColor: colors.secondary,
     },
-    targetScreen: routes.MESSAGES,
+    targetScreen: "Messages",
   },
 ];
 
@@ -39,7 +38,7 @@ function AccountScreen({ navigation }: any) {
         <ListItem
           title={newUser.name}
           subTitle="Edit User Info"
-          onPress={() => navigation.navigate(routes.USER_EDIT)}
+          onPress={() => navigation.navigate("User Edit")}
           IconComponent={
             <Avatar
               firstName={newUser.name.split(" ")[0]}

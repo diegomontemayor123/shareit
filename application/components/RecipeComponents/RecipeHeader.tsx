@@ -4,7 +4,6 @@ import Text from '../AppText';
 import Icon from "../Icon";
 import { ListItem } from "../lists";
 import Avatar from "../Avatar";
-import routes from "../../navigation/routes";
 import colors from "../../config/colors";
 import { getUserbyId } from "../../api/users"
 
@@ -57,7 +56,7 @@ const RecipeHeader: React.FC<RecipeHeaderProps> = ({
             />
           }
           title={recipeUser.name}
-          onPress={() => navigation.navigate(routes.USERSRECIPESSCREEN, { userId: recipeUser._id })}
+          onPress={() => navigation.navigate("Users Recipes", { userId: recipeUser._id })}
           subTitle={recipeCount === 1 ? `${recipeCount} Recipe` : `${recipeCount} Recipes`}
           containerPadding={0}
           containerMarginVert={10}

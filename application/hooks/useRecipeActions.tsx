@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Alert } from 'react-native';
+import { useRoute } from '@react-navigation/native'
 import recipesApi from "../api/recipes";
 import useApi from './useApi';
 import useAuth from '../auth/useAuth';
-import routes from '../navigation/routes';
 
 type FilterFn = (recipes: any[]) => any[];
 
@@ -12,6 +11,7 @@ export default function useRecipeActions(filterFn: FilterFn) {
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [filteredRecipes, setFilteredRecipes] = useState<any[]>([]);
   const { user } = useAuth();
+  const route = useRoute()
 
   useEffect(() => {
     getRecipesApi.request();
@@ -39,7 +39,7 @@ export default function useRecipeActions(filterFn: FilterFn) {
     if (result.ok) {
       if (data.alreadyLiked) {
         setFilteredRecipes(filteredRecipes.map(recipe =>
-          recipe.id === id ? { ...recipe, likesCount: recipe.likesCount - 1, likerIds: [...recipe.likerIds, user._id] } : recipe))
+          recipe.id === id ? { ...recipe, likesCount: recipe.likesCount - 1, likerIds: recipe.likerIds.filter((likerId: any) => likerId !== user._id) } : recipe))
       } else {
         setFilteredRecipes(filteredRecipes.map(recipe =>
           recipe.id === id ? { ...recipe, likesCount: recipe.likesCount + 1, likerIds: [...recipe.likerIds, user._id] } : recipe));
@@ -49,8 +49,30 @@ export default function useRecipeActions(filterFn: FilterFn) {
     }
   };
 
+  const handleAddBookmark = async (id: number) => {
+    const result = await recipesApi.addBookmark(id, user._id)
+    const data = result.data as any
+
+    if (result.ok) {
+      if (data.alreadyBookmarked) {
+        setFilteredRecipes(filteredRecipes.map(recipe =>
+          recipe.id === id ? { ...recipe, bookmarkIds: recipe.bookmarkIds.filter((bookmarkId: any) => bookmarkId !== user._id) } : recipe))
+        if (route.name === 'Cookbook') {
+          setFilteredRecipes(filteredRecipes.filter(recipe => recipe.id !== id))
+        }
+      } else {
+        setFilteredRecipes(filteredRecipes.map(recipe =>
+          recipe.id === id ? { ...recipe, bookmarkIds: [...recipe.bookmarkIds, user._id] } : recipe))
+      }
+    } else {
+      alert('Error bookmarking recipe.')
+    }
+
+  }
+
   return {
     handleAddLike,
+    handleAddBookmark,
     handleRefresh,
     refreshing,
     filteredRecipes,

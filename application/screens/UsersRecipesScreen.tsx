@@ -1,9 +1,7 @@
 import React from "react";
 import RecipesScreen from "./RecipesScreen";
 import { useState, useEffect } from "react";
-import { View, StyleSheet } from "react-native";
 import { ListItem } from "../components/lists";
-import routes from "../navigation/routes";
 import Avatar from "../components/Avatar";
 import { getUserbyId } from "../api/users";
 import messagesApi from '../api/messages'
@@ -43,7 +41,7 @@ function UsersRecipesScreen({ navigation, route }: { navigation: any; route: any
             console.log("Error", result);
             if (!result.ok) { return Alert.alert("Error", "Could not send the message.") }
             navigation.navigate(
-              routes.CHATSCREEN, { ...result.data } as any,
+              "Chat", { ...result.data } as any,
             )
           }}
         IconComponent={

@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import { FlatList } from "react-native";
+import { FlatList, View } from "react-native";
 import Avatar from "../components/Avatar";
 import Screen from "../components/Screen";
 import { ListItem, ListItemDeleteAction, ListItemSeparator } from "../components/lists";
 import messagesApi from "../api/messages";
 import useAuth from "../auth/useAuth";
 import useApi from "../hooks/useApi";
-import routes from "../navigation/routes";
 import { useFocusEffect } from '@react-navigation/native';
 import { getUserbyId } from "../api/users";
+import colors from "../config/colors";
+import AppText from "../components/AppText";
+import Button from "../components/Button";
 
 interface Message {
   _id: string;
@@ -82,7 +84,18 @@ function MessagesScreen({ navigation }: any) {
   };
 
   return (
-    <Screen>
+    <Screen style={{ backgroundColor: colors.light }}>
+
+      {(getMessagesApi.error || messages ? messages.length === 0 : null) && (
+        <View style={{ padding: 10 }}>
+          <AppText>{getMessagesApi.error ? "Could not retrieve user's messages." : "You have no messages."}</AppText>
+          <Button title="Retry" onPress={() => {
+            setRefreshing(true);
+            fetchMessages();
+            setRefreshing(false);
+          }} />
+        </View>
+      )}
       <FlatList
         data={messages}
         keyExtractor={(message) => `${message.fromUserId}-${message.recipeId}`}
@@ -93,7 +106,7 @@ function MessagesScreen({ navigation }: any) {
           return (
             <ListItem
               title={displayUser.name}
-              subTitle={`${item.content[item.content.length - 1].text.substring(0, 30)}...`}
+              subTitle={item.content.text ? `${item.content[item.content.length - 1].text.substring(0, 30)}...` : null}
               IconComponent={
                 <Avatar
                   firstName={displayUser.name.split(" ")[0]}
@@ -104,7 +117,7 @@ function MessagesScreen({ navigation }: any) {
                 />
               }
               onPress={() => {
-                navigation.navigate(routes.CHATSCREEN, item);
+                navigation.navigate("Chat", item);
               }}
               renderRightActions={() => (
                 <ListItemDeleteAction onPress={() => handleDelete(item._id)} />

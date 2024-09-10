@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View, Modal, Button, FlatList } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View, Modal, FlatList } from "react-native";
 import colors from "../config/colors";
 import { useState, useEffect } from "react";
 import { categories } from "../config/categories";
@@ -57,7 +57,7 @@ const SorterFilter: React.FC<SorterFilter> = ({ color = "white", onCategoryFilte
 
             {selectedCategory &&
                 (<TouchableOpacity onPress={() => { setSelectedCategory(null), onCategoryFilterChange(null) }} style={styles.deleteButton}>
-                    <MaterialCommunityIcons name="close-circle" size={22} color={colors.light} />
+                    <MaterialCommunityIcons name="close-circle" size={22} color={colors.medium} />
                 </TouchableOpacity>)}
 
             <Modal visible={showCategories} animationType="slide"><Screen>

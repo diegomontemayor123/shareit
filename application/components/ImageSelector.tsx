@@ -18,13 +18,13 @@ const ImageSelector: React.FC<ImageSelectorProps> = ({ imageUri, onChangeImage }
 
   const requestPermission = async () => {
     const { granted } = await ImagePicker.requestCameraPermissionsAsync();
-    if (!granted) alert("You need to enable permission to access the library.");
+    if (!granted) alert("Permission required to access the library.");
   };
 
   const handlePress = () => {
     if (!imageUri) selectImage();
     else
-      Alert.alert("Delete", "Are you sure you want to delete this image?", [
+      Alert.alert("Delete", "Delete this image?", [
         { text: "Yes", onPress: () => onChangeImage(null) },
         { text: "No" },
       ]);

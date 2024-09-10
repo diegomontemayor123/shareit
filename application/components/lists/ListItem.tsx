@@ -7,7 +7,7 @@ import colors from "../../config/colors";
 
 interface ListItemProps {
   title: string;
-  subTitle?: string;
+  subTitle?: string | null;
   image?: any;
   IconComponent?: React.ReactNode;
   onPress?: () => void;
@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     backgroundColor: colors.light,
+    borderRadius: 10
   },
   detailsContainer: {
     flex: 1,

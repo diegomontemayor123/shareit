@@ -6,13 +6,12 @@ import ChatScreen from "../screens/ChatScreen";
 import FeedNavigator from "./FeedNavigator";
 import RecipeEditScreen from "../screens/RecipeEditScreen";
 import NewRecipeButton from "./NewRecipeButton";
-import routes from "./routes";
 import useNotifications from "../hooks/useNotifications";
-import MyRecipesScreen from "../screens/MyRecipesScreen";
 import SearchScreen from "../screens/SearchScreen";
 import ProfileNavigator from "./ProfileNavigator";
 import { HeaderLeftButton, HeaderRightButton } from "../components/HeaderButtons";
 import colors from "../config/colors";
+import MyCookBook from "../screens/MyCookbook";
 
 const Tab = createBottomTabNavigator();
 
@@ -30,6 +29,7 @@ const AppNavigator: React.FC = () => (
         headerStyle: { backgroundColor: colors.light },
         headerRight: () => <HeaderRightButton navigation={navigation} />
       })} />
+
 
   </Stack.Navigator>
 );
@@ -74,7 +74,7 @@ const MainTab: React.FC = () => {
         component={RecipeEditScreen}
         options={({ navigation }) => ({
           tabBarButton: () => (
-            <NewRecipeButton onPress={() => navigation.navigate(routes.RECIPE_EDIT)} />
+            <NewRecipeButton onPress={() => navigation.navigate("Edit")} />
           ),
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="chef-hat" color={color} size={size} />
@@ -85,7 +85,7 @@ const MainTab: React.FC = () => {
       />
       <Tab.Screen
         name="Cookbook"
-        component={MyRecipesScreen}
+        component={MyCookBook}
         options={({ navigation }) => ({
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="notebook" color={color} size={size} />

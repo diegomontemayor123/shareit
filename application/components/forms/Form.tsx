@@ -7,14 +7,16 @@ interface RegisterFormValues {
   message?: string
   email?: string;
   password?: string;
+  comment?: string
 }
 
 interface AppFormProps {
   initialValues: RegisterFormValues;
   onSubmit: any
-  validationSchema: any;
+  validationSchema?: any;
   children: React.ReactNode;
 }
+
 
 const AppForm: React.FC<AppFormProps> = ({ initialValues, onSubmit, validationSchema, children }) => {
   return (

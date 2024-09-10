@@ -2,7 +2,6 @@ import { useState } from "react";
 import recipesApi from "../api/recipes";
 import useAuth from "../auth/useAuth";
 import useLocation from "./useLocation";
-import routes from "../navigation/routes";
 import { Alert } from "react-native";
 
 interface Props {
@@ -34,7 +33,7 @@ export default function useSubmitRecipe({ navigation }: Props) {
       if (!updatedRecipe) {
         return Alert.alert("Could not fetch the updated recipe from the server");
       }
-      navigation.navigate(routes.RECIPE_DETAILS, updatedRecipe);
+      navigation.navigate("RecipeDetails", updatedRecipe);
     } catch (error) {
       setUploadVisible(false);
       resetForm();

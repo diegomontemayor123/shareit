@@ -16,14 +16,14 @@ interface SlideProps {
   imageUrl: string
   onPress: () => void
   thumbnailUrl: string
-  onChange?: () => void
-  showSave: boolean
+  showBookmark: boolean
   likesCount: number
   addLike: () => void
+  addBookmark: () => void
   profilePage: boolean
 }
 
-const Slide: React.FC<SlideProps> = ({ title, subTitle, subTitle2, category, color, imageUrl, onPress, thumbnailUrl, onChange, showSave, likesCount, addLike, profilePage }) => {
+const Slide: React.FC<SlideProps> = ({ title, subTitle, subTitle2, category, color, imageUrl, onPress, thumbnailUrl, likesCount, addLike, addBookmark, showBookmark, profilePage }) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.Slide}>
@@ -33,17 +33,20 @@ const Slide: React.FC<SlideProps> = ({ title, subTitle, subTitle2, category, col
           preview={{ uri: thumbnailUrl }}
           uri={imageUrl}
         />
-        {showSave && (
-          <TouchableOpacity onPress={onChange} style={styles.Button}>
+
+        <TouchableOpacity onPress={addBookmark} style={styles.Button}>
+          {showBookmark ?
             <MaterialCommunityIcons name="bookmark" size={30} color={colors.light} />
-          </TouchableOpacity>
-        )}
+            : <MaterialCommunityIcons name="bookmark-outline" size={30} color={colors.light} />
+          }
+        </TouchableOpacity>
+
 
         <RecipeLikes likesCount={likesCount} addLike={addLike} />
 
         <View style={styles.detailsContainer}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title} numberOfLines={1}>
+            <Text style={styles.title} >
               {title}
             </Text>
             <Icon
@@ -105,14 +108,20 @@ const styles = StyleSheet.create({
     color: colors.secondary,
     fontWeight: "bold",
     flex: 1,
+    fontSize: 16
   },
   subTitle2: {
     color: colors.black,
     textAlign: "right",
+    fontSize: 16
   },
   title: {
     marginBottom: 7,
     fontWeight: "bold",
+    flex: 1,
+    flexWrap: 'wrap',
+    fontSize: 17
+
   },
 });
 

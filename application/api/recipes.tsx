@@ -16,6 +16,7 @@ interface Recipe {
   };
   likesCount?: number;
   likerIds?: string[]
+  bookmarkIds?: string[]
   images: string[];
   location?: {
     latitude: number;
@@ -35,7 +36,7 @@ const endpoint = "/recipes";
 const getRecipes = () => client.get(endpoint);
 
 
-export const addRecipe = async (
+const addRecipe = async (
   recipe: Recipe,
   onUploadProgress: OnUploadProgress,
   user: User
@@ -52,6 +53,7 @@ export const addRecipe = async (
   data.append("userId", user._id)
   data.append("likesCount", (recipe.likesCount || 0).toString())
   data.append("likerIds", JSON.stringify(recipe.likerIds || []))
+  data.append("bookmarkIds", JSON.stringify(recipe.bookmarkIds || []))
 
   recipe.images.forEach((image, index) =>
     data.append("images", {
@@ -115,15 +117,28 @@ const editRecipe = async (recipeId: string, newRecipeInfo: Recipe, onUploadProgr
 };
 
 
-export const deleteRecipe = (id: string) => client.delete(`${endpoint}/${id}`);
+const deleteRecipe = (id: string) => client.delete(`${endpoint}/${id}`);
 
-export const addLike = (id: number, userId: string) =>
+const deleteComment = (id: number, commentId: string) => {
+  return client.delete(`${endpoint}/${id}/comment/${commentId}`)
+}
+
+const addLike = (id: number, userId: string) =>
   client.post(`${endpoint}/${id}/like`, { userId });
+
+const addComment = (id: number, userId: string, message: string) =>
+  client.post(`${endpoint}/${id}/comment`, { userId, message });
+
+const addBookmark = (id: number, userId: string) =>
+  client.post(`${endpoint}/${id}/bookmark`, { userId });
 
 export default {
   addRecipe,
   getRecipes,
   deleteRecipe,
   addLike,
-  editRecipe
+  editRecipe,
+  addBookmark,
+  addComment,
+  deleteComment,
 };

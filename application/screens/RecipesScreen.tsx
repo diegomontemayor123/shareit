@@ -5,7 +5,6 @@ import Button from "../components/Button";
 import Slide from "../components/Slide";
 import colors from "../config/colors";
 import recipesApi from "../api/recipes";
-import routes from "../navigation/routes";
 import Screen from "../components/Screen";
 import AppText from "../components/AppText";
 import useApi from "../hooks/useApi";
@@ -37,7 +36,7 @@ interface RecipesProps {
 }
 
 function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCategoryChange, onUsersChange, profilePage = false }: RecipesProps) {
-  const { handleAddLike, handleRefresh, refreshing, filteredRecipes } = useRecipeActions(filterFn);
+  const { handleAddLike, handleAddBookmark, handleRefresh, refreshing, filteredRecipes } = useRecipeActions(filterFn);
   const getRecipesApi = useApi(recipesApi.getRecipes);
   const { user } = useAuth();
 
@@ -117,7 +116,8 @@ function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCat
           data={getSortedRecipes()}
           keyExtractor={(recipe) => recipe.id.toString()}
           renderItem={({ item }) => {
-            const showSave = true
+            const showBookmark = item.bookmarkIds?.includes(user._id)
+
             const userName = users[item.userId]
             return (
               <View style={profilePage ? styles.slideContainer : null}>
@@ -130,10 +130,10 @@ function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCat
                   color={item.categoryColor}
                   imageUrl={item.images[0].url}
                   thumbnailUrl={item.images[0].thumbnailUrl}
-                  onPress={() => navigation.navigate(routes.RECIPE_DETAILS, item)}
-                  onChange={() => console.log('placeholder')}
-                  showSave={showSave}
+                  onPress={() => navigation.navigate("RecipeDetails", item)}
+                  showBookmark={showBookmark}
                   addLike={() => handleAddLike(item.id)}
+                  addBookmark={() => handleAddBookmark(item.id)}
                   likesCount={item.likesCount}
                 />
               </View>
@@ -155,6 +155,7 @@ const styles = StyleSheet.create({
   slideContainer: {
     flex: 1,
     margin: 8,
+
   },
 });
 

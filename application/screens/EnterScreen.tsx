@@ -1,7 +1,6 @@
 import React from "react";
 import { ImageBackground, StyleSheet, View, Image, Text } from "react-native";
 import Button from "../components/Button";
-import routes from "../navigation/routes";
 
 function EnterScreen({ navigation }: { navigation: any }) {
   return (
@@ -17,12 +16,12 @@ function EnterScreen({ navigation }: { navigation: any }) {
       <View style={styles.buttonsContainer}>
         <Button
           title="Login"
-          onPress={() => navigation.navigate(routes.LOGIN)}
+          onPress={() => navigation.navigate("Login")}
         />
         <Button
           title="Register"
           color="secondary"
-          onPress={() => navigation.navigate(routes.REGISTER)}
+          onPress={() => navigation.navigate("Register")}
         />
       </View>
     </ImageBackground>
