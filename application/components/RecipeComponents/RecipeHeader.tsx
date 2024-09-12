@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import Text from '../AppText';
 import Icon from "../Icon";
-import { ListItem } from "../lists";
+import { Entry } from "../entries";
 import Avatar from "../Avatar";
 import colors from "../../config/colors";
 import { getUserbyId } from "../../api/users"
@@ -45,7 +45,7 @@ const RecipeHeader: React.FC<RecipeHeaderProps> = ({
       </View>
       <Text style={styles.timeToComplete}>~{timeToComplete} min</Text>
       <View>
-        <ListItem
+        <Entry
           IconComponent={
             <Avatar
               firstName={recipeUser.name.split(" ")[0]}

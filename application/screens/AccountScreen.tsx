@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View, FlatList } from "react-native";
 import { useState, useEffect } from "react";
-import { ListItem } from "../components/lists";
+import { Entry } from "../components/entries";
 import colors from "../config/colors";
 import Icon from "../components/Icon";
 import Screen from "../components/Screen";
@@ -35,7 +35,7 @@ function AccountScreen({ navigation }: any) {
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
-        <ListItem
+        <Entry
           title={newUser.name}
           subTitle="Edit User Info"
           onPress={() => navigation.navigate("User Edit")}
@@ -55,7 +55,7 @@ function AccountScreen({ navigation }: any) {
           data={menuItems}
           keyExtractor={(menuItem) => menuItem.title}
           renderItem={({ item }) => (
-            <ListItem
+            <Entry
               title={item.title}
               IconComponent={
                 <Icon
@@ -69,7 +69,7 @@ function AccountScreen({ navigation }: any) {
         />
       </View>
       <View style={styles.container}>
-        <ListItem
+        <Entry
           title="Logout"
           IconComponent={<Icon name="logout" backgroundColor="red" />}
           onPress={() => logOut()}

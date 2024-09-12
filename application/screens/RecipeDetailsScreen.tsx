@@ -1,44 +1,43 @@
-import React from "react";
-import { View, StyleSheet, KeyboardAvoidingView, ScrollView, Platform, Dimensions, FlatList, Modal } from "react-native";
+import React, { useState, useRef } from "react";
+import { View, StyleSheet, KeyboardAvoidingView, ScrollView, Platform, Dimensions, FlatList, Modal, Alert } from "react-native";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import RecipeImages from "../components/RecipeComponents/RecipeImages";
 import RecipeHeader from "../components/RecipeComponents/RecipeHeader";
 import RecipeDescription from "../components/RecipeComponents/RecipeDescription";
-import useRecipeCount from "../hooks/useRecipeCount";
-import Text from '../components/AppText'
-import useAuth from "../auth/useAuth";
-import { useState } from "react";
-import { useFocusEffect } from "@react-navigation/native";
-import { getUserbyId } from "../api/users";
-import recipesApi from "../api/recipes"
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import colors from "../config/colors";
-import { Alert } from "react-native";
+import Text from '../components/AppText';
 import { FormField, Form, SubmitButton } from "../components/forms";
-import { ListItem, ListItemSeparator, ListItemDeleteAction } from "../components/lists";
+import { Entry, EntrySeparator, EntryDeleteAction } from "../components/entries";
 import Avatar from "../components/Avatar";
 import AppButton from "../components/Button";
-import Screen from "../components/Screen"
-import { useRef } from 'react';
-
+import Screen from "../components/Screen";
+import useAuth from "../auth/useAuth";
+import useRecipeCount from "../hooks/useRecipeCount";
+import { getUserbyId, followUser } from "../api/users";
+import recipesApi from "../api/recipes";
+import { useFocusEffect } from "@react-navigation/native";
+import colors from "../config/colors";
 
 const { width } = Dimensions.get('window');
 function RecipeDetailsScreen({ route, navigation }: any) {
   const recipeId = route.params._id
   const { user } = useAuth()
+  const [updatedUser, setUpdatedUser] = useState<any>({})
   const [recipeUser, setRecipeUser] = useState<{ [_id: string]: string }>({});
   const [recipe, setRecipe] = useState<any>(route.params);
   const [userDetails, setUserDetails] = useState<{ [key: string]: any }>({});
   const [showComments, setShowComments] = useState<any>({});
   const recipeCount = useRecipeCount(recipe.userId);
-  const yourRef = useRef<any>(null)
+  const scrollRef = useRef<any>(null)
 
   const fetchUsersandRecipe = async () => {
     const userData = await getUserbyId(recipe.userId);
+    const updatedUserData = await getUserbyId(user._id)
     const response: any = await recipesApi.getRecipes() as any;
     const updatedRecipe = response.data.find((r: any) => r._id === recipeId);
     setRecipe(updatedRecipe);
     setRecipeUser(userData);
+    setUpdatedUser(updatedUserData)
 
     const userIds = new Set<string>();
     recipe.comments.forEach((comment: any) => {
@@ -77,10 +76,9 @@ function RecipeDetailsScreen({ route, navigation }: any) {
           try {
             const result = await recipesApi.deleteRecipe(item.id);
             if (!result.ok) {
-              alert("Could not delete the recipe.");
-              return;
+              return alert("Could not delete the recipe.");
             }
-            navigation.navigate("Feed", { screen: "Recipes" })
+            navigation.navigate("Recipes")
           } catch (error) {
             alert("An unexpected error occurred.");
           }
@@ -92,7 +90,6 @@ function RecipeDetailsScreen({ route, navigation }: any) {
 
   const handleSubmit = async (values: any, { resetForm }: { resetForm: () => void }) => {
     const result = await recipesApi.addComment(recipeId, user._id, values.comment)
-
     if (result.ok) {
       await fetchUsersandRecipe()
       resetForm()
@@ -108,13 +105,18 @@ function RecipeDetailsScreen({ route, navigation }: any) {
       const result = await recipesApi.deleteComment(_id, commentId);
       fetchUsersandRecipe()
       if (!result.ok) {
-        alert("Could not delete message.");
-        return
+        return alert("Could not delete message.");
       }
-    } catch (error) {
-      alert("An unexpected error occurred.");
-    }
+    } catch (error) { alert("An unexpected error occurred."); }
   };
+
+  const handleFollow = async (id: any) => {
+    try {
+      await followUser(user._id, id);
+    } catch (error) {
+      alert('Error following user.');
+    }
+  }
 
   return (
     <KeyboardAvoidingView
@@ -145,44 +147,43 @@ function RecipeDetailsScreen({ route, navigation }: any) {
           <RecipeDescription description={recipe.ingredients} isIngredient />
           <Text style={styles.header}>Recipe</Text>
           <RecipeDescription description={recipe.description} />
-
-
-          <Text style={styles.header}>Comments</Text>
           <AppButton title="Show Comments" onPress={() => setShowComments(true)} />
-        </View>
-      </ScrollView>
-
+        </View></ScrollView>
       <Modal visible={showComments} animationType="slide"><Screen>
         <View style={{ padding: 15 }}>
           <TouchableWithoutFeedback onPress={() => setShowComments(false)}>
             <MaterialCommunityIcons name="close" size={30} />
-          </TouchableWithoutFeedback>
-        </View>
+          </TouchableWithoutFeedback></View>
 
         <FlatList data={recipe.comments}
           keyExtractor={(comment) => `${comment._id}`}
-          ref={yourRef}
-          onContentSizeChange={() => yourRef.current.scrollToEnd()}
-          onLayout={() => yourRef.current.scrollToEnd()}
+          ref={scrollRef}
+          onContentSizeChange={() => scrollRef.current.scrollToEnd()}
+          onLayout={() => scrollRef.current.scrollToEnd()}
           renderItem={({ item }) => {
             const displayUser = userDetails[item.user] || { name: '', images: { url: null, thumbnailUrl: null } };
             return (
-              <ListItem
+              <Entry
                 title={displayUser.name}
+                icon2={displayUser._id != user._id ? "plus-box-multiple-outline" : null}
+                icon2Function={() => {
+                  handleFollow(displayUser._id)
+                  fetchUsersandRecipe()
+                }}
+                icon2Color={updatedUser.following &&
+                  updatedUser.following.includes(displayUser._id) ? "green" : null}
                 subTitle={item.message}
                 onPress={() => {
                   navigation.navigate(
-                    "Feed", {
-                    screen: 'Users Recipes',
-                    params: { userId: item.user },
-                  });
+
+                    'Users Recipes',
+                    { userId: item.user },
+                  );
                   setShowComments(false)
                 }}
-
                 renderRightActions={() => (
-                  <ListItemDeleteAction onPress={() => handleDelete(recipe._id, item._id)} />
+                  <EntryDeleteAction onPress={() => handleDelete(recipe._id, item._id)} />
                 )}
-
                 IconComponent={
                   <Avatar
                     firstName={displayUser.name.split(" ")[0]}
@@ -190,18 +191,9 @@ function RecipeDetailsScreen({ route, navigation }: any) {
                     size={55}
                     imageUrl={displayUser.images?.url || null}
                     thumbnailUrl={displayUser.images?.thumbnailUrl || null}
-                  />
-                }
-
-
-
-              />
-            );
+                  />} />);
           }}
-          ItemSeparatorComponent={ListItemSeparator}
-
-
-        />
+          ItemSeparatorComponent={EntrySeparator} />
         <View style={{ padding: 10 }}>
           <Text style={styles.header}>Add Comment</Text>
           <Form initialValues={{ comment: '' }} onSubmit={handleSubmit}>
@@ -210,15 +202,9 @@ function RecipeDetailsScreen({ route, navigation }: any) {
             <SubmitButton title="Post Comment" />
           </Form></View>
       </Screen></Modal>
-
-
-
-
-
     </KeyboardAvoidingView>
-  );
+  )
 }
-
 const styles = StyleSheet.create({
   detailsContainer: {
     padding: 15,

@@ -3,11 +3,11 @@ import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../../config/colors";
 
-interface ListItemDeleteActionProps {
+interface EntryDeleteActionProps {
   onPress: () => void;
 }
 
-const ListItemDeleteAction: React.FC<ListItemDeleteActionProps> = ({ onPress }) => (
+const EntryDeleteAction: React.FC<EntryDeleteActionProps> = ({ onPress }) => (
   <TouchableWithoutFeedback onPress={onPress}>
     <View style={styles.container}>
       <MaterialCommunityIcons name="trash-can" size={35} color={colors.white} />
@@ -24,4 +24,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ListItemDeleteAction;
+export default EntryDeleteAction;

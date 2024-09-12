@@ -5,7 +5,7 @@ import Swipeable from "react-native-gesture-handler/Swipeable";
 import Text from "../AppText";
 import colors from "../../config/colors";
 
-interface ListItemProps {
+interface EntryProps {
   title: string;
   subTitle?: string | null;
   image?: any;
@@ -16,10 +16,14 @@ interface ListItemProps {
   containerMarginVert?: number;
   icon1?: any
   icon2?: any
+  icon2Color?: any
   icon2Function?: any
+  icon3?: any
+  icon3Color?: any
+  icon3Function?: any
 }
 
-const ListItem: React.FC<ListItemProps> = ({
+const Entry: React.FC<EntryProps> = ({
   title,
   subTitle,
   image,
@@ -30,7 +34,11 @@ const ListItem: React.FC<ListItemProps> = ({
   containerMarginVert = 0,
   icon1,
   icon2,
+  icon2Color,
   icon2Function,
+  icon3,
+  icon3Color,
+  icon3Function,
 
 }) => {
 
@@ -52,9 +60,14 @@ const ListItem: React.FC<ListItemProps> = ({
           </Text>
         )}
       </View>
+      {icon3 &&
+        <TouchableOpacity onPress={icon3Function} style={{ marginRight: 10 }}>
+          <MaterialCommunityIcons color={icon3Color ? icon3Color : colors.medium} name={icon3} size={35} />
+        </TouchableOpacity>
+      }
       {icon2 &&
         <TouchableOpacity onPress={icon2Function} style={{ marginRight: 10 }}>
-          <MaterialCommunityIcons color={colors.medium} name={icon2} size={35} />
+          <MaterialCommunityIcons color={icon2Color ? icon2Color : colors.medium} name={icon2} size={35} />
         </TouchableOpacity>
       }
       {icon1 ?
@@ -100,4 +113,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ListItem;
+export default Entry;

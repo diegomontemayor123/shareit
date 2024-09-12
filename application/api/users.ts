@@ -5,6 +5,7 @@ interface UserInfo {
   email: string;
   password: string;
   images: string[]
+  following?: string[]
 }
 
 const endpoint = "/users";
@@ -14,6 +15,7 @@ const register = async (userInfo: UserInfo) => {
   data.append("name", userInfo.name);
   data.append("email", userInfo.email);
   data.append("password", userInfo.password);
+  data.append("following", JSON.stringify(userInfo.following || []))
 
   if (userInfo.images) {
     userInfo.images.forEach((image, index) =>
@@ -56,6 +58,9 @@ const getUserbyId = async (_id: string) => {
   return result.data
 }
 
+const followUser = (id: number, userId: string) =>
+  client.post(`${endpoint}/${id}/follow`, { userId });
+
 export {
-  register, getUserbyId, editUser
+  register, getUserbyId, editUser, followUser
 };

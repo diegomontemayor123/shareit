@@ -1,9 +1,9 @@
 import React from "react";
 import RecipesScreen from "./RecipesScreen";
 import { useState, useEffect } from "react";
-import { ListItem } from "../components/lists";
+import { Entry } from "../components/entries";
 import Avatar from "../components/Avatar";
-import { getUserbyId } from "../api/users";
+import { getUserbyId, followUser } from "../api/users";
 import messagesApi from '../api/messages'
 import useAuth from "../auth/useAuth";
 import { Alert } from "react-native";
@@ -12,26 +12,36 @@ function UsersRecipesScreen({ navigation, route }: { navigation: any; route: any
   const { userId } = route.params;
   const [profileUser, setProfileUser] = useState<{ [_id: string]: any }>({});
   const { user } = useAuth()
+  const [updatedUser, setUpdatedUser] = useState<{ [_id: string]: any }>({});
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const handleCategoryChange = (category: any) => {
     setSelectedCategory(category);
   };
 
+
+  const fetchUser = async () => {
+    const profileUserData = await getUserbyId(userId);
+    const userData = await getUserbyId(user._id)
+    setProfileUser(profileUserData);
+    setUpdatedUser(userData)
+  };
+
   useEffect(() => {
-    const fetchUser = async () => {
-      const userData = await getUserbyId(userId);
-      setProfileUser(userData);
-    };
     fetchUser();
   }, [userId])
 
+  const handleFollow = async (id: any) => {
+    try {
+      await followUser(user._id, id);
+    } catch (error) {
+      alert('Error following user.');
+    }
+  }
 
   const filterUserRecipes = (recipes: any[]) => recipes.filter((recipe) => selectedCategory ? recipe.userId === userId && recipe.categoryId == selectedCategory.value : recipe.userId === userId);
-
   return (
-
     <>
-      <ListItem
+      <Entry
         title={profileUser.name}
         subTitle={""}
         icon1="email"
@@ -44,6 +54,14 @@ function UsersRecipesScreen({ navigation, route }: { navigation: any; route: any
               "Chat", { ...result.data } as any,
             )
           }}
+        icon2={
+          user._id != profileUser._id ? "plus-box-multiple-outline" : null}
+        icon2Function={() => {
+          handleFollow(profileUser._id)
+          fetchUser()
+        }}
+        icon2Color={updatedUser.following &&
+          updatedUser.following.includes(profileUser._id) ? "green" : null}
         IconComponent={
           <Avatar
             firstName={profileUser.name ? profileUser.name.split(" ")[0] : ""}

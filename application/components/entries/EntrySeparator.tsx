@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 import colors from "../../config/colors";
 
-const ListItemSeparator: React.FC = () => <View style={styles.separator} />;
+const EntrySeparator: React.FC = () => <View style={styles.separator} />;
 
 const styles = StyleSheet.create({
   separator: {
@@ -12,4 +12,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ListItemSeparator;
+export default EntrySeparator;

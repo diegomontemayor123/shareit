@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FlatList, View } from "react-native";
 import Avatar from "../components/Avatar";
 import Screen from "../components/Screen";
-import { ListItem, ListItemDeleteAction, ListItemSeparator } from "../components/lists";
+import { Entry, EntryDeleteAction, EntrySeparator } from "../components/entries";
 import messagesApi from "../api/messages";
 import useAuth from "../auth/useAuth";
 import useApi from "../hooks/useApi";
@@ -104,7 +104,7 @@ function MessagesScreen({ navigation }: any) {
           const displayUser = userDetails[_id] || { name: '', images: { url: null, thumbnailUrl: null } };
 
           return (
-            <ListItem
+            <Entry
               title={displayUser.name}
               subTitle={item.content.text ? `${item.content[item.content.length - 1].text.substring(0, 30)}...` : null}
               IconComponent={
@@ -120,12 +120,12 @@ function MessagesScreen({ navigation }: any) {
                 navigation.navigate("Chat", item);
               }}
               renderRightActions={() => (
-                <ListItemDeleteAction onPress={() => handleDelete(item._id)} />
+                <EntryDeleteAction onPress={() => handleDelete(item._id)} />
               )}
             />
           );
         }}
-        ItemSeparatorComponent={ListItemSeparator}
+        ItemSeparatorComponent={EntrySeparator}
         refreshing={refreshing}
         onRefresh={() => {
           setRefreshing(true);
