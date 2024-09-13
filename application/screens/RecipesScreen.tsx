@@ -95,7 +95,7 @@ function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCat
       <Screen style={styles.screen}>
         {(getRecipesApi.error || filteredRecipes ? filteredRecipes.length === 0 : null) && (
           <>
-            <AppText>{getRecipesApi.error ? errorMessage : emptyMessage}</AppText>
+            <AppText style={{ marginVertical: 15 }}>{getRecipesApi.error ? errorMessage : emptyMessage}</AppText>
             <Button title="Retry" onPress={handleRefresh} />
           </>
         )}

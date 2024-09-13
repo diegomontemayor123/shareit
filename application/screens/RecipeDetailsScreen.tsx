@@ -9,7 +9,6 @@ import Text from '../components/AppText';
 import { FormField, Form, SubmitButton } from "../components/forms";
 import { Entry, EntrySeparator, EntryDeleteAction } from "../components/entries";
 import Avatar from "../components/Avatar";
-import AppButton from "../components/Button";
 import Screen from "../components/Screen";
 import useAuth from "../auth/useAuth";
 import useRecipeCount from "../hooks/useRecipeCount";
@@ -17,6 +16,7 @@ import { getUserbyId, followUser } from "../api/users";
 import recipesApi from "../api/recipes";
 import { useFocusEffect } from "@react-navigation/native";
 import colors from "../config/colors";
+import messagesApi from "../api/messages";
 
 const { width } = Dimensions.get('window');
 function RecipeDetailsScreen({ route, navigation }: any) {
@@ -26,11 +26,12 @@ function RecipeDetailsScreen({ route, navigation }: any) {
   const [recipeUser, setRecipeUser] = useState<{ [_id: string]: string }>({});
   const [recipe, setRecipe] = useState<any>(route.params);
   const [userDetails, setUserDetails] = useState<{ [key: string]: any }>({});
-  const [showComments, setShowComments] = useState<any>({});
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showFollow, setShowFollow] = useState<boolean>(false);
   const recipeCount = useRecipeCount(recipe.userId);
   const scrollRef = useRef<any>(null)
 
-  const fetchUsersandRecipe = async () => {
+  const fetchCommentUsersandRecipe = async () => {
     const userData = await getUserbyId(recipe.userId);
     const updatedUserData = await getUserbyId(user._id)
     const response: any = await recipesApi.getRecipes() as any;
@@ -52,9 +53,22 @@ function RecipeDetailsScreen({ route, navigation }: any) {
     setUserDetails(details);
   };
 
+  const fetchFollowIds = async () => {
+    const userIds = new Set<string>();
+    updatedUser.following.forEach((follow: any) => {
+      userIds.add(follow);
+    });
+    const details: { [key: string]: any } = {};
+    for (const _id of userIds) {
+      const userData = await getUserbyId(_id);
+      details[_id] = userData;
+    }
+    setUserDetails(details);
+  };
+
   useFocusEffect(
     React.useCallback(() => {
-      fetchUsersandRecipe();
+      fetchCommentUsersandRecipe();
     }, [recipeId, recipe.userId])
   );
 
@@ -91,7 +105,7 @@ function RecipeDetailsScreen({ route, navigation }: any) {
   const handleSubmit = async (values: any, { resetForm }: { resetForm: () => void }) => {
     const result = await recipesApi.addComment(recipeId, user._id, values.comment)
     if (result.ok) {
-      await fetchUsersandRecipe()
+      await fetchCommentUsersandRecipe()
       resetForm()
     }
     else {
@@ -103,7 +117,7 @@ function RecipeDetailsScreen({ route, navigation }: any) {
   const handleDelete = async (_id: any, commentId: string) => {
     try {
       const result = await recipesApi.deleteComment(_id, commentId);
-      fetchUsersandRecipe()
+      fetchCommentUsersandRecipe()
       if (!result.ok) {
         return alert("Could not delete message.");
       }
@@ -131,6 +145,27 @@ function RecipeDetailsScreen({ route, navigation }: any) {
             </TouchableWithoutFeedback>
           </View>
         )}
+        <View style={styles.bottomButton}>
+          <TouchableWithoutFeedback onPress={
+            () => {
+              fetchFollowIds()
+              setShowModal(true)
+              setShowFollow(true)
+            }
+          }>
+            <MaterialCommunityIcons name="share" size={35} color={colors.light} />
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback style={{ marginLeft: 5 }} onPress={
+            () => {
+              fetchCommentUsersandRecipe()
+
+              setShowModal(true)
+              setShowFollow(false)
+            }} >
+            <MaterialCommunityIcons name="comment" size={30} color={colors.light} />
+          </TouchableWithoutFeedback>
+        </View>
+
         <RecipeImages images={recipe.images} width={width} />
         <View style={styles.detailsContainer}>
 
@@ -147,41 +182,57 @@ function RecipeDetailsScreen({ route, navigation }: any) {
           <RecipeDescription description={recipe.ingredients} isIngredient />
           <Text style={styles.header}>Recipe</Text>
           <RecipeDescription description={recipe.description} />
-          <AppButton title="Show Comments" onPress={() => setShowComments(true)} />
         </View></ScrollView>
-      <Modal visible={showComments} animationType="slide"><Screen>
+
+      <Modal visible={showModal} animationType="slide"><Screen>
         <View style={{ padding: 15 }}>
-          <TouchableWithoutFeedback onPress={() => setShowComments(false)}>
+          <TouchableWithoutFeedback onPress={() => {
+            setShowModal(false)
+
+          }}>
             <MaterialCommunityIcons name="close" size={30} />
           </TouchableWithoutFeedback></View>
 
-        <FlatList data={recipe.comments}
+        <FlatList data={showFollow ? Object.values(userDetails) : recipe.comments}
           keyExtractor={(comment) => `${comment._id}`}
           ref={scrollRef}
           onContentSizeChange={() => scrollRef.current.scrollToEnd()}
           onLayout={() => scrollRef.current.scrollToEnd()}
           renderItem={({ item }) => {
-            const displayUser = userDetails[item.user] || { name: '', images: { url: null, thumbnailUrl: null } };
+            const displayUser = showFollow ? item : userDetails[item.user];
+            if (!displayUser) return null
             return (
               <Entry
                 title={displayUser.name}
+                icon3={"share"}
+                icon3Function={
+                  async () => {
+                    const result = await messagesApi.sendMessage(`${recipe.title} by ${recipeUser.name}`, user._id, displayUser._id, recipe) as any;
+                    if (!result.ok) { return Alert.alert("Error", "Could not send the message.") }
+                    navigation.navigate(
+                      "Chat", { ...result.data } as any,
+                    )
+                    setShowModal(false)
+                  }
+                }
                 icon2={displayUser._id != user._id ? "plus-box-multiple-outline" : null}
                 icon2Function={() => {
                   handleFollow(displayUser._id)
-                  fetchUsersandRecipe()
+                  fetchCommentUsersandRecipe()
                 }}
                 icon2Color={updatedUser.following &&
                   updatedUser.following.includes(displayUser._id) ? "green" : null}
-                subTitle={item.message}
+                subTitle={showFollow ? null : item.message}
                 onPress={() => {
                   navigation.navigate(
 
                     'Users Recipes',
                     { userId: item.user },
                   );
-                  setShowComments(false)
+                  setShowModal(false)
+
                 }}
-                renderRightActions={() => (
+                renderRightActions={showFollow ? () => null : () => (
                   <EntryDeleteAction onPress={() => handleDelete(recipe._id, item._id)} />
                 )}
                 IconComponent={
@@ -194,13 +245,15 @@ function RecipeDetailsScreen({ route, navigation }: any) {
                   />} />);
           }}
           ItemSeparatorComponent={EntrySeparator} />
-        <View style={{ padding: 10 }}>
-          <Text style={styles.header}>Add Comment</Text>
-          <Form initialValues={{ comment: '' }} onSubmit={handleSubmit}>
-            <FormField autoCorrect={true} icon="comment" name="comment"
-              placeholder="Type a comment here." blurOnSubmit={true} />
-            <SubmitButton title="Post Comment" />
-          </Form></View>
+
+        {!showFollow &&
+          <View style={{ padding: 10 }}>
+            <Text style={styles.header}>Add Comment</Text>
+            <Form initialValues={{ comment: '' }} onSubmit={handleSubmit}>
+              <FormField autoCorrect={true} icon="comment" name="comment"
+                placeholder="Type a comment here." blurOnSubmit={true} />
+              <SubmitButton title="Post Comment" />
+            </Form></View>}
       </Screen></Modal>
     </KeyboardAvoidingView>
   )
@@ -220,6 +273,14 @@ const styles = StyleSheet.create({
     top: 10,
     right: 10,
     zIndex: 1,
+  },
+  bottomButton: {
+    position: 'absolute',
+    top: 255,
+    right: 10,
+    zIndex: 1,
+    flexDirection: "row",
+
   },
 });
 

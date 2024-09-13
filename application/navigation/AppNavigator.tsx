@@ -8,7 +8,7 @@ import NewRecipeButton from "./NewRecipeButton";
 import useNotifications from "../hooks/useNotifications";
 import SearchScreen from "../screens/SearchScreen";
 import ProfileNavigator from "./ProfileNavigator";
-import { HeaderLeftButton, HeaderRightButton, HeaderBackButton } from "../components/HeaderButtons";
+import { HeaderLeftButton, HeaderRightButton } from "../components/HeaderButtons";
 import colors from "../config/colors";
 import MyCookBook from "../screens/MyCookbook";
 import AllRecipesScreen from "../screens/AllRecipesScreen";
@@ -18,7 +18,7 @@ const Tab = createBottomTabNavigator();
 
 const Stack = createStackNavigator();
 
-const AppNavigator: React.FC = () => (
+const AppNavigator: any = () => (
   <Stack.Navigator>
     <Stack.Screen name="MainTab" component={MainTab} options={{
       title: "Back", headerShown: false
@@ -34,11 +34,55 @@ const AppNavigator: React.FC = () => (
   </Stack.Navigator>
 );
 
-const MainTab: React.FC = () => {
+const MainTab: any = () => {
   useNotifications();
 
   return (
     <Tab.Navigator>
+      <Tab.Screen
+        name="Profile"
+        component={ProfileNavigator}
+        options={({ navigation }) => ({
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="account" color={color} size={size} />
+          ),
+          headerShown: true,
+          title: "",
+          tabBarLabel: "Profile",
+          headerStyle: { backgroundColor: colors.light },
+          headerRight: () => <HeaderRightButton navigation={navigation} />,
+          headerLeft: () => <HeaderLeftButton navigation={navigation} />,
+        })}
+      />
+      <Tab.Screen
+        name="Cookbook"
+        component={MyCookBook}
+        options={({ navigation }) => ({
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="notebook" color={color} size={size} />
+          ),
+          headerShown: true,
+          title: "",
+          tabBarLabel: "Cookbook",
+          headerStyle: { backgroundColor: colors.light },
+          headerRight: () => <HeaderRightButton navigation={navigation} />,
+          headerLeft: () => <HeaderLeftButton navigation={navigation} />,
+        })}
+      />
+      <Tab.Screen
+        name="Edit"
+        component={RecipeEditScreen}
+        options={({ navigation }) => ({
+          tabBarButton: () => (
+            <NewRecipeButton onPress={() => navigation.navigate("Edit")} />
+          ),
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="chef-hat" color={color} size={size} />
+          ),
+          headerShown: false,
+
+        })}
+      />
       <Tab.Screen
         name="Recipes"
         component={AllRecipesScreen}
@@ -64,50 +108,6 @@ const MainTab: React.FC = () => {
           headerShown: true,
           title: "",
           tabBarLabel: "Search",
-          headerStyle: { backgroundColor: colors.light },
-          headerRight: () => <HeaderRightButton navigation={navigation} />,
-          headerLeft: () => <HeaderLeftButton navigation={navigation} />,
-        })}
-      />
-      <Tab.Screen
-        name="Edit"
-        component={RecipeEditScreen}
-        options={({ navigation }) => ({
-          tabBarButton: () => (
-            <NewRecipeButton onPress={() => navigation.navigate("Edit")} />
-          ),
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="chef-hat" color={color} size={size} />
-          ),
-          headerShown: false,
-
-        })}
-      />
-      <Tab.Screen
-        name="Cookbook"
-        component={MyCookBook}
-        options={({ navigation }) => ({
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="notebook" color={color} size={size} />
-          ),
-          headerShown: true,
-          title: "",
-          tabBarLabel: "Cookbook",
-          headerStyle: { backgroundColor: colors.light },
-          headerRight: () => <HeaderRightButton navigation={navigation} />,
-          headerLeft: () => <HeaderLeftButton navigation={navigation} />,
-        })}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={ProfileNavigator}
-        options={({ navigation }) => ({
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account" color={color} size={size} />
-          ),
-          headerShown: true,
-          title: "",
-          tabBarLabel: "Profile",
           headerStyle: { backgroundColor: colors.light },
           headerRight: () => <HeaderRightButton navigation={navigation} />,
           headerLeft: () => <HeaderLeftButton navigation={navigation} />,

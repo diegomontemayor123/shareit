@@ -11,7 +11,8 @@ import Screen from "../components/Screen";
 import AppText from "../components/AppText";
 function MyRecipesScreen({ navigation, isMyRecipes = true }: any) {
   const { user, logOut } = useAuth();
-  const [selectedCategory, setSelectedCategory] = useState<any>(null); const [showFollow, setShowFollow] = useState<any>(false)
+  const [selectedCategory, setSelectedCategory] = useState<any>(null);
+  const [showFollow, setShowFollow] = useState<any>(false)
   const [userDetails, setUserDetails] = useState<{ [key: string]: any }>({});
   const [profileUser, setProfileUser] = useState<any>(user)
   const fetchUserIds = async () => {

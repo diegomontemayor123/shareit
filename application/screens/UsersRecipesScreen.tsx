@@ -47,9 +47,11 @@ function UsersRecipesScreen({ navigation, route }: { navigation: any; route: any
         icon1="email"
         onPress={
           async () => {
-            const result = await messagesApi.sendMessage(null, user._id, profileUser._id) as any;
-            console.log("Error", result);
-            if (!result.ok) { return Alert.alert("Error", "Could not send the message.") }
+            const result = await messagesApi.sendMessage(null, user._id, profileUser._id, null) as any;
+            if (!result.ok) {
+              console.log('result' + JSON.stringify(result))
+              return Alert.alert("Error", "Could not send the message.")
+            }
             navigation.navigate(
               "Chat", { ...result.data } as any,
             )

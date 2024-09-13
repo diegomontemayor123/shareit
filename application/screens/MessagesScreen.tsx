@@ -88,7 +88,7 @@ function MessagesScreen({ navigation }: any) {
 
       {(getMessagesApi.error || messages ? messages.length === 0 : null) && (
         <View style={{ padding: 10 }}>
-          <AppText>{getMessagesApi.error ? "Could not retrieve user's messages." : "You have no messages."}</AppText>
+          <AppText style={{ marginVertical: 15 }}>{getMessagesApi.error ? "Could not retrieve user's messages." : "You have no messages."}</AppText>
           <Button title="Retry" onPress={() => {
             setRefreshing(true);
             fetchMessages();
@@ -98,7 +98,7 @@ function MessagesScreen({ navigation }: any) {
       )}
       <FlatList
         data={messages}
-        keyExtractor={(message) => `${message.fromUserId}-${message.recipeId}`}
+        keyExtractor={(message) => `${message._id}`}
         renderItem={({ item }) => {
           const _id = item.fromUserId === user._id ? item.toUserId : item.fromUserId;
           const displayUser = userDetails[_id] || { name: '', images: { url: null, thumbnailUrl: null } };

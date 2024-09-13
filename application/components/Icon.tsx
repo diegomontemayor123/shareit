@@ -8,6 +8,8 @@ interface IconProps {
   size?: number;
   backgroundColor?: string;
   iconColor?: string;
+  iconRatio?: any
+  onPress?: any
   borderRadius?: number;
 }
 
@@ -16,9 +18,11 @@ const Icon: React.FC<IconProps> = ({
   size = 40,
   backgroundColor = "#000",
   iconColor = "#fff",
+  iconRatio = 0.5,
+  onPress,
   borderRadius = 10
 }) => {
- 
+
   const containerStyle: ViewStyle = {
     width: size,
     height: size,
@@ -30,7 +34,7 @@ const Icon: React.FC<IconProps> = ({
 
   return (
     <View style={containerStyle}>
-      <MaterialCommunityIcons name={name} color={iconColor} size={size * 0.5} />
+      <MaterialCommunityIcons name={name} color={iconColor} size={size * iconRatio} onPress={onPress} />
     </View>
   );
 };

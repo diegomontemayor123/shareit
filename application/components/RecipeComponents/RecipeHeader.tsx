@@ -43,7 +43,10 @@ const RecipeHeader: React.FC<RecipeHeaderProps> = ({
         <Text style={styles.title}>{title}</Text>
         <Icon backgroundColor={categoryColor} name={categoryIcon} size={35} />
       </View>
-      <Text style={styles.timeToComplete}>~{timeToComplete} min</Text>
+      <View style={styles.titleContainer}>
+        <Text style={styles.timeToComplete}>~{timeToComplete} min</Text>
+
+      </View>
       <View>
         <Entry
           IconComponent={
