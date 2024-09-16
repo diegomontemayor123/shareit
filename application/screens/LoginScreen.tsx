@@ -6,6 +6,9 @@ import { ErrorMessage, Form, FormField, SubmitButton, } from "../components/form
 import authApi from "../api/auth";
 import useAuth from "../auth/useAuth";
 import colors from "../config/colors";
+import { forgotPassword } from "../api/users";
+import { Alert } from "react-native";
+import { useFormikContext } from "formik";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
@@ -16,19 +19,36 @@ interface FormValues {
   email?: string;
   password?: string;
 }
-
 function LoginScreen() {
   const { logIn } = useAuth();
   const [loginFailed, setLoginFailed] = useState(false);
-
   const handleSubmit = async ({ email, password }: FormValues) => {
     if (!email || !password) { return setLoginFailed(true) }
     const result = await authApi.login(email, password);
     if (!result.ok) return setLoginFailed(true);
-
     setLoginFailed(false);
     logIn(result.data as string);
   };
+
+  const ForgotPasswordButton: React.FC = () => {
+    const { values } = useFormikContext<FormValues>();
+    const handleForgotPassword = async () => {
+      try {
+        if (!values.email) {
+          Alert.alert('Error', 'Please enter your email address.');
+          return;
+        } Alert.alert
+          ('Success', 'If e-mai exists, password reset instructions will be sent to your email. Please double check the Spam folder.');
+        await forgotPassword(values.email);
+      } catch (error) {
+        Alert.alert('Error', 'An error occurred. Please try again.');
+      }
+    };
+    return (
+      <TouchableWithoutFeedback onPress={handleForgotPassword}>
+        <Text style={{ textAlign: 'center', fontSize: 12, color: colors.primary }}>Forgot Password?</Text>
+      </TouchableWithoutFeedback>)
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -67,8 +87,8 @@ function LoginScreen() {
             onSubmitEditing={Keyboard.dismiss}
           />
           <SubmitButton title="Login" />
+          <ForgotPasswordButton />
         </Form>
-        <Text style={styles.text}>Please e-mail diegomontemayor.f@gmail.com with any inquiries, concerns, or suggestions.</Text>
       </Screen>
     </TouchableWithoutFeedback>
   );
@@ -84,12 +104,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginTop: 170,
     marginBottom: 20,
-  },
-  text: {
-    textAlign: "center",
-    fontSize: 12,
-    color: colors.primary,
-
   }
 });
 

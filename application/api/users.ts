@@ -61,6 +61,9 @@ const getUserbyId = async (_id: string) => {
 const followUser = (id: number, userId: string) =>
   client.post(`${endpoint}/${id}/follow`, { userId });
 
+const forgotPassword = (email: string) =>
+  client.post(`${endpoint}/${email}/forgot-password`);
+
 export {
-  register, getUserbyId, editUser, followUser
+  register, getUserbyId, editUser, followUser, forgotPassword
 };

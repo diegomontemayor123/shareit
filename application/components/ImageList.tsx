@@ -13,8 +13,6 @@ const ImageList: React.FC<ImageListProps> = ({ imageUris = [], onRemoveImage, on
   const scrollView: RefObject<ScrollView> = useRef<ScrollView>(null);
 
   useEffect(() => {
-    console.log('imageUris :' + imageUris.length + ":")
-
   }, [imageUris])
 
   return (

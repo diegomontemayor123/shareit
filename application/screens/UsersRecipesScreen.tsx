@@ -49,7 +49,7 @@ function UsersRecipesScreen({ navigation, route }: { navigation: any; route: any
           async () => {
             const result = await messagesApi.sendMessage(null, user._id, profileUser._id, null) as any;
             if (!result.ok) {
-              console.log('result' + JSON.stringify(result))
+
               return Alert.alert("Error", "Could not send the message.")
             }
             navigation.navigate(

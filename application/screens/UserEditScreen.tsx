@@ -21,7 +21,6 @@ function UserEditScreen({ navigation }: any) {
   useEffect(() => {
     const fetchUser = async () => {
       const result = await getUserbyId(user._id)
-      console.log('result ' + JSON.stringify(result))
       setCurrentUser(result)
     }
     fetchUser()

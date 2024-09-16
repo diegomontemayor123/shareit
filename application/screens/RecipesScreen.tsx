@@ -13,6 +13,7 @@ import useRecipeActions from "../hooks/useRecipeActions";
 import SorterFilter from "../components/SorterFilter";
 import { getUserbyId } from "../api/users";
 import { useFocusEffect } from '@react-navigation/native';
+import { useRef } from "react";
 
 
 interface Recipe {
@@ -35,7 +36,7 @@ interface RecipesProps {
   profilePage?: boolean
 }
 
-function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCategoryChange, onUsersChange, profilePage = false }: RecipesProps) {
+function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCategoryChange, onUsersChange = () => { }, profilePage = false }: RecipesProps) {
   const { handleAddLike, handleAddBookmark, handleRefresh, refreshing, filteredRecipes } = useRecipeActions(filterFn);
   const getRecipesApi = useApi(recipesApi.getRecipes);
   const { user } = useAuth();
@@ -54,14 +55,20 @@ function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCat
       usersMap[_ids[index]] = userData.name;
     });
     setUsers(usersMap);
-    onUsersChange ? onUsersChange(usersMap) : null
+    if (onUsersChange) onUsersChange(usersMap)
   };
+
+  const prevFilteredRecipes = useRef(filteredRecipes);
 
   useEffect(() => {
     if (filteredRecipes.length > 0) {
-      fetchUsers();
+
+      if (JSON.stringify(filteredRecipes) !== JSON.stringify(prevFilteredRecipes.current)) {
+        fetchUsers();
+        prevFilteredRecipes.current = filteredRecipes;
+      }
     }
-  }, [filteredRecipes])
+  }, [filteredRecipes]);
 
   useFocusEffect(
     React.useCallback(() => {

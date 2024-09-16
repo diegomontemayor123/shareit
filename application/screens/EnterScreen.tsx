@@ -1,6 +1,7 @@
 import React from "react";
 import { ImageBackground, StyleSheet, View, Image, Text } from "react-native";
 import Button from "../components/Button";
+import colors from "../config/colors";
 
 function EnterScreen({ navigation }: { navigation: any }) {
   return (
@@ -24,6 +25,8 @@ function EnterScreen({ navigation }: { navigation: any }) {
           onPress={() => navigation.navigate("Register")}
         />
       </View>
+      <Text style={styles.text}>
+        Please e-mail diegomontemayor.f@gmail.com with any inquiries, concerns, or suggestions.</Text>
     </ImageBackground>
   );
 }
@@ -53,6 +56,13 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     paddingVertical: 20,
   },
+  text: {
+    textAlign: "center",
+    fontSize: 12,
+    color: colors.primary,
+    marginBottom: 25
+
+  }
 });
 
 export default EnterScreen;

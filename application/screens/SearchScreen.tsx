@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import colors from "../config/colors";
 import RecipesScreen from "./RecipesScreen";
-
 import { Searchbar } from 'react-native-paper';
 
 function SearchScreen({ navigation }: any) {
@@ -17,8 +16,14 @@ function SearchScreen({ navigation }: any) {
     setSearch(query);
   };
 
+  const handleUsersChange = (usersMap: { [_id: string]: string }) => {
+    setUsers(usersMap);
+  };
+
 
   const filterSearch = (recipes: any) => {
+
+
 
     let matchedUserId: string | undefined;
     if (users) {
@@ -28,6 +33,8 @@ function SearchScreen({ navigation }: any) {
     }
 
     return recipes.filter((recipe: any) =>
+
+
       selectedCategory
         ? recipe.categoryId == selectedCategory.value
         && (recipe.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -44,14 +51,14 @@ function SearchScreen({ navigation }: any) {
         value={search}
         placeholderTextColor={colors.medium}
       />
-      {search != '' && <RecipesScreen
+      <RecipesScreen
         filterFn={filterSearch}
         navigation={navigation}
         errorMessage="Couldn't retrieve the recipes."
         emptyMessage="No recipes available."
         onCategoryChange={handleCategoryChange}
-        onUsersChange={(usersMap) => { setUsers(usersMap) }}
-      />}
+        onUsersChange={handleUsersChange}
+      />
     </>
   );
 }
