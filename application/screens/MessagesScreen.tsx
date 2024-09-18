@@ -17,6 +17,7 @@ interface Message {
   fromUserId: string;
   toUserId: string;
   recipeName: string;
+  read: any
   content: any
   recipeId: string;
 }
@@ -88,7 +89,7 @@ function MessagesScreen({ navigation }: any) {
 
       {(getMessagesApi.error || messages ? messages.length === 0 : null) && (
         <View style={{ padding: 10 }}>
-          <AppText style={{ marginVertical: 15 }}>{getMessagesApi.error ? "Could not retrieve user's messages." : "You have no messages."}</AppText>
+          <AppText style={{ marginVertical: 15 }}>{getMessagesApi.error ? "Could not retrieve user's messages." : "Your mailbox is empty."}</AppText>
           <Button title="Retry" onPress={() => {
             setRefreshing(true);
             fetchMessages();
@@ -105,7 +106,9 @@ function MessagesScreen({ navigation }: any) {
 
           return (
             <Entry
-              title={displayUser.name}
+              title={
+
+                displayUser.name}
               subTitle={item.content.text ? `${item.content[item.content.length - 1].text.substring(0, 30)}...` : null}
               IconComponent={
                 <Avatar
@@ -116,9 +119,16 @@ function MessagesScreen({ navigation }: any) {
                   thumbnailUrl={displayUser.images?.thumbnailUrl || null}
                 />
               }
-              onPress={() => {
+              onPress={async () => {
+                const result = await messagesApi.sendMessage(null, user._id, displayUser._id, null, user._id) as any;
                 navigation.navigate("Chat", item);
               }}
+              icon2={'account'}
+              icon2Function={() => { navigation.navigate('Users Recipes', { userId: displayUser._id }) }}
+              icon3={item.read.includes(user._id) ? null : 'circle'}
+              icon3Size={17}
+              icon3Color={colors.blue}
+
               renderRightActions={() => (
                 <EntryDeleteAction onPress={() => handleDelete(item._id)} />
               )}

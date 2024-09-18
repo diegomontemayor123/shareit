@@ -13,6 +13,7 @@ import colors from "../config/colors";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required().label("Name"),
+  phoneNumber: Yup.string().required().label("Phone Number"),
   email: Yup.string().required().email().label("Email"),
   password: Yup.string().required().min(5).label("Password"),
   images: Yup.array().max(1, "Only one image allowed."),
@@ -24,9 +25,8 @@ function RegisterScreen() {
   const auth = useAuth();
   const [error, setError] = useState<string | undefined>();
 
-  const handleSubmit = async (userInfo: { name?: string; email?: string; password?: string; images?: any[] }) => {
+  const handleSubmit = async (userInfo: { name?: string; email?: string; password?: string; images?: any[], phoneNumber?: any }) => {
     const result = await registerApi.request(userInfo);
-
     if (!result.ok) {
       if (result.data) setError(result.data.error);
       else setError("An unexpected error occurred.");
@@ -54,6 +54,14 @@ function RegisterScreen() {
               icon="account"
               name="name"
               placeholder="Name"
+              blurOnSubmit
+              onSubmitEditing={Keyboard.dismiss}
+            />
+            <FormField
+              autoCorrect={false}
+              icon="phone"
+              name="phoneNumber"
+              placeholder="Phone Number"
               blurOnSubmit
               onSubmitEditing={Keyboard.dismiss}
             />

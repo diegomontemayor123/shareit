@@ -11,6 +11,7 @@ import useApi from "../hooks/useApi";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().optional().label("Name"),
+  phoneNumber: Yup.string().optional().label("Phone Number"),
   email: Yup.string().optional().email().label("Email"),
   password: Yup.string().optional().min(5).label("Password"),
   images: Yup.array().max(1, "Only one image allowed."),
@@ -29,7 +30,7 @@ function UserEditScreen({ navigation }: any) {
   const editApi = useApi(editUser);
   const { user }: any = useAuth();
   const [error, setError] = useState<string | undefined>();
-  const handleSubmit = async (newUserInfo: { name?: string; email?: string; password?: string; images?: any[] }, { resetForm }: { resetForm: () => void }) => {
+  const handleSubmit = async (newUserInfo: { name?: string; email?: string; password?: string; phoneNumber?: any; images?: any[] }, { resetForm }: { resetForm: () => void }) => {
     const result = await editApi.request(user._id, newUserInfo)
 
     if (!result.ok) {
@@ -63,6 +64,14 @@ function UserEditScreen({ navigation }: any) {
               icon="account"
               name="name"
               placeholder={currentUser?.name || "name"}
+              blurOnSubmit
+              onSubmitEditing={Keyboard.dismiss}
+            />
+            <FormField
+              autoCorrect={false}
+              icon="phone"
+              name="phoneNumber"
+              placeholder={currentUser?.phoneNumber || "Phone Number"}
               blurOnSubmit
               onSubmitEditing={Keyboard.dismiss}
             />

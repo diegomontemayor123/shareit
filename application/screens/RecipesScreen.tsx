@@ -34,9 +34,10 @@ interface RecipesProps {
   onCategoryChange: any
   onUsersChange?: (users: any) => void;
   profilePage?: boolean
+  searchPage?: boolean
 }
 
-function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCategoryChange, onUsersChange = () => { }, profilePage = false }: RecipesProps) {
+function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCategoryChange, onUsersChange = () => { }, profilePage = false, searchPage = false }: RecipesProps) {
   const { handleAddLike, handleAddBookmark, handleRefresh, refreshing, filteredRecipes } = useRecipeActions(filterFn);
   const getRecipesApi = useApi(recipesApi.getRecipes);
   const { user } = useAuth();
@@ -128,21 +129,23 @@ function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCat
             const userName = users[item.userId]
             return (
               <View style={profilePage ? styles.slideContainer : null}>
-                <Slide
-                  profilePage={profilePage}
-                  title={item.title}
-                  subTitle={`~${item.timeToComplete} min`}
-                  subTitle2={userName}
-                  category={item.categoryIcon}
-                  color={item.categoryColor}
-                  imageUrl={item.images[0].url}
-                  thumbnailUrl={item.images[0].thumbnailUrl}
-                  onPress={() => navigation.navigate("RecipeDetails", item)}
-                  showBookmark={showBookmark}
-                  addLike={() => handleAddLike(item.id)}
-                  addBookmark={() => handleAddBookmark(item.id)}
-                  likesCount={item.likesCount}
-                />
+                {searchPage ? null :
+                  <Slide
+                    profilePage={profilePage}
+                    title={item.title}
+                    subTitle={`~${item.timeToComplete} min`}
+                    subTitle2={userName}
+                    category={item.categoryIcon}
+                    color={item.categoryColor}
+                    imageUrl={item.images[0].url}
+                    thumbnailUrl={item.images[0].thumbnailUrl}
+                    onPress={() => navigation.navigate("RecipeDetails", item)}
+                    showBookmark={showBookmark}
+                    addLike={() => handleAddLike(item.id)}
+                    addBookmark={() => handleAddBookmark(item.id)}
+                    likesCount={item.likesCount}
+                  />
+                }
               </View>
             );
           }}

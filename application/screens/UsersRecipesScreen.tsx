@@ -47,7 +47,7 @@ function UsersRecipesScreen({ navigation, route }: { navigation: any; route: any
         icon1="email"
         onPress={
           async () => {
-            const result = await messagesApi.sendMessage(null, user._id, profileUser._id, null) as any;
+            const result = await messagesApi.sendMessage(null, user._id, profileUser._id, null, null) as any;
             if (!result.ok) {
 
               return Alert.alert("Error", "Could not send the message.")

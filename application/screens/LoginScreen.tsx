@@ -21,14 +21,22 @@ interface FormValues {
 }
 function LoginScreen() {
   const { logIn } = useAuth();
-  const [loginFailed, setLoginFailed] = useState(false);
+  const [loginFailed, setLoginFailed] = useState<any>();
   const handleSubmit = async ({ email, password }: FormValues) => {
-    if (!email || !password) { return setLoginFailed(true) }
-    const result = await authApi.login(email, password);
-    if (!result.ok) return setLoginFailed(true);
-    setLoginFailed(false);
-    logIn(result.data as string);
+    try {
+
+
+
+      if (!email || !password) { return setLoginFailed('You must enter both an email and a password.') }
+      const result: any = await authApi.login(email, password);
+      if (result.data.error) return setLoginFailed('Invalid Email or Password');
+      setLoginFailed(false);
+      logIn(result.data as string);
+    } catch (error) {
+      return setLoginFailed('We are temporarily having issues reaching our servers.');
+    }
   };
+
 
   const ForgotPasswordButton: React.FC = () => {
     const { values } = useFormikContext<FormValues>();
@@ -61,8 +69,8 @@ function LoginScreen() {
           validationSchema={validationSchema}
         >
           <ErrorMessage
-            error="Invalid email and/or password."
-            visible={loginFailed}
+            error={loginFailed}
+            visible={!!loginFailed}
           />
           <FormField
             autoCapitalize="none"

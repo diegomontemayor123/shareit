@@ -3,8 +3,8 @@ import { StyleSheet } from "react-native";
 import Text from "../AppText";
 
 interface ErrorMessageProps {
-  error?: string;
-  visible?: boolean;
+  error?: any
+  visible?: any
 }
 
 const ErrorMessage: React.FC<ErrorMessageProps> = ({ error, visible }) => {

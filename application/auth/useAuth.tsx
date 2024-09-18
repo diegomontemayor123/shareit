@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import AuthContext from './context';
 import AuthStorage from './Storage';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 const useAuth = () => {
   const context = useContext(AuthContext);
@@ -16,7 +16,7 @@ const useAuth = () => {
       if (typeof authToken !== 'string') {
         throw new Error('Auth token must be a string');
       }
-      const user = jwtDecode<string>(authToken); 
+      const user = jwtDecode<string>(authToken);
 
       setUser(user);
       await AuthStorage.storeToken(authToken);

@@ -2,8 +2,10 @@ import client from "./client";
 
 const endpoint = "/messages";
 
-const sendMessage = (message: string | null, fromUserId: string, toUserId: string, item: any) =>
-  client.post(endpoint, { message, fromUserId, toUserId, item });
+const sendMessage = async (message: string | null, fromUserId: string, toUserId: string, item: any, read: any) => {
+  const result = await client.post(endpoint, { message, fromUserId, toUserId, item, read });
+  return result
+}
 
 const getMessagesForUser = (user: any) =>
   client.get(endpoint, { user });

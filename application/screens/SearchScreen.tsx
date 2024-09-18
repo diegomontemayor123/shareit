@@ -54,6 +54,7 @@ function SearchScreen({ navigation }: any) {
       <RecipesScreen
         filterFn={filterSearch}
         navigation={navigation}
+        searchPage={search.length > 0 ? false : true}
         errorMessage="Couldn't retrieve the recipes."
         emptyMessage="No recipes available."
         onCategoryChange={handleCategoryChange}

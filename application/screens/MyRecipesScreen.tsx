@@ -50,7 +50,12 @@ function MyRecipesScreen({ navigation, isMyRecipes = true }: any) {
 
   const fetchUsers = async () => {
     const userData = await getUserbyId(user._id);
-    setProfileUser(userData);
+    if (userData) {
+      setProfileUser(userData)
+    }
+    else {
+      setProfileUser({ name: '' })
+    }
   };
 
   useFocusEffect(
@@ -83,6 +88,7 @@ function MyRecipesScreen({ navigation, isMyRecipes = true }: any) {
         subTitle="Edit User Info"
         onPress={() => navigation.navigate("User Edit")}
         IconComponent={
+
           <Avatar
             firstName={profileUser.name.split(" ")[0]}
             lastName={profileUser.name.split(" ")[1] || ""}

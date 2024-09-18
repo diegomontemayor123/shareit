@@ -20,6 +20,7 @@ interface EntryProps {
   icon2Function?: any
   icon3?: any
   icon3Color?: any
+  icon3Size?: any
   icon3Function?: any
 }
 
@@ -38,6 +39,7 @@ const Entry: React.FC<EntryProps> = ({
   icon2Function,
   icon3,
   icon3Color,
+  icon3Size = 30,
   icon3Function,
 
 }) => {
@@ -62,17 +64,17 @@ const Entry: React.FC<EntryProps> = ({
       </View>
       {icon3 &&
         <TouchableOpacity onPress={icon3Function} style={{ marginRight: 10 }}>
-          <MaterialCommunityIcons color={icon3Color ? icon3Color : colors.medium} name={icon3} size={35} />
+          <MaterialCommunityIcons color={icon3Color ? icon3Color : colors.medium} name={icon3} size={icon3Size} />
         </TouchableOpacity>
       }
       {icon2 &&
         <TouchableOpacity onPress={icon2Function} style={{ marginRight: 10 }}>
-          <MaterialCommunityIcons color={icon2Color ? icon2Color : colors.medium} name={icon2} size={35} />
+          <MaterialCommunityIcons color={icon2Color ? icon2Color : colors.medium} name={icon2} size={30} />
         </TouchableOpacity>
       }
       {icon1 ?
-        <MaterialCommunityIcons color={colors.medium} name={icon1} size={35} />
-        : <MaterialCommunityIcons color={colors.medium} name="chevron-right" size={35} />
+        <MaterialCommunityIcons color={colors.medium} name={icon1} size={30} />
+        : <MaterialCommunityIcons color={colors.medium} name="chevron-right" size={30} />
       }
 
     </TouchableOpacity>

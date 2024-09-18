@@ -153,7 +153,7 @@ function RecipeDetailsScreen({ route, navigation }: any) {
               setShowFollow(true)
             }
           }>
-            <MaterialCommunityIcons name="share" size={35} color={colors.light} />
+            <MaterialCommunityIcons name="share" size={30} color={colors.light} />
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback style={{ marginLeft: 5 }} onPress={
             () => {
@@ -207,7 +207,7 @@ function RecipeDetailsScreen({ route, navigation }: any) {
                 icon3={"share"}
                 icon3Function={
                   async () => {
-                    const result = await messagesApi.sendMessage(`${recipe.title} by ${recipeUser.name}`, user._id, displayUser._id, recipe) as any;
+                    const result = await messagesApi.sendMessage(`${recipe.title} by ${recipeUser.name}`, user._id, displayUser._id, recipe, null) as any;
                     if (!result.ok) { return Alert.alert("Error", "Could not send the message.") }
                     navigation.navigate(
                       "Chat", { ...result.data } as any,

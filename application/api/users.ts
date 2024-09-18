@@ -2,6 +2,7 @@ import client from "./client";
 
 interface UserInfo {
   name: string;
+  phoneNumber: any
   email: string;
   password: string;
   images: string[]
@@ -13,6 +14,7 @@ const endpoint = "/users";
 const register = async (userInfo: UserInfo) => {
   const data = new FormData();
   data.append("name", userInfo.name);
+  data.append("phoneNumber", userInfo.phoneNumber)
   data.append("email", userInfo.email);
   data.append("password", userInfo.password);
   data.append("following", JSON.stringify(userInfo.following || []))
@@ -34,6 +36,7 @@ const register = async (userInfo: UserInfo) => {
 const editUser = async (userId: string, newUserInfo: UserInfo) => {
   const data = new FormData();
   data.append("name", newUserInfo.name);
+  data.append("phoneNumber", newUserInfo.phoneNumber);
   data.append("email", newUserInfo.email);
   data.append("password", newUserInfo.password);
 
