@@ -13,7 +13,7 @@ import colors from "../config/colors";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required().label("Name"),
-  phoneNumber: Yup.string().required().label("Phone Number"),
+  phoneNumber: Yup.string().required().max(11).min(10).label("Phone Number"),
   email: Yup.string().required().email().label("Email"),
   password: Yup.string().required().min(5).label("Password"),
   images: Yup.array().max(1, "Only one image allowed."),

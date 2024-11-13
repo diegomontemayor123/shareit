@@ -12,6 +12,7 @@ import { HeaderLeftButton, HeaderRightButton } from "../components/HeaderButtons
 import colors from "../config/colors";
 import MyCookBook from "../screens/MyCookbook";
 import AllRecipesScreen from "../screens/AllRecipesScreen";
+import ContactsScreen from '../screens/ContactsScreen'
 
 const Tab = createBottomTabNavigator();
 
@@ -26,6 +27,12 @@ const AppNavigator: any = () => (
     <Stack.Screen name="Chat" component={ChatScreen}
       options={({ navigation }) => ({
         title: "Chat",
+        headerStyle: { backgroundColor: colors.light },
+        headerRight: () => <HeaderRightButton navigation={navigation} />
+      })} />
+    <Stack.Screen name="Contacts Screen" component={ContactsScreen}
+      options={({ navigation }) => ({
+        title: "Contacts",
         headerStyle: { backgroundColor: colors.light },
         headerRight: () => <HeaderRightButton navigation={navigation} />
       })} />

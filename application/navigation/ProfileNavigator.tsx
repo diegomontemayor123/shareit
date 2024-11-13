@@ -7,6 +7,7 @@ import RecipeDetailsScreen from "../screens/RecipeDetailsScreen";
 import UsersRecipesScreen from "../screens/UsersRecipesScreen";
 
 
+
 const Stack = createStackNavigator();
 
 const ProfileNavigator: any = () => (
@@ -16,6 +17,7 @@ const ProfileNavigator: any = () => (
     <Stack.Screen name="User Edit" component={UserEditScreen} />
     <Stack.Screen name="RecipeDetails" component={RecipeDetailsScreen} />
     <Stack.Screen name="Users Recipes" component={UsersRecipesScreen} />
+
   </Stack.Navigator>
 );
 

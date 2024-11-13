@@ -12,7 +12,7 @@ interface AvatarProps {
 }
 
 const Avatar: React.FC<AvatarProps> = ({ firstName, lastName, imageUrl, thumbnailUrl, size = 50 }) => {
-  const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
+  const initials = `${firstName?.charAt(0) || ""}${lastName?.charAt(0) || ""}`.toUpperCase();
 
   return (
     <View

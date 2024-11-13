@@ -63,10 +63,10 @@ const ChatScreen = ({ route }: any) => {
     };
 
     return (
-        <View style={{ flex: 1, paddingBottom: 25 }}>
+        <View style={{ flex: 1, paddingBottom: 35 }}>
             <GiftedChat
                 messages={messages.sort((a, b) => Number(b.createdAt) - Number(a.createdAt))}
-                renderAvatar={() => null}
+                renderAvatar={null}
                 onSend={onSend}
                 renderMessageText={renderMessageText}
                 user={{

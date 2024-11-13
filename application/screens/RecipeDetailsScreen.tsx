@@ -170,13 +170,9 @@ function RecipeDetailsScreen({ route, navigation }: any) {
         <View style={styles.detailsContainer}>
 
           <RecipeHeader
-            title={recipe.title}
-            timeToComplete={recipe.timeToComplete}
-            categoryIcon={recipe.categoryIcon}
-            categoryColor={recipe.categoryColor}
-            userId={recipe.userId}
             recipeCount={recipeCount}
             navigation={navigation}
+            recipe={recipe}
           />
           <Text style={styles.header}>Ingredients</Text>
           <RecipeDescription description={recipe.ingredients} isIngredient />
@@ -232,7 +228,7 @@ function RecipeDetailsScreen({ route, navigation }: any) {
                   setShowModal(false)
 
                 }}
-                renderRightActions={showFollow ? () => null : () => (
+                renderRightActions={showFollow || (item.user != user._id && user._id != recipe.userId) ? () => null : () => (
                   <EntryDeleteAction onPress={() => handleDelete(recipe._id, item._id)} />
                 )}
                 IconComponent={

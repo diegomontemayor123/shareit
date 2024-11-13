@@ -7,45 +7,38 @@ import Avatar from "../Avatar";
 import colors from "../../config/colors";
 import { getUserbyId } from "../../api/users"
 
+
 interface RecipeHeaderProps {
-  title: string;
-  timeToComplete: number;
-  categoryIcon: string;
-  categoryColor: string;
   recipeCount: number;
   navigation: any;
-  userId: string
+  recipe?: any
 }
 
 const RecipeHeader: React.FC<RecipeHeaderProps> = ({
-  title,
-  timeToComplete,
-  categoryIcon,
-  categoryColor,
   recipeCount,
   navigation,
-  userId,
+  recipe
 
 }) => {
   const [recipeUser, setRecipeUser] = useState({ _id: "", name: "", images: { url: null, thumbnailUrl: null } })
   useEffect(() => {
     const fetchImages = async () => {
-      const result = await getUserbyId(userId)
+      const result = await getUserbyId(recipe.userId)
       setRecipeUser(result)
     }
     fetchImages()
-  }, [userId])
-
+  }, [recipe.userId])
+  const createdAt = () => new Date(parseInt(recipe._id.toString().substring(0, 8), 16) * 1000).toString().substring(4, 15)
 
   return (
     <>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>{title}</Text>
-        <Icon backgroundColor={categoryColor} name={categoryIcon} size={35} />
+        <Text style={styles.title}>{recipe.title}</Text>
+        <Icon backgroundColor={recipe.categoryColor} name={recipe.categoryIcon} size={35} />
       </View>
       <View style={styles.titleContainer}>
-        <Text style={styles.timeToComplete}>~{timeToComplete} min</Text>
-
+        <Text style={styles.timeToComplete}>~{recipe.timeToComplete} min</Text>
+        <Text style={{ fontSize: 12 }}>{createdAt()}</Text>
       </View>
       <View>
         <Entry

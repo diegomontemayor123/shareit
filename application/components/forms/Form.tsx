@@ -6,8 +6,10 @@ interface RegisterFormValues {
   name?: string;
   message?: string
   email?: string;
+  phoneNumber?: string
   password?: string;
   comment?: string
+  images?: any
 }
 
 interface AppFormProps {

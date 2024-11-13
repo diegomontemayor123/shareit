@@ -30,7 +30,8 @@ function UserEditScreen({ navigation }: any) {
   const editApi = useApi(editUser);
   const { user }: any = useAuth();
   const [error, setError] = useState<string | undefined>();
-  const handleSubmit = async (newUserInfo: { name?: string; email?: string; password?: string; phoneNumber?: any; images?: any[] }, { resetForm }: { resetForm: () => void }) => {
+  const handleSubmit = async (newUserInfo: { name: string; email: string; password: string; phoneNumber: string; images: any[] }, { resetForm }: { resetForm: () => void }) => {
+    console.log('newUserINfo ', newUserInfo)
     const result = await editApi.request(user._id, newUserInfo)
 
     if (!result.ok) {
@@ -50,7 +51,7 @@ function UserEditScreen({ navigation }: any) {
         <ActivityIndicator visible={editApi.loading} />
         <Screen style={styles.container}>
           <Form
-            initialValues={{ name: "", email: "", password: "" }}
+            initialValues={{ name: "", phoneNumber: "", email: "", password: "" }}
             onSubmit={handleSubmit}
             validationSchema={validationSchema}
           >

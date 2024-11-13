@@ -9,34 +9,37 @@ import { getUserbyId, followUser } from "../api/users";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Screen from "../components/Screen";
 import AppText from "../components/AppText";
+import colors from "../config/colors";
 function MyRecipesScreen({ navigation, isMyRecipes = true }: any) {
   const { user, logOut } = useAuth();
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const [showFollow, setShowFollow] = useState<any>(false)
   const [userDetails, setUserDetails] = useState<{ [key: string]: any }>({});
   const [profileUser, setProfileUser] = useState<any>(user)
+
   const fetchUserIds = async () => {
     const userIds = new Set<string>();
-    profileUser.following.forEach((follow: any) => {
+    profileUser.following?.forEach((follow: any) => {
       userIds.add(follow);
     });
-    const details: { [key: string]: any } = {};
+    const usersData: { [key: string]: any } = {};
     for (const _id of userIds) {
       const userData = await getUserbyId(_id);
-      details[_id] = userData;
+      usersData[_id] = userData;
     }
-    setUserDetails(details);
+    const userData = await getUserbyId(user._id);
+    setUserDetails(usersData);
+    setProfileUser(userData)
   };
 
   const handleFollow = async (id: any) => {
     try {
       await followUser(profileUser._id, id);
-      fetchUsers()
+      fetchUserIds()
     } catch (error) {
       alert('Error following user.');
     }
   }
-
 
   const handleCategoryChange = (category: any) => {
     setSelectedCategory(category);
@@ -47,21 +50,9 @@ function MyRecipesScreen({ navigation, isMyRecipes = true }: any) {
       : (isMyRecipes ? recipe.userId === user._id : recipe.bookmarkIds.includes(user._id)));
   };
 
-
-  const fetchUsers = async () => {
-    const userData = await getUserbyId(user._id);
-    if (userData) {
-      setProfileUser(userData)
-    }
-    else {
-      setProfileUser({ name: '' })
-    }
-  };
-
   useFocusEffect(
     React.useCallback(() => {
-
-      fetchUsers();
+      fetchUserIds();
     }, [user._id])
   );
 
@@ -90,8 +81,8 @@ function MyRecipesScreen({ navigation, isMyRecipes = true }: any) {
         IconComponent={
 
           <Avatar
-            firstName={profileUser.name.split(" ")[0]}
-            lastName={profileUser.name.split(" ")[1] || ""}
+            firstName={profileUser.name?.split(" ")[0] || ""}
+            lastName={profileUser.name?.split(" ")[1] || ""}
             size={40}
             imageUrl={profileUser.images?.url || null}
             thumbnailUrl={profileUser.images?.thumbnailUrl || null}
@@ -106,17 +97,29 @@ function MyRecipesScreen({ navigation, isMyRecipes = true }: any) {
       />
 
       <Modal visible={showFollow} animationType="slide"><Screen>
-        <View style={{ padding: 15 }}>
+        <View style={{
+          padding: 15, flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}>
           <TouchableWithoutFeedback onPress={() => setShowFollow(false)}>
             <MaterialCommunityIcons name="close" size={30} />
-          </TouchableWithoutFeedback></View>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={() => {
+            navigation.navigate('Contacts Screen')
+            setShowFollow(false)
+          }
+          }>
+            <AppText style={{ fontWeight: 'bold', color: colors.primary }}>See who else is using lets feast</AppText>
+          </TouchableWithoutFeedback>
+        </View>
         {Object.keys(userDetails).length > 0 ?
           <FlatList data={Object.values(userDetails)}
             keyExtractor={(item) => item._id}
             renderItem={({ item }) => {
               return (
                 <Entry
-                  title={item.name}
+                  title={item?.name || null}
                   icon2={item._id != user._id ? "plus-box-multiple-outline" : null}
                   icon2Function={() => {
                     handleFollow(item._id)
@@ -133,8 +136,8 @@ function MyRecipesScreen({ navigation, isMyRecipes = true }: any) {
                   }}
                   IconComponent={
                     <Avatar
-                      firstName={item.name.split(" ")[0]}
-                      lastName={item.name.split(" ")[1] || ""}
+                      firstName={item.name?.split(" ")[0] || ""}
+                      lastName={item.name?.split(" ")[1] || ""}
                       size={55}
                       imageUrl={item.images?.url || null}
                       thumbnailUrl={item.images?.thumbnailUrl || null}

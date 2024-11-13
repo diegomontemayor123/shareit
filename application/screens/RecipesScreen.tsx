@@ -15,7 +15,6 @@ import { getUserbyId } from "../api/users";
 import { useFocusEffect } from '@react-navigation/native';
 import { useRef } from "react";
 
-
 interface Recipe {
   id: number;
   title: string;
@@ -41,10 +40,8 @@ function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCat
   const { handleAddLike, handleAddBookmark, handleRefresh, refreshing, filteredRecipes } = useRecipeActions(filterFn);
   const getRecipesApi = useApi(recipesApi.getRecipes);
   const { user } = useAuth();
-
   const [selectedSort, setSelectedSort] = useState<any>()
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<any>()
-
   const [users, setUsers] = useState<{ [_id: string]: string }>({});
 
   const fetchUsers = async () => {
