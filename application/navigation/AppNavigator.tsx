@@ -3,7 +3,7 @@ import { createBottomTabNavigator, } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ChatScreen from "../screens/ChatScreen";
-import RecipeEditScreen from "../screens/RecipeEditScreen";
+import RecipeAddScreen from "../screens/RecipeAddScreen";
 import NewRecipeButton from "./NewRecipeButton";
 import useNotifications from "../hooks/useNotifications";
 import SearchScreen from "../screens/SearchScreen";
@@ -77,11 +77,11 @@ const MainTab: any = () => {
         })}
       />
       <Tab.Screen
-        name="Edit"
-        component={RecipeEditScreen}
+        name="Add"
+        component={RecipeAddScreen}
         options={({ navigation }) => ({
           tabBarButton: () => (
-            <NewRecipeButton onPress={() => navigation.navigate("Edit")} />
+            <NewRecipeButton onPress={() => navigation.navigate("Add")} />
           ),
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="chef-hat" color={color} size={size} />

@@ -92,7 +92,7 @@ function RecipeDetailsScreen({ route, navigation }: any) {
             if (!result.ok) {
               return alert("Could not delete the recipe.");
             }
-            navigation.navigate("Recipes")
+            navigation.navigate("MyRecipes")
           } catch (error) {
             alert("An unexpected error occurred.");
           }

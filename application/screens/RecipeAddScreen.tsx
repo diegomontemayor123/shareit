@@ -19,9 +19,6 @@ const validationSchema = Yup.object().shape({
   images: Yup.array().min(1, "Please select at least one image."),
 });
 
-const editValidation = Yup.object().shape({
-  images: Yup.array().min(1, "Please select at least one image."),
-});
 
 interface RecipeEditScreenProps {
   navigation: any;
@@ -35,15 +32,9 @@ interface RecipeFormValues {
   description: string;
   category: any;
 }
-function RecipeEditScreen({ navigation, route }: RecipeEditScreenProps) {
+function RecipeAddScreen({ navigation, route }: RecipeEditScreenProps) {
   const { handleSubmit, uploadVisible, progress } = useSubmitRecipe({ navigation });
-  const [recipe, setRecipe] = useState(route.params || null)
 
-  useFocusEffect(
-    React.useCallback(
-      () => {
-        setRecipe(route.params)
-      }, [route.params]))
 
   return (
     <ScrollView>
@@ -60,17 +51,17 @@ function RecipeEditScreen({ navigation, route }: RecipeEditScreenProps) {
               ingredients: "",
               description: "",
               category: "",
-              images: recipe?.images?.map((image: any) => image.url) || []
+              images: []
             } as RecipeFormValues}
-            onSubmit={(values: any, { resetForm }: any) => handleSubmit(values, { resetForm }, recipe?._id)}
-            validationSchema={recipe ? editValidation : validationSchema}
+            onSubmit={(values: any, { resetForm }: any) => handleSubmit(values, { resetForm },)}
+            validationSchema={validationSchema}
           >
             <FormImagePicker name="images"
-              placeholderUrls={recipe?.images?.map((image: any) => image.url) || []} />
+              placeholderUrls={[]} />
             <FormField
               maxLength={255}
               name="title"
-              placeholder={recipe?.title || "Title"}
+              placeholder={"Title"}
               blurOnSubmit
               onSubmitEditing={Keyboard.dismiss}
             />
@@ -78,7 +69,7 @@ function RecipeEditScreen({ navigation, route }: RecipeEditScreenProps) {
               keyboardType="numeric"
               maxLength={8}
               name="timeToComplete"
-              placeholder={recipe ? recipe.timeToComplete.toString() + " min." : "Min. to complete"}
+              placeholder={"Min. to complete"}
               width={250}
               blurOnSubmit
               onSubmitEditing={Keyboard.dismiss}
@@ -88,7 +79,7 @@ function RecipeEditScreen({ navigation, route }: RecipeEditScreenProps) {
               name="category"
               numberOfColumns={3}
               PickerItemComponent={CategoryPickerItem}
-              placeholder={getCategoryLabelByValue(recipe?.categoryId) || "Cuisine"}
+              placeholder={"Cuisine"}
               width="50%"
             />
             <FormField
@@ -96,7 +87,7 @@ function RecipeEditScreen({ navigation, route }: RecipeEditScreenProps) {
               multiline
               name="ingredients"
               numberOfLines={10}
-              placeholder={recipe?.ingredients || "Ingredients - Please separate each ingredient with a period '.'"}
+              placeholder={"Ingredients - Please separate each ingredient with a period '.'"}
               blurOnSubmit
               onSubmitEditing={Keyboard.dismiss}
             />
@@ -105,11 +96,11 @@ function RecipeEditScreen({ navigation, route }: RecipeEditScreenProps) {
               multiline
               name="description"
               numberOfLines={10}
-              placeholder={recipe?.description || "Recipe - Please separate each step with a period '.'"}
+              placeholder={"Recipe - Please separate each step with a period '.'"}
               blurOnSubmit
               onSubmitEditing={Keyboard.dismiss}
             />
-            <SubmitButton title={recipe ? "Done" : "Cook up"} />
+            <SubmitButton title={"Cook up"} />
           </Form>
         </Screen>
       </TouchableWithoutFeedback>
@@ -123,4 +114,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RecipeEditScreen;
+export default RecipeAddScreen;
