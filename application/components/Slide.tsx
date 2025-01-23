@@ -5,7 +5,7 @@ import Text from "./AppText";
 import colors from "../config/colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Icon from "./Icon";
-import RecipeLikes from "./RecipeComponents/RecipeLikes";
+import RentalLikes from "./RentalComponents/RentalLikes";
 
 interface SlideProps {
   title: string
@@ -42,7 +42,7 @@ const Slide: React.FC<SlideProps> = ({ title, subTitle, subTitle2, category, col
         </TouchableOpacity>
 
 
-        <RecipeLikes likesCount={likesCount} addLike={addLike} />
+        <RentalLikes likesCount={likesCount} addLike={addLike} />
 
         <View style={styles.detailsContainer}>
           <View style={styles.titleContainer}>

@@ -4,18 +4,18 @@ import ActivityIndicator from "../components/ActivityIndicator";
 import Button from "../components/Button";
 import Slide from "../components/Slide";
 import colors from "../config/colors";
-import recipesApi from "../api/recipes";
+import rentalsApi from "../api/rentals";
 import Screen from "../components/Screen";
 import AppText from "../components/AppText";
 import useApi from "../hooks/useApi";
 import useAuth from "../auth/useAuth";
-import useRecipeActions from "../hooks/useRecipeActions";
+import useRentalActions from "../hooks/useRentalActions";
 import SorterFilter from "../components/SorterFilter";
 import { getUserbyId } from "../api/users";
 import { useFocusEffect } from '@react-navigation/native';
 import { useRef } from "react";
 
-interface Recipe {
+interface Rental {
   id: number;
   title: string;
   timeToComplete: string;
@@ -25,8 +25,8 @@ interface Recipe {
   likesCount: number;
 }
 
-interface RecipesProps {
-  filterFn: (recipes: Recipe[]) => Recipe[];
+interface RentalsProps {
+  filterFn: (rentals: Rental[]) => Rental[];
   errorMessage: string;
   emptyMessage: string;
   navigation: any;
@@ -36,16 +36,16 @@ interface RecipesProps {
   searchPage?: boolean
 }
 
-function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCategoryChange, onUsersChange = () => { }, profilePage = false, searchPage = false }: RecipesProps) {
-  const { handleAddLike, handleAddBookmark, handleRefresh, refreshing, filteredRecipes } = useRecipeActions(filterFn);
-  const getRecipesApi = useApi(recipesApi.getRecipes);
+function RentalsScreen({ filterFn, errorMessage, emptyMessage, navigation, onCategoryChange, onUsersChange = () => { }, profilePage = false, searchPage = false }: RentalsProps) {
+  const { handleAddLike, handleAddBookmark, handleRefresh, refreshing, filteredRentals } = useRentalActions(filterFn);
+  const getRentalsApi = useApi(rentalsApi.getRentals);
   const { user } = useAuth();
   const [selectedSort, setSelectedSort] = useState<any>()
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<any>()
   const [users, setUsers] = useState<{ [_id: string]: string }>({});
 
   const fetchUsers = async () => {
-    const _ids = filteredRecipes.map((recipe) => recipe.userId);
+    const _ids = filteredRentals.map((rental) => rental.userId);
     const userFetches = _ids.map(_id => getUserbyId(_id));
     const usersData = await Promise.all(userFetches);
     const usersMap: { [_id: string]: string } = {};
@@ -56,51 +56,51 @@ function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCat
     if (onUsersChange) onUsersChange(usersMap)
   };
 
-  const prevFilteredRecipes = useRef(filteredRecipes);
+  const prevFilteredRentals = useRef(filteredRentals);
 
   useEffect(() => {
-    if (filteredRecipes.length > 0) {
+    if (filteredRentals.length > 0) {
 
-      if (JSON.stringify(filteredRecipes) !== JSON.stringify(prevFilteredRecipes.current)) {
+      if (JSON.stringify(filteredRentals) !== JSON.stringify(prevFilteredRentals.current)) {
         fetchUsers();
-        prevFilteredRecipes.current = filteredRecipes;
+        prevFilteredRentals.current = filteredRentals;
       }
     }
-  }, [filteredRecipes]);
+  }, [filteredRentals]);
 
   useFocusEffect(
     React.useCallback(() => {
-      getRecipesApi.request();
+      getRentalsApi.request();
       handleRefresh()
     }, [])
   );
 
-  const getSortedRecipes = () => {
-    let sortedRecipes = [...filteredRecipes];
+  const getSortedRentals = () => {
+    let sortedRentals = [...filteredRentals];
     if (selectedSort) {
       if (selectedSort.label === "Likes") {
-        sortedRecipes.sort((a, b) => b.likesCount - a.likesCount);
+        sortedRentals.sort((a, b) => b.likesCount - a.likesCount);
       } else {
-        sortedRecipes.sort((a, b) => {
+        sortedRentals.sort((a, b) => {
           return b.id.localeCompare(a.id)
         });
       }
     }
     else {
-      sortedRecipes.sort((a, b) => {
+      sortedRentals.sort((a, b) => {
         return b.id.localeCompare(a.id)
       })
     }
-    return sortedRecipes;
+    return sortedRentals;
   };
 
   return (
     <>
-      <ActivityIndicator visible={getRecipesApi.loading} />
+      <ActivityIndicator visible={getRentalsApi.loading} />
       <Screen style={styles.screen}>
-        {(getRecipesApi.error || filteredRecipes ? filteredRecipes.length === 0 : null) && (
+        {(getRentalsApi.error || filteredRentals ? filteredRentals.length === 0 : null) && (
           <>
-            <AppText style={{ marginVertical: 15 }}>{getRecipesApi.error ? errorMessage : emptyMessage}</AppText>
+            <AppText style={{ marginVertical: 15 }}>{getRentalsApi.error ? errorMessage : emptyMessage}</AppText>
             <Button title="Retry" onPress={handleRefresh} />
           </>
         )}
@@ -118,8 +118,8 @@ function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCat
 
         <FlatList
           numColumns={profilePage ? 2 : 1}
-          data={getSortedRecipes()}
-          keyExtractor={(recipe) => recipe.id.toString()}
+          data={getSortedRentals()}
+          keyExtractor={(rental) => rental.id.toString()}
           renderItem={({ item }) => {
             const showBookmark = item.bookmarkIds?.includes(user._id)
 
@@ -136,7 +136,7 @@ function RecipesScreen({ filterFn, errorMessage, emptyMessage, navigation, onCat
                     color={item.categoryColor}
                     imageUrl={item.images[0].url}
                     thumbnailUrl={item.images[0].thumbnailUrl}
-                    onPress={() => navigation.navigate("RecipeDetails", item)}
+                    onPress={() => navigation.navigate("RentalDetails", item)}
                     showBookmark={showBookmark}
                     addLike={() => handleAddLike(item.id)}
                     addBookmark={() => handleAddBookmark(item.id)}
@@ -166,4 +166,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RecipesScreen;
+export default RentalsScreen;

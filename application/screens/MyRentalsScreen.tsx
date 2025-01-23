@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import RecipesScreen from "./RecipesScreen";
+import RentalsScreen from "./RentalsScreen";
 import useAuth from "../auth/useAuth";
 import { Entry, EntrySeparator } from "../components/entries";
 import Avatar from "../components/Avatar";
@@ -10,7 +10,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Screen from "../components/Screen";
 import AppText from "../components/AppText";
 import colors from "../config/colors";
-function MyRecipesScreen({ navigation, isMyRecipes = true }: any) {
+function MyRentalsScreen({ navigation, isMyRentals = true }: any) {
   const { user, logOut } = useAuth();
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const [showFollow, setShowFollow] = useState<any>(false)
@@ -44,10 +44,10 @@ function MyRecipesScreen({ navigation, isMyRecipes = true }: any) {
   const handleCategoryChange = (category: any) => {
     setSelectedCategory(category);
   };
-  const filterMyRecipes = (recipes: any[]) => {
-    return recipes.filter((recipe) => selectedCategory ?
-      (isMyRecipes ? recipe.userId === user._id : recipe.bookmarkIds.includes(user._id)) && recipe.categoryId == selectedCategory.value
-      : (isMyRecipes ? recipe.userId === user._id : recipe.bookmarkIds.includes(user._id)));
+  const filterMyRentals = (rentals: any[]) => {
+    return rentals.filter((rental) => selectedCategory ?
+      (isMyRentals ? rental.userId === user._id : rental.bookmarkIds.includes(user._id)) && rental.categoryId == selectedCategory.value
+      : (isMyRentals ? rental.userId === user._id : rental.bookmarkIds.includes(user._id)));
   };
 
   useFocusEffect(
@@ -89,11 +89,11 @@ function MyRecipesScreen({ navigation, isMyRecipes = true }: any) {
           />
         }
       />
-      <RecipesScreen
-        filterFn={filterMyRecipes} onCategoryChange={handleCategoryChange}
+      <RentalsScreen
+        filterFn={filterMyRentals} onCategoryChange={handleCategoryChange}
         profilePage={true} navigation={navigation}
-        errorMessage={"Could not retrieve your recipes."}
-        emptyMessage={isMyRecipes ? "You don't have any recipes yet." : "You don't have any bookmarked recipes."}
+        errorMessage={"Could not retrieve your rentals."}
+        emptyMessage={isMyRentals ? "You don't have any gear yet." : "You don't have any gear yet."}
       />
 
       <Modal visible={showFollow} animationType="slide"><Screen>
@@ -110,7 +110,7 @@ function MyRecipesScreen({ navigation, isMyRecipes = true }: any) {
             setShowFollow(false)
           }
           }>
-            <AppText style={{ fontWeight: 'bold', color: colors.primary }}>See who else is using lets feast</AppText>
+            <AppText style={{ fontWeight: 'bold', color: colors.primary }}>See who else is using ShareIt</AppText>
           </TouchableWithoutFeedback>
         </View>
         {Object.keys(userDetails).length > 0 ?
@@ -129,7 +129,7 @@ function MyRecipesScreen({ navigation, isMyRecipes = true }: any) {
                   subTitle={item.message}
                   onPress={() => {
                     navigation.navigate(
-                      'Users Recipes',
+                      'Users Rentals',
                       { userId: item._id },
                     );
                     setShowFollow(false)
@@ -151,4 +151,4 @@ function MyRecipesScreen({ navigation, isMyRecipes = true }: any) {
   );
 }
 
-export default MyRecipesScreen;
+export default MyRentalsScreen;

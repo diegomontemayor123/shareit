@@ -16,10 +16,10 @@ interface Message {
   _id: string;
   fromUserId: string;
   toUserId: string;
-  recipeName: string;
+  rentalName: string;
   read: any
   content: any
-  recipeId: string;
+  rentalId: string;
 }
 
 interface User {
@@ -124,7 +124,7 @@ function MessagesScreen({ navigation }: any) {
                 navigation.navigate("Chat", item);
               }}
               icon2={'account'}
-              icon2Function={() => { navigation.navigate('Users Recipes', { userId: displayUser._id }) }}
+              icon2Function={() => { navigation.navigate('Users Rentals', { userId: displayUser._id }) }}
               icon3={item.read.includes(user._id) ? null : 'circle'}
               icon3Size={17}
               icon3Color={colors.blue}

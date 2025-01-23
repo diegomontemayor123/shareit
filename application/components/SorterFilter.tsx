@@ -37,7 +37,7 @@ const SorterFilter: React.FC<SorterFilter> = ({ color = "white", onCategoryFilte
         if (selectedCategory) {
             setTitleFilter(`${selectedCategory.label}`);
         } else {
-            setTitleFilter('Filter Cuisine');
+            setTitleFilter('Filter Category');
         }
     }, [selectedCategory]);
 

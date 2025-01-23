@@ -7,33 +7,33 @@ import CategoryPickerItem from "../components/CategoryPickerItem";
 import Screen from "../components/Screen";
 import FormImagePicker from "../components/forms/FormImagePicker";
 import UploadScreen from "./UploadScreen";
-import useSubmitRecipe from "../hooks/useSubmitRecipe";
+import useSubmitRental from "../hooks/useSubmitRental";
 import { categories, getCategoryLabelByValue } from "../config/categories";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label("Title"),
   timeToComplete: Yup.number().required().min(1, "Please input at least one minute.").max(10000).label("Time to Complete"),
-  ingredients: Yup.string().required().label("Ingredients"),
+  availdates: Yup.string().required().label("availdates"),
   description: Yup.string().required().label("Description"),
   category: Yup.object().required().nullable().label("Category"),
   images: Yup.array().min(1, "Please select at least one image."),
 });
 
 
-interface RecipeEditScreenProps {
+interface RentalEditScreenProps {
   navigation: any;
   route: any
 }
-interface RecipeFormValues {
+interface RentalFormValues {
   name?: string
   title: string;
   timeToComplete: string;
-  ingredients: string;
+  availdates: string;
   description: string;
   category: any;
 }
-function RecipeAddScreen({ navigation, route }: RecipeEditScreenProps) {
-  const { handleSubmit, uploadVisible, progress } = useSubmitRecipe({ navigation });
+function RentalAddScreen({ navigation, route }: RentalEditScreenProps) {
+  const { handleSubmit, uploadVisible, progress } = useSubmitRental({ navigation });
 
 
   return (
@@ -48,11 +48,11 @@ function RecipeAddScreen({ navigation, route }: RecipeEditScreenProps) {
             initialValues={{
               title: "",
               timeToComplete: "",
-              ingredients: "",
+              availdates: "",
               description: "",
               category: "",
               images: []
-            } as RecipeFormValues}
+            } as RentalFormValues}
             onSubmit={(values: any, { resetForm }: any) => handleSubmit(values, { resetForm },)}
             validationSchema={validationSchema}
           >
@@ -79,15 +79,15 @@ function RecipeAddScreen({ navigation, route }: RecipeEditScreenProps) {
               name="category"
               numberOfColumns={3}
               PickerItemComponent={CategoryPickerItem}
-              placeholder={"Cuisine"}
+              placeholder={"Category"}
               width="50%"
             />
             <FormField
               maxLength={1000}
               multiline
-              name="ingredients"
+              name="availdates"
               numberOfLines={10}
-              placeholder={"Ingredients - Please separate each ingredient with a period '.'"}
+              placeholder={"Availability - Please separate each availdate with a period '.'"}
               blurOnSubmit
               onSubmitEditing={Keyboard.dismiss}
             />
@@ -96,11 +96,11 @@ function RecipeAddScreen({ navigation, route }: RecipeEditScreenProps) {
               multiline
               name="description"
               numberOfLines={10}
-              placeholder={"Recipe - Please separate each step with a period '.'"}
+              placeholder={"Rental - Please separate each step with a period '.'"}
               blurOnSubmit
               onSubmitEditing={Keyboard.dismiss}
             />
-            <SubmitButton title={"Cook up"} />
+            <SubmitButton title={"Done"} />
           </Form>
         </Screen>
       </TouchableWithoutFeedback>
@@ -114,4 +114,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RecipeAddScreen;
+export default RentalAddScreen;

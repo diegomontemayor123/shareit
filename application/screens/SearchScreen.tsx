@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import colors from "../config/colors";
-import RecipesScreen from "./RecipesScreen";
+import RentalsScreen from "./RentalsScreen";
 import { Searchbar } from 'react-native-paper';
 
 function SearchScreen({ navigation }: any) {
@@ -21,7 +21,7 @@ function SearchScreen({ navigation }: any) {
   };
 
 
-  const filterSearch = (recipes: any) => {
+  const filterSearch = (rentals: any) => {
 
 
 
@@ -32,31 +32,31 @@ function SearchScreen({ navigation }: any) {
       );
     }
 
-    return recipes.filter((recipe: any) =>
+    return rentals.filter((rental: any) =>
 
 
       selectedCategory
-        ? recipe.categoryId == selectedCategory.value
-        && (recipe.title.toLowerCase().includes(search.toLowerCase()) ||
-          recipe.userId.toLowerCase() === matchedUserId)
-        : (recipe.title.toLowerCase().includes(search.toLowerCase()) ||
-          recipe.userId.toLowerCase() === matchedUserId))
+        ? rental.categoryId == selectedCategory.value
+        && (rental.title.toLowerCase().includes(search.toLowerCase()) ||
+          rental.userId.toLowerCase() === matchedUserId)
+        : (rental.title.toLowerCase().includes(search.toLowerCase()) ||
+          rental.userId.toLowerCase() === matchedUserId))
   }
 
   return (
     <>
       <Searchbar style={styles.search}
-        placeholder="Search Recipes or Users"
+        placeholder="Search Rentals or Users"
         onChangeText={handleSearchChange}
         value={search}
         placeholderTextColor={colors.medium}
       />
-      <RecipesScreen
+      <RentalsScreen
         filterFn={filterSearch}
         navigation={navigation}
         searchPage={search.length > 0 ? false : true}
-        errorMessage="Couldn't retrieve the recipes."
-        emptyMessage="No recipes available."
+        errorMessage="Couldn't retrieve the rentals."
+        emptyMessage="No rentals available."
         onCategoryChange={handleCategoryChange}
         onUsersChange={handleUsersChange}
       />

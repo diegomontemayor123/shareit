@@ -3,19 +3,19 @@ import { View, StyleSheet } from "react-native";
 import Text from '../AppText';
 import colors from "../../config/colors";
 
-interface RecipeDescriptionProps {
+interface ItemDescriptionProps {
   description: string;
-  isIngredient?: boolean
+
 }
 
-const RecipeDescription: React.FC<RecipeDescriptionProps> = ({ description, isIngredient }) => {
+const ItemDescription: React.FC<ItemDescriptionProps> = ({ description }) => {
   const descriptionSteps = description.split('. ').filter(step => step.trim() !== '');
 
   return (
     <View style={styles.description}>
       {descriptionSteps.map((step, index) => (
         <Text key={index} style={styles.step}>
-          {isIngredient ? `${index + 1}. ${step.replace(/\.$/, '')}` : `Step ${index + 1}. ${step.endsWith('.') ? step : `${step}.`}`}
+          {`${step.endsWith('.') ? step : `${step}.`}`}
         </Text>
       ))}
     </View>
@@ -38,4 +38,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RecipeDescription;
+export default ItemDescription;

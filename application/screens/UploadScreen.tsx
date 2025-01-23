@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Modal } from "react-native";
+import { View, StyleSheet, Modal, Dimensions } from "react-native";
 import LottieView from "lottie-react-native";
 
 interface UploadScreenProps {
@@ -7,6 +7,8 @@ interface UploadScreenProps {
   progress?: number;
   visible?: boolean;
 }
+
+const { width, height } = Dimensions.get("window");
 
 function UploadScreen({ progress = 0, visible = false }: UploadScreenProps) {
   return (
@@ -16,7 +18,7 @@ function UploadScreen({ progress = 0, visible = false }: UploadScreenProps) {
           <LottieView
             autoPlay
             loop
-            source={require("../assets/animations/cooking.json")}
+            source={require("../assets/animations/loader.json")}
             style={styles.animation}
           />
         ) : (
@@ -34,8 +36,8 @@ function UploadScreen({ progress = 0, visible = false }: UploadScreenProps) {
 
 const styles = StyleSheet.create({
   animation: {
-    width: 200,
-    height: 200,
+    width: width,
+    height: height * 0.5,
   },
   container: {
     alignItems: "center",

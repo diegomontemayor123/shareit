@@ -3,15 +3,15 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../config/colors";
 
-interface NewRecipeButtonProps {
+interface NewRentalButtonProps {
   onPress: () => void;
 }
 
-const NewRecipeButton: React.FC<NewRecipeButtonProps> = ({ onPress }) => {
+const NewRentalButton: React.FC<NewRentalButtonProps> = ({ onPress }) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.container}>
-        <MaterialCommunityIcons name="chef-hat" color={colors.white} size={45} />
+        <MaterialCommunityIcons name="upload" color={colors.white} size={45} />
       </View>
     </TouchableOpacity>
   );
@@ -31,4 +31,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NewRecipeButton;
+export default NewRentalButton;

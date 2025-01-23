@@ -45,7 +45,7 @@ const ChatScreen = ({ route }: any) => {
                 <View style={{ flexDirection: 'row', }}>
                     <Text style={{ flex: 1 }}>{text}</Text>
                     <TouchableOpacity
-                        onPress={() => navigation.navigate("RecipeDetails", item)}
+                        onPress={() => navigation.navigate("RentalDetails", item)}
                         style={{ marginLeft: 10, alignItems: 'center' }}>
                         <Avatar
                             firstName={""}

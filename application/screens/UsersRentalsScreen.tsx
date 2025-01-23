@@ -1,5 +1,5 @@
 import React from "react";
-import RecipesScreen from "./RecipesScreen";
+import RentalsScreen from "./RentalsScreen";
 import { useState, useEffect } from "react";
 import { Entry } from "../components/entries";
 import Avatar from "../components/Avatar";
@@ -8,7 +8,7 @@ import messagesApi from '../api/messages'
 import useAuth from "../auth/useAuth";
 import { Alert } from "react-native";
 
-function UsersRecipesScreen({ navigation, route }: { navigation: any; route: any }) {
+function UsersRentalsScreen({ navigation, route }: { navigation: any; route: any }) {
   const { userId } = route.params;
   const [profileUser, setProfileUser] = useState<{ [_id: string]: any }>({});
   const { user } = useAuth()
@@ -38,7 +38,7 @@ function UsersRecipesScreen({ navigation, route }: { navigation: any; route: any
     }
   }
 
-  const filterUserRecipes = (recipes: any[]) => recipes.filter((recipe) => selectedCategory ? recipe.userId === userId && recipe.categoryId == selectedCategory.value : recipe.userId === userId);
+  const filterUserRentals = (rentals: any[]) => rentals.filter((rental) => selectedCategory ? rental.userId === userId && rental.categoryId == selectedCategory.value : rental.userId === userId);
   return (
     <>
       <Entry
@@ -74,12 +74,12 @@ function UsersRecipesScreen({ navigation, route }: { navigation: any; route: any
           />
         }
       />
-      <RecipesScreen
-        filterFn={filterUserRecipes}
+      <RentalsScreen
+        filterFn={filterUserRentals}
         profilePage={true}
         navigation={navigation}
-        errorMessage="Could not retrieve the user's recipes."
-        emptyMessage="This user has no recipes yet."
+        errorMessage="Could not retrieve the user's gear."
+        emptyMessage="This user has no gear yet."
         onCategoryChange={handleCategoryChange}
       />
     </>
@@ -88,4 +88,4 @@ function UsersRecipesScreen({ navigation, route }: { navigation: any; route: any
 
 
 
-export default UsersRecipesScreen;
+export default UsersRentalsScreen;

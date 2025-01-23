@@ -7,7 +7,7 @@ import { Image } from "react-native";
 const HeaderLeftButton: React.FC<any> = ({ navigation }: any) => {
     return (
         <TouchableOpacity style={styles.button}
-            onPress={() => navigation.navigate("Recipes")}>
+            onPress={() => navigation.navigate("Rentals")}>
 
             <Image style={styles.logo} source={require("../assets/logo-blue.png")} />
         </TouchableOpacity>

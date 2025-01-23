@@ -1,5 +1,5 @@
 import { useState } from "react";
-import recipesApi from "../api/recipes";
+import rentalsApi from "../api/rentals";
 import useAuth from "../auth/useAuth";
 import useLocation from "./useLocation";
 import { Alert } from "react-native";
@@ -7,33 +7,33 @@ import { Alert } from "react-native";
 interface Props {
   navigation: any;
 }
-export default function useSubmitRecipe({ navigation }: Props) {
+export default function useSubmitRental({ navigation }: Props) {
   const [uploadVisible, setUploadVisible] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const { user } = useAuth();
   const location = useLocation();
 
-  const handleSubmit = async (recipe: any, { resetForm }: { resetForm: () => void }, recipeId?: string) => {
+  const handleSubmit = async (rental: any, { resetForm }: { resetForm: () => void }, rentalId?: string) => {
     setProgress(0);
     setUploadVisible(true);
     try {
       let result: any
-      if (recipeId) {
-        await recipesApi.editRecipe(recipeId, { ...recipe, location },
+      if (rentalId) {
+        await rentalsApi.editRental(rentalId, { ...rental, location },
           (progress: number) => { setProgress(progress) }) as any
       } else {
-        result = await recipesApi.addRecipe({ ...recipe, location },
+        result = await rentalsApi.addRental({ ...rental, location },
           (progress: number) => { setProgress(progress) }, user) as any
       }
       resetForm();
       setUploadVisible(false);
-      const response: any = await recipesApi.getRecipes() as any
-      const updatedRecipe = response.data.find((r: any) => r._id === (recipeId || result.data._id));
+      const response: any = await rentalsApi.getRentals() as any
+      const updatedRental = response.data.find((r: any) => r._id === (rentalId || result.data._id));
 
-      if (!updatedRecipe) {
-        return Alert.alert("Could not fetch the updated recipe from the server");
+      if (!updatedRental) {
+        return Alert.alert("Could not fetch the updated rental from the server");
       }
-      navigation.navigate("RecipeDetails", updatedRecipe);
+      navigation.navigate("RentalDetails", updatedRental);
     } catch (error) {
       setUploadVisible(false);
       resetForm();

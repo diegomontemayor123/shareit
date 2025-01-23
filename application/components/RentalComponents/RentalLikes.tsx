@@ -4,12 +4,12 @@ import Text from '../AppText';
 import colors from "../../config/colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-interface RecipeLikesProps {
+interface RentalLikesProps {
   likesCount: number;
   addLike: () => void;
 }
 
-const RecipeLikes: React.FC<RecipeLikesProps> = ({ likesCount, addLike }) => (
+const RentalLikes: React.FC<RentalLikesProps> = ({ likesCount, addLike }) => (
   <View style={styles.likesContainer}>
     <TouchableOpacity onPress={addLike} style={styles.likes}>
       {likesCount > 0 && <Text style={styles.likesCount}>{likesCount}</Text>}
@@ -43,4 +43,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RecipeLikes;
+export default RentalLikes;

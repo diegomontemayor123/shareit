@@ -2,12 +2,12 @@ import React from "react";
 import { FlatList, StyleSheet } from "react-native";
 import { Image } from 'react-native-expo-image-cache';
 
-interface RecipeImagesProps {
+interface RentalImagesProps {
   images: { thumbnailUrl: string; url: string }[];
   width: number;
 }
 
-const RecipeImages: React.FC<RecipeImagesProps> = ({ images, width }) => (
+const RentalImages: React.FC<RentalImagesProps> = ({ images, width }) => (
   <FlatList
     data={images}
     horizontal
@@ -30,4 +30,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RecipeImages;
+export default RentalImages;

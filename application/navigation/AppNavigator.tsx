@@ -3,15 +3,15 @@ import { createBottomTabNavigator, } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ChatScreen from "../screens/ChatScreen";
-import RecipeAddScreen from "../screens/RecipeAddScreen";
-import NewRecipeButton from "./NewRecipeButton";
+import RentalAddScreen from "../screens/RentalAddScreen"
+import NewRentalButton from "./NewRentalButton"
 import useNotifications from "../hooks/useNotifications";
 import SearchScreen from "../screens/SearchScreen";
 import ProfileNavigator from "./ProfileNavigator";
 import { HeaderLeftButton, HeaderRightButton } from "../components/HeaderButtons";
 import colors from "../config/colors";
-import MyCookBook from "../screens/MyCookbook";
-import AllRecipesScreen from "../screens/AllRecipesScreen";
+import MyCookBook from "../screens/MyGear"
+import AllRentalsScreen from "../screens/AllRentalsScreen"
 import ContactsScreen from '../screens/ContactsScreen'
 
 const Tab = createBottomTabNavigator();
@@ -51,26 +51,26 @@ const MainTab: any = () => {
         component={ProfileNavigator}
         options={({ navigation }) => ({
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account" color={color} size={size} />
+            <MaterialCommunityIcons name="tennis-ball" color={color} size={size} />
           ),
           headerShown: true,
           title: "",
-          tabBarLabel: "Profile",
+          tabBarLabel: "My Rentals",
           headerStyle: { backgroundColor: colors.light },
           headerRight: () => <HeaderRightButton navigation={navigation} />,
           headerLeft: () => <HeaderLeftButton navigation={navigation} />,
         })}
       />
       <Tab.Screen
-        name="Cookbook"
+        name="Gear"
         component={MyCookBook}
         options={({ navigation }) => ({
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="notebook" color={color} size={size} />
+            <MaterialCommunityIcons name="hiking" color={color} size={size} />
           ),
           headerShown: true,
           title: "",
-          tabBarLabel: "Cookbook",
+          tabBarLabel: "My Gear",
           headerStyle: { backgroundColor: colors.light },
           headerRight: () => <HeaderRightButton navigation={navigation} />,
           headerLeft: () => <HeaderLeftButton navigation={navigation} />,
@@ -78,21 +78,18 @@ const MainTab: any = () => {
       />
       <Tab.Screen
         name="Add"
-        component={RecipeAddScreen}
+        component={RentalAddScreen}
         options={({ navigation }) => ({
           tabBarButton: () => (
-            <NewRecipeButton onPress={() => navigation.navigate("Add")} />
-          ),
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="chef-hat" color={color} size={size} />
+            <NewRentalButton onPress={() => navigation.navigate("Add")} />
           ),
           headerShown: false,
 
         })}
       />
       <Tab.Screen
-        name="Recipes"
-        component={AllRecipesScreen}
+        name="Rentals"
+        component={AllRentalsScreen}
         options={({ navigation }) => ({
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="view-list-outline" color={color} size={size} />

@@ -101,7 +101,7 @@ const ContactsScreen: React.FC = ({ navigation }: any) => {
   const sendText = async (item: any) => {
     try {
       await Linking.openURL(`sms:${item.phoneNumber.replace(/\D/g, '')}?body=${encodeURIComponent(`
-Join me on an exciting new app where we can share and discover amazing recipes together. 
+Join me on an exciting new app where we can share and discover amazing rentals together. 
 It's a fantastic way to learn new dishes and connect over our love for cooking!
 
 Here’s how to get started:
@@ -116,11 +116,11 @@ If you haven't already, download the Expo Go app:
 
 Join Our App:
 
-Once you have Expo Go, open the app and scan this link to access our recipe-sharing platform:
+Once you have Expo Go, open the app and scan this link to access our rental-sharing platform:
           
 exp://192.168.1.6:8081
 
-About the App: Our app allows users to easily share their favorite recipes, explore new culinary ideas, 
+About the App: Our app allows users to easily share their favorite rentals, explore new culinary ideas, 
 and connect with fellow food enthusiasts.
         `)}`)
     } catch (error) {
@@ -134,7 +134,7 @@ and connect with fellow food enthusiasts.
       {(getUsersApi.error || contacts ? contacts.length === 0 : null) && (
         <Text style={{ marginVertical: 15 }}>{getUsersApi.error ? "Temporarily encountering issues." : "No contacts found."}</Text>
       )}
-      {contacts.length > 0 && <Text style={{ padding: 15, color: colors.primary, fontWeight: 'bold' }}>Select friends to invite to lets feast:</Text>}
+      {contacts.length > 0 && <Text style={{ padding: 15, color: colors.primary, fontWeight: 'bold' }}>Select friends to invite to ShareIt:</Text>}
       <FlatList
         data={contacts.sort((a: any, b: any) => {
           const aName = a.name ? a.name[0] : ''
@@ -159,7 +159,7 @@ and connect with fellow food enthusiasts.
                 />}
               onPress={item._id ? async () => {
                 navigation.navigate(
-                  'Users Recipes',
+                  'Users Rentals',
                   { userId: item._id })
               } : item.phoneNumber ? () => sendText(item) : () => null}
               icon2={item._id ? "email" : null}
