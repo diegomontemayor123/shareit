@@ -12,8 +12,8 @@ import { categories, getCategoryLabelByValue } from "../config/categories";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().min(1).label("Title"),
-  timeToComplete: Yup.number().required().min(1, "Please input at least one minute.").max(10000).label("Time to Complete"),
-  availdates: Yup.string().required().label("availdates"),
+  dailyPrice: Yup.number().required().min(.001, "Please input Daily Price.").max(10000).label("Daily Price"),
+  availdates: Yup.string().required().label("Availability"),
   description: Yup.string().required().label("Description"),
   category: Yup.object().required().nullable().label("Category"),
   images: Yup.array().min(1, "Please select at least one image."),
@@ -27,7 +27,7 @@ interface RentalEditScreenProps {
 interface RentalFormValues {
   name?: string
   title: string;
-  timeToComplete: string;
+  dailyPrice: string;
   availdates: string;
   description: string;
   category: any;
@@ -47,7 +47,7 @@ function RentalAddScreen({ navigation, route }: RentalEditScreenProps) {
           <Form
             initialValues={{
               title: "",
-              timeToComplete: "",
+              dailyPrice: "",
               availdates: "",
               description: "",
               category: "",
@@ -68,8 +68,8 @@ function RentalAddScreen({ navigation, route }: RentalEditScreenProps) {
             <FormField
               keyboardType="numeric"
               maxLength={8}
-              name="timeToComplete"
-              placeholder={"Min. to complete"}
+              name="dailyPrice"
+              placeholder={"Daily Price"}
               width={250}
               blurOnSubmit
               onSubmitEditing={Keyboard.dismiss}
@@ -87,7 +87,7 @@ function RentalAddScreen({ navigation, route }: RentalEditScreenProps) {
               multiline
               name="availdates"
               numberOfLines={10}
-              placeholder={"Availability - Please separate each availdate with a period '.'"}
+              placeholder={"Availability - Please separate each date with a period '.'"}
               blurOnSubmit
               onSubmitEditing={Keyboard.dismiss}
             />

@@ -37,7 +37,7 @@ const RentalHeader: React.FC<RentalHeaderProps> = ({
         <Icon backgroundColor={rental.categoryColor} name={rental.categoryIcon} size={35} />
       </View>
       <View style={styles.titleContainer}>
-        <Text style={styles.timeToComplete}>~{rental.timeToComplete} min</Text>
+        <Text style={styles.dailyPrice}>${rental.dailyPrice} / day</Text>
         <Text style={{ fontSize: 12 }}>{createdAt()}</Text>
       </View>
       <View>
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "500",
   },
-  timeToComplete: {
+  dailyPrice: {
     color: colors.secondary,
     fontWeight: "bold",
     fontSize: 18,

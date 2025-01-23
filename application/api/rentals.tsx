@@ -2,7 +2,7 @@ import client from "./client";
 
 interface Rental {
   title: string;
-  timeToComplete: string;
+  dailyPrice: string;
   category: {
     value: string;
     icon: string;
@@ -44,7 +44,7 @@ const addRental = async (
 
   const data = new FormData();
   data.append("title", rental.title);
-  data.append("timeToComplete", rental.timeToComplete);
+  data.append("dailyPrice", rental.dailyPrice);
   data.append("categoryId", rental.category.value);
   data.append("categoryIcon", rental.category.icon)
   data.append("categoryColor", rental.category.backgroundColor)
@@ -84,7 +84,7 @@ const addRental = async (
 const editRental = async (rentalId: string, newRentalInfo: Rental, onUploadProgress: OnUploadProgress,) => {
   const data = new FormData();
   data.append("title", newRentalInfo.title);
-  data.append("timeToComplete", newRentalInfo.timeToComplete);
+  data.append("dailyPrice", newRentalInfo.dailyPrice);
   data.append("categoryId", newRentalInfo.category.value == null ? "" : newRentalInfo.category.value);
   data.append("categoryIcon", newRentalInfo.category.icon == null ? "" : newRentalInfo.category.icon)
   data.append("categoryColor", newRentalInfo.category.backgroundColor == null ? "" : newRentalInfo.category.backgroundColor)

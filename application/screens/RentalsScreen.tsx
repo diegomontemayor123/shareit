@@ -18,7 +18,7 @@ import { useRef } from "react";
 interface Rental {
   id: number;
   title: string;
-  timeToComplete: string;
+  dailyPrice: string;
   categoryIcon: string;
   categoryColor: string;
   images: { url: string; thumbnailUrl: string }[];
@@ -130,7 +130,7 @@ function RentalsScreen({ filterFn, errorMessage, emptyMessage, navigation, onCat
                   <Slide
                     profilePage={profilePage}
                     title={item.title}
-                    subTitle={`~${item.timeToComplete} min`}
+                    subTitle={`$${item.dailyPrice} / day`}
                     subTitle2={userName}
                     category={item.categoryIcon}
                     color={item.categoryColor}
