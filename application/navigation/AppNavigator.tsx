@@ -6,13 +6,13 @@ import ChatScreen from "../screens/ChatScreen";
 import RentalAddScreen from "../screens/RentalAddScreen"
 import NewRentalButton from "./NewRentalButton"
 import useNotifications from "../hooks/useNotifications";
-import SearchScreen from "../screens/SearchScreen";
-import GearNavigator from "./GearNavigator"
+import SearchNavigator from "./SearchNavigator"
 import { HeaderLeftButton, HeaderRightButton } from "../components/HeaderButtons";
 import colors from "../config/colors";
 import MyWishlist from "../screens/MyWishlist"
 import AllRentalsScreen from "../screens/AllRentalsScreen"
 import ContactsScreen from '../screens/ContactsScreen'
+import MyGearScreen from "../screens/MyGearScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -47,15 +47,15 @@ const MainTab: any = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen
-        name="My Gear"
-        component={GearNavigator}
+        name="SearchNav"
+        component={SearchNavigator}
         options={({ navigation }) => ({
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="tennis-ball" color={color} size={size} />
+            <MaterialCommunityIcons name="magnify" color={color} size={size} />
           ),
           headerShown: true,
           title: "",
-          tabBarLabel: "My Gear",
+          tabBarLabel: "Search",
           headerStyle: { backgroundColor: colors.light },
           headerRight: () => <HeaderRightButton navigation={navigation} />,
           headerLeft: () => <HeaderLeftButton navigation={navigation} />,
@@ -103,15 +103,15 @@ const MainTab: any = () => {
         })}
       />
       <Tab.Screen
-        name="Search"
-        component={SearchScreen}
+        name="My Gear"
+        component={MyGearScreen}
         options={({ navigation }) => ({
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="magnify" color={color} size={size} />
+            <MaterialCommunityIcons name="tennis-ball" color={color} size={size} />
           ),
           headerShown: true,
           title: "",
-          tabBarLabel: "Search",
+          tabBarLabel: "My Gear",
           headerStyle: { backgroundColor: colors.light },
           headerRight: () => <HeaderRightButton navigation={navigation} />,
           headerLeft: () => <HeaderLeftButton navigation={navigation} />,

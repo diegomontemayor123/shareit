@@ -1,19 +1,19 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import MessagesScreen from "../screens/MessagesScreen";
-import MyGearScreen from "../screens/MyGearScreen"
 import UserEditScreen from "../screens/UserEditScreen";
 import RentalDetailsScreen from "../screens/RentalDetailsScreen";
 import UserGearScreen from "../screens/UserGearScreen";
 import RentalEditScreen from "../screens/RentalEditScreen";
+import SearchScreen from "../screens/SearchScreen";
 
 
 
 const Stack = createStackNavigator();
 
-const GearNavigator: any = () => (
+const SearchNavigator: any = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
-    <Stack.Screen name="MyGear" component={MyGearScreen} />
+    <Stack.Screen name="Search" component={SearchScreen} />
     <Stack.Screen name="Messages" component={MessagesScreen} />
     <Stack.Screen name="User Edit" component={UserEditScreen} />
     <Stack.Screen name="RentalDetails" component={RentalDetailsScreen} />
@@ -22,4 +22,4 @@ const GearNavigator: any = () => (
   </Stack.Navigator>
 );
 
-export default GearNavigator;
+export default SearchNavigator;
