@@ -3,7 +3,7 @@ import RentalsScreen from "./RentalsScreen";
 import { useState, useEffect } from "react";
 import { Entry } from "../components/entries";
 import Avatar from "../components/Avatar";
-import { getUserbyId, followUser } from "../api/users";
+import { getUserbyId } from "../api/users";
 import messagesApi from '../api/messages'
 import useAuth from "../auth/useAuth";
 import { Alert } from "react-native";
@@ -30,13 +30,6 @@ function UserGearScreen({ navigation, route }: { navigation: any; route: any }) 
     fetchUser();
   }, [userId])
 
-  const handleFollow = async (id: any) => {
-    try {
-      await followUser(user._id, id);
-    } catch (error) {
-      alert('Error following user.');
-    }
-  }
 
   const filterUserGear = (rentals: any[]) => rentals.filter((rental) => selectedCategory ? rental.userId === userId && rental.categoryId == selectedCategory.value : rental.userId === userId);
   return (

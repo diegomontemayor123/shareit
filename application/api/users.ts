@@ -6,7 +6,6 @@ interface UserInfo {
   email: string;
   password: string;
   images: string[]
-  following?: string[]
   deleted?: any
 }
 
@@ -28,7 +27,6 @@ const register = async (userInfo: UserInfo) => {
   data.append("phoneNumber", formatPhoneNumber(userInfo.phoneNumber))
   data.append("email", userInfo.email);
   data.append("password", userInfo.password);
-  data.append("following", JSON.stringify(userInfo.following || []))
 
   if (userInfo.images) {
     userInfo.images.forEach((image, index) =>
@@ -75,12 +73,10 @@ const getUserbyPhoneNumber = async (phoneNumber: string) => {
   return result.data
 }
 
-const followUser = (id: number, userId: string) =>
-  client.post(`${endpoint}/${id}/follow`, { userId });
 
 const forgotPassword = (email: string) =>
   client.post(`${endpoint}/${email}/forgot-password`);
 
 export {
-  register, getUserbyId, getUserbyPhoneNumber, editUser, followUser, forgotPassword
+  register, getUserbyId, getUserbyPhoneNumber, editUser, forgotPassword
 };

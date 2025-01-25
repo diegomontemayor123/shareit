@@ -12,7 +12,7 @@ import Avatar from "../components/Avatar";
 import Screen from "../components/Screen";
 import useAuth from "../auth/useAuth";
 import useRentalCount from "../hooks/useRentalCount";
-import { getUserbyId, followUser } from "../api/users";
+import { getUserbyId } from "../api/users";
 import rentalsApi from "../api/rentals";
 import { useFocusEffect } from "@react-navigation/native";
 import colors from "../config/colors";
@@ -27,7 +27,6 @@ function RentalDetailsScreen({ route, navigation }: any) {
   const [rental, setRental] = useState<any>(route.params);
   const [userDetails, setUserDetails] = useState<{ [key: string]: any }>({});
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [showFollow, setShowFollow] = useState<boolean>(false);
   const rentalCount = useRentalCount(rental.userId);
   const scrollRef = useRef<any>(null)
 
@@ -53,18 +52,6 @@ function RentalDetailsScreen({ route, navigation }: any) {
     setUserDetails(details);
   };
 
-  const fetchFollowIds = async () => {
-    const userIds = new Set<string>();
-    updatedUser.following.forEach((follow: any) => {
-      userIds.add(follow);
-    });
-    const details: { [key: string]: any } = {};
-    for (const _id of userIds) {
-      const userData = await getUserbyId(_id);
-      details[_id] = userData;
-    }
-    setUserDetails(details);
-  };
 
   useFocusEffect(
     React.useCallback(() => {
@@ -124,13 +111,7 @@ function RentalDetailsScreen({ route, navigation }: any) {
     } catch (error) { alert("An unexpected error occurred."); }
   };
 
-  const handleFollow = async (id: any) => {
-    try {
-      await followUser(user._id, id);
-    } catch (error) {
-      alert('Error following user.');
-    }
-  }
+
 
   return (
     <KeyboardAvoidingView
@@ -147,20 +128,14 @@ function RentalDetailsScreen({ route, navigation }: any) {
         )}
         <View style={styles.bottomButton}>
           <TouchableWithoutFeedback onPress={
-            () => {
-              fetchFollowIds()
-              setShowModal(true)
-              setShowFollow(true)
-            }
+            () => { navigation.navigate('Contacts Screen') }
           }>
             <MaterialCommunityIcons name="share" size={30} color={colors.light} />
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback style={{ marginLeft: 5 }} onPress={
             () => {
               fetchCommentUsersandRental()
-
               setShowModal(true)
-              setShowFollow(false)
             }} >
             <MaterialCommunityIcons name="comment" size={30} color={colors.light} />
           </TouchableWithoutFeedback>
@@ -190,13 +165,13 @@ function RentalDetailsScreen({ route, navigation }: any) {
             <MaterialCommunityIcons name="close" size={30} />
           </TouchableWithoutFeedback></View>
 
-        <FlatList data={showFollow ? Object.values(userDetails) : rental.comments}
+        <FlatList data={rental.comments}
           keyExtractor={(comment) => `${comment._id}`}
           ref={scrollRef}
           onContentSizeChange={() => scrollRef.current.scrollToEnd()}
           onLayout={() => scrollRef.current.scrollToEnd()}
           renderItem={({ item }) => {
-            const displayUser = showFollow ? item : userDetails[item.user];
+            const displayUser = userDetails[item.user];
             if (!displayUser) return null
             return (
               <Entry
@@ -212,7 +187,7 @@ function RentalDetailsScreen({ route, navigation }: any) {
                     setShowModal(false)
                   }
                 }
-                subTitle={showFollow ? null : item.message}
+                subTitle={item.message}
                 onPress={() => {
                   navigation.navigate(
 
@@ -222,7 +197,7 @@ function RentalDetailsScreen({ route, navigation }: any) {
                   setShowModal(false)
 
                 }}
-                renderRightActions={showFollow || (item.user != user._id && user._id != rental.userId) ? () => null : () => (
+                renderRightActions={(item.user != user._id && user._id != rental.userId) ? () => null : () => (
                   <EntryDeleteAction onPress={() => handleDelete(rental._id, item._id)} />
                 )}
                 IconComponent={
@@ -235,15 +210,13 @@ function RentalDetailsScreen({ route, navigation }: any) {
                   />} />);
           }}
           ItemSeparatorComponent={EntrySeparator} />
-
-        {!showFollow &&
-          <View style={{ padding: 10 }}>
-            <Text style={styles.header}>Add Comment</Text>
-            <Form initialValues={{ comment: '' }} onSubmit={handleSubmit}>
-              <FormField autoCorrect={true} icon="comment" name="comment"
-                placeholder="Type a comment here." blurOnSubmit={true} />
-              <SubmitButton title="Post Comment" />
-            </Form></View>}
+        <View style={{ padding: 10 }}>
+          <Text style={styles.header}>Add Comment</Text>
+          <Form initialValues={{ comment: '' }} onSubmit={handleSubmit}>
+            <FormField autoCorrect={true} icon="comment" name="comment"
+              placeholder="Type a comment here." blurOnSubmit={true} />
+            <SubmitButton title="Post Comment" />
+          </Form></View>
       </Screen></Modal>
     </KeyboardAvoidingView>
   )

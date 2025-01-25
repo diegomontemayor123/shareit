@@ -4,7 +4,7 @@ import * as Contacts from 'expo-contacts';
 import Button from '../components/Button';
 import Text from '../components/AppText';
 import useApi from '../hooks/useApi';
-import { getUserbyId, followUser, getUserbyPhoneNumber } from '../api/users';
+import { getUserbyId, getUserbyPhoneNumber } from '../api/users';
 import { Entry, EntrySeparator } from '../components/entries';
 import Avatar from '../components/Avatar';
 import useAuth from '../auth/useAuth';
@@ -76,14 +76,7 @@ const ContactsScreen: React.FC = ({ navigation }: any) => {
     setProfileUser(userData)
   }
 
-  const handleFollow = async (id: any) => {
-    try {
-      await followUser(user._id, id);
-      loadContacts()
-    } catch (error) {
-      alert('Error following user.');
-    }
-  }
+
 
   useEffect(() => {
     permissions()

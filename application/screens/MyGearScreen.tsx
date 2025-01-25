@@ -1,33 +1,22 @@
 import React, { useState } from "react";
 import RentalsScreen from "./RentalsScreen";
 import useAuth from "../auth/useAuth";
-import { Entry, EntrySeparator } from "../components/entries";
+import { Entry } from "../components/entries";
 import Avatar from "../components/Avatar";
-import { Alert, Modal, View, TouchableWithoutFeedback, FlatList } from "react-native";
+import { Alert, TouchableWithoutFeedback } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
-import { getUserbyId, followUser } from "../api/users";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import Screen from "../components/Screen";
+import { getUserbyId } from "../api/users";
+
 import AppText from "../components/AppText";
 import colors from "../config/colors";
 function MyGearScreen({ navigation, isMyGear = true }: any) {
   const { user, logOut } = useAuth();
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
-  const [userDetails, setUserDetails] = useState<{ [key: string]: any }>({});
+
   const [profileUser, setProfileUser] = useState<any>(user)
 
-  const fetchUserIds = async () => {
-    const userIds = new Set<string>();
-    profileUser.following?.forEach((follow: any) => {
-      userIds.add(follow);
-    });
-    const usersData: { [key: string]: any } = {};
-    for (const _id of userIds) {
-      const userData = await getUserbyId(_id);
-      usersData[_id] = userData;
-    }
+  const fetchUser = async () => {
     const userData = await getUserbyId(user._id);
-    setUserDetails(usersData);
     setProfileUser(userData)
   };
 
@@ -43,19 +32,13 @@ function MyGearScreen({ navigation, isMyGear = true }: any) {
 
   useFocusEffect(
     React.useCallback(() => {
-      fetchUserIds();
+      fetchUser();
     }, [user._id])
   );
 
   return (
     <>
-      <TouchableWithoutFeedback onPress={() => {
-        navigation.navigate('Contacts Screen')
 
-      }
-      }>
-        <AppText style={{ fontWeight: 'bold', color: colors.primary }}>See who else is using ShareIt</AppText>
-      </TouchableWithoutFeedback>
       <Entry
         title={profileUser.name}
         icon1=""
@@ -84,15 +67,12 @@ function MyGearScreen({ navigation, isMyGear = true }: any) {
           />
         }
       />
-
       <RentalsScreen
         filterFn={filterMyGear} onCategoryChange={handleCategoryChange}
         profilePage={true} navigation={navigation}
         errorMessage={"Could not retrieve your rentals."}
         emptyMessage={isMyGear ? "You don't have any gear yet." : "You don't have any gear saved yet."}
       />
-
-
     </>
   );
 }

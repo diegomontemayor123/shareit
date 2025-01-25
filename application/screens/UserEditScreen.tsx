@@ -31,7 +31,7 @@ function UserEditScreen({ navigation }: any) {
   const { user }: any = useAuth();
   const [error, setError] = useState<string | undefined>();
   const handleSubmit = async (newUserInfo: { name: string; email: string; password: string; phoneNumber: string; images: any[] }, { resetForm }: { resetForm: () => void }) => {
-    console.log('newUserINfo ', newUserInfo)
+
     const result = await editApi.request(user._id, newUserInfo)
 
     if (!result.ok) {
@@ -41,7 +41,7 @@ function UserEditScreen({ navigation }: any) {
     }
     else {
       resetForm()
-      navigation.goBack()
+      navigation.navigate('My Gear')
     }
   };
 
