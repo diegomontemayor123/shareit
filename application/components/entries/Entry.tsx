@@ -74,7 +74,7 @@ const Entry: React.FC<EntryProps> = ({
       }
       {icon1 ?
         <MaterialCommunityIcons color={colors.medium} name={icon1} size={30} />
-        : <MaterialCommunityIcons color={colors.medium} name="chevron-right" size={30} />
+        : null
       }
 
     </TouchableOpacity>

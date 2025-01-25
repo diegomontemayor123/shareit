@@ -4,7 +4,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ChatScreen from "../screens/ChatScreen";
 import RentalAddScreen from "../screens/RentalAddScreen"
-import NewRentalButton from "./NewRentalButton"
 import useNotifications from "../hooks/useNotifications";
 import SearchNavigator from "./SearchNavigator"
 import { HeaderLeftButton, HeaderRightButton } from "../components/HeaderButtons";
@@ -74,17 +73,6 @@ const MainTab: any = () => {
           headerStyle: { backgroundColor: colors.light },
           headerRight: () => <HeaderRightButton navigation={navigation} />,
           headerLeft: () => <HeaderLeftButton navigation={navigation} />,
-        })}
-      />
-      <Tab.Screen
-        name="Add"
-        component={RentalAddScreen}
-        options={({ navigation }) => ({
-          tabBarButton: () => (
-            <NewRentalButton onPress={() => navigation.navigate("Add")} />
-          ),
-          headerShown: false,
-
         })}
       />
       <Tab.Screen

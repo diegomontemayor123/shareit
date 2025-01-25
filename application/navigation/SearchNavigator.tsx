@@ -6,6 +6,7 @@ import RentalDetailsScreen from "../screens/RentalDetailsScreen";
 import UserGearScreen from "../screens/UserGearScreen";
 import RentalEditScreen from "../screens/RentalEditScreen";
 import SearchScreen from "../screens/SearchScreen";
+import RentalAddScreen from "../screens/RentalAddScreen";
 
 
 
@@ -19,6 +20,7 @@ const SearchNavigator: any = () => (
     <Stack.Screen name="RentalDetails" component={RentalDetailsScreen} />
     <Stack.Screen name="Edit" component={RentalEditScreen} />
     <Stack.Screen name="Users Rentals" component={UserGearScreen} />
+    <Stack.Screen name="Add" component={RentalAddScreen} />
   </Stack.Navigator>
 );
 

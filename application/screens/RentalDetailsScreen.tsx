@@ -212,13 +212,6 @@ function RentalDetailsScreen({ route, navigation }: any) {
                     setShowModal(false)
                   }
                 }
-                icon2={displayUser._id != user._id ? "plus-box-multiple-outline" : null}
-                icon2Function={() => {
-                  handleFollow(displayUser._id)
-                  fetchCommentUsersandRental()
-                }}
-                icon2Color={updatedUser.following &&
-                  updatedUser.following.includes(displayUser._id) ? "green" : null}
                 subTitle={showFollow ? null : item.message}
                 onPress={() => {
                   navigation.navigate(

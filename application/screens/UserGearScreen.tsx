@@ -56,14 +56,7 @@ function UserGearScreen({ navigation, route }: { navigation: any; route: any }) 
               "Chat", { ...result.data } as any,
             )
           }}
-        icon2={
-          user._id != profileUser._id ? "plus-box-multiple-outline" : null}
-        icon2Function={() => {
-          handleFollow(profileUser._id)
-          fetchUser()
-        }}
-        icon2Color={updatedUser.following &&
-          updatedUser.following.includes(profileUser._id) ? "green" : null}
+
         IconComponent={
           <Avatar
             firstName={profileUser.name ? profileUser.name.split(" ")[0] : ""}

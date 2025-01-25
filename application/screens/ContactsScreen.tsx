@@ -172,11 +172,9 @@ and connect with fellow food enthusiasts.
                   "Chat", { ...result.data } as any,
                 )
               }}
-              icon3={item._id ? "plus-box-multiple-outline" : "message-outline"}
-              icon3Color={item._id && profileUser.following ? (profileUser.following.includes(item._id) ? "green" : null) : null}
-              icon3Function={item._id ? () => {
-                handleFollow(item._id)
-              } : () => {
+              icon3={"message-outline"}
+              icon3Color={item._id ? "green" : null}
+              icon3Function={item._id ? null : () => {
                 sendText(item)
               }} />)
         }}
