@@ -93,7 +93,7 @@ function MyGearScreen({ navigation, isMyGear = true }: any) {
         filterFn={filterMyGear} onCategoryChange={handleCategoryChange}
         profilePage={true} navigation={navigation}
         errorMessage={"Could not retrieve your rentals."}
-        emptyMessage={isMyGear ? "You don't have any gear yet." : "You don't have any gear yet."}
+        emptyMessage={isMyGear ? "You don't have any gear yet." : "You don't have any gear saved yet."}
       />
 
       <Modal visible={showFollow} animationType="slide"><Screen>

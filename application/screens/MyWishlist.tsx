@@ -1,6 +1,6 @@
 import React from "react";
 
-import MyGearScreen from "./MyGearScreen";
+import MyGearScreen from "./MyGearScreen"
 function MyWishlist({ navigation }: any) {
   return (
     <MyGearScreen navigation={navigation} isMyGear={false} />

@@ -28,7 +28,7 @@ const HeaderBackButton: React.FC<any> = ({ navigation }: any) => {
 const HeaderRightButton: React.FC<any> = ({ navigation }: any) => {
     return (
         <TouchableOpacity style={styles.button}
-            onPress={() => navigation.navigate("Profile", { screen: "Messages" })}>
+            onPress={() => navigation.navigate("SearchNav", { screen: "Messages" })}>
             <MaterialCommunityIcons name="send" size={30} color={colors.primary} />
 
         </TouchableOpacity>
