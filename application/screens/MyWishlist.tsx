@@ -1,9 +1,9 @@
 import React from "react";
 
-import MyRentalsScreen from "./MyRentalsScreen";
+import MyGearScreen from "./MyGearScreen";
 function MyWishlist({ navigation }: any) {
   return (
-    <MyRentalsScreen navigation={navigation} isMyRentals={false} />
+    <MyGearScreen navigation={navigation} isMyGear={false} />
   )
 
 

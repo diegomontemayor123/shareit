@@ -92,7 +92,7 @@ function RentalDetailsScreen({ route, navigation }: any) {
             if (!result.ok) {
               return alert("Could not delete the rental.");
             }
-            navigation.navigate("MyRentals")
+            navigation.navigate("MyGear")
           } catch (error) {
             alert("An unexpected error occurred.");
           }

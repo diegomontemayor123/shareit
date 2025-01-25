@@ -11,8 +11,8 @@ export default function useRentalCount(userId: string) {
       const rentals = result.data as any;
 
       if (result.ok) {
-        const userRentals = rentals.filter((rental: any) => rental.userId === userId);
-        setRentalCount(userRentals.length);
+        const UserGear = rentals.filter((rental: any) => rental.userId === userId);
+        setRentalCount(UserGear.length);
       } else {
         console.log("Failed to fetch rental count");
       }

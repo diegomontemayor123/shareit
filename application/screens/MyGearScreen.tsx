@@ -10,7 +10,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Screen from "../components/Screen";
 import AppText from "../components/AppText";
 import colors from "../config/colors";
-function MyRentalsScreen({ navigation, isMyRentals = true }: any) {
+function MyGearScreen({ navigation, isMyGear = true }: any) {
   const { user, logOut } = useAuth();
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const [showFollow, setShowFollow] = useState<any>(false)
@@ -44,10 +44,10 @@ function MyRentalsScreen({ navigation, isMyRentals = true }: any) {
   const handleCategoryChange = (category: any) => {
     setSelectedCategory(category);
   };
-  const filterMyRentals = (rentals: any[]) => {
+  const filterMyGear = (rentals: any[]) => {
     return rentals.filter((rental) => selectedCategory ?
-      (isMyRentals ? rental.userId === user._id : rental.bookmarkIds.includes(user._id)) && rental.categoryId == selectedCategory.value
-      : (isMyRentals ? rental.userId === user._id : rental.bookmarkIds.includes(user._id)));
+      (isMyGear ? rental.userId === user._id : rental.bookmarkIds.includes(user._id)) && rental.categoryId == selectedCategory.value
+      : (isMyGear ? rental.userId === user._id : rental.bookmarkIds.includes(user._id)));
   };
 
   useFocusEffect(
@@ -90,10 +90,10 @@ function MyRentalsScreen({ navigation, isMyRentals = true }: any) {
         }
       />
       <RentalsScreen
-        filterFn={filterMyRentals} onCategoryChange={handleCategoryChange}
+        filterFn={filterMyGear} onCategoryChange={handleCategoryChange}
         profilePage={true} navigation={navigation}
         errorMessage={"Could not retrieve your rentals."}
-        emptyMessage={isMyRentals ? "You don't have any gear yet." : "You don't have any gear yet."}
+        emptyMessage={isMyGear ? "You don't have any gear yet." : "You don't have any gear yet."}
       />
 
       <Modal visible={showFollow} animationType="slide"><Screen>
@@ -151,4 +151,4 @@ function MyRentalsScreen({ navigation, isMyRentals = true }: any) {
   );
 }
 
-export default MyRentalsScreen;
+export default MyGearScreen;

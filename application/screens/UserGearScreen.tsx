@@ -8,7 +8,7 @@ import messagesApi from '../api/messages'
 import useAuth from "../auth/useAuth";
 import { Alert } from "react-native";
 
-function UsersRentalsScreen({ navigation, route }: { navigation: any; route: any }) {
+function UserGearScreen({ navigation, route }: { navigation: any; route: any }) {
   const { userId } = route.params;
   const [profileUser, setProfileUser] = useState<{ [_id: string]: any }>({});
   const { user } = useAuth()
@@ -38,7 +38,7 @@ function UsersRentalsScreen({ navigation, route }: { navigation: any; route: any
     }
   }
 
-  const filterUserRentals = (rentals: any[]) => rentals.filter((rental) => selectedCategory ? rental.userId === userId && rental.categoryId == selectedCategory.value : rental.userId === userId);
+  const filterUserGear = (rentals: any[]) => rentals.filter((rental) => selectedCategory ? rental.userId === userId && rental.categoryId == selectedCategory.value : rental.userId === userId);
   return (
     <>
       <Entry
@@ -75,7 +75,7 @@ function UsersRentalsScreen({ navigation, route }: { navigation: any; route: any
         }
       />
       <RentalsScreen
-        filterFn={filterUserRentals}
+        filterFn={filterUserGear}
         profilePage={true}
         navigation={navigation}
         errorMessage="Could not retrieve the user's gear."
@@ -88,4 +88,4 @@ function UsersRentalsScreen({ navigation, route }: { navigation: any; route: any
 
 
 
-export default UsersRentalsScreen;
+export default UserGearScreen;
