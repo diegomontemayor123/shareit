@@ -11,7 +11,7 @@ import RentalEditScreen from "../screens/RentalEditScreen";
 
 const Stack = createStackNavigator();
 
-const ProfileNavigator: any = () => (
+const GearNavigator: any = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
     <Stack.Screen name="MyRentals" component={MyRentalsScreen} />
     <Stack.Screen name="Messages" component={MessagesScreen} />
@@ -22,4 +22,4 @@ const ProfileNavigator: any = () => (
   </Stack.Navigator>
 );
 
-export default ProfileNavigator;
+export default GearNavigator;

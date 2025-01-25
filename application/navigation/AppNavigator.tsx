@@ -7,7 +7,7 @@ import RentalAddScreen from "../screens/RentalAddScreen"
 import NewRentalButton from "./NewRentalButton"
 import useNotifications from "../hooks/useNotifications";
 import SearchScreen from "../screens/SearchScreen";
-import ProfileNavigator from "./ProfileNavigator";
+import GearNavigator from "./GearNavigator"
 import { HeaderLeftButton, HeaderRightButton } from "../components/HeaderButtons";
 import colors from "../config/colors";
 import MyWishlist from "../screens/MyWishlist"
@@ -47,22 +47,22 @@ const MainTab: any = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen
-        name="Profile"
-        component={ProfileNavigator}
+        name="My Gear"
+        component={GearNavigator}
         options={({ navigation }) => ({
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="tennis-ball" color={color} size={size} />
           ),
           headerShown: true,
           title: "",
-          tabBarLabel: "My Rentals",
+          tabBarLabel: "My Gear",
           headerStyle: { backgroundColor: colors.light },
           headerRight: () => <HeaderRightButton navigation={navigation} />,
           headerLeft: () => <HeaderLeftButton navigation={navigation} />,
         })}
       />
       <Tab.Screen
-        name="Gear"
+        name="Wishlist"
         component={MyWishlist}
         options={({ navigation }) => ({
           tabBarIcon: ({ color, size }) => (
@@ -70,7 +70,7 @@ const MainTab: any = () => {
           ),
           headerShown: true,
           title: "",
-          tabBarLabel: "My Gear",
+          tabBarLabel: "Wishlist",
           headerStyle: { backgroundColor: colors.light },
           headerRight: () => <HeaderRightButton navigation={navigation} />,
           headerLeft: () => <HeaderLeftButton navigation={navigation} />,
@@ -96,7 +96,7 @@ const MainTab: any = () => {
           ),
           headerShown: true,
           title: "",
-          tabBarLabel: "Feed",
+          tabBarLabel: "Rentals(FEED)",
           headerStyle: { backgroundColor: colors.light },
           headerRight: () => <HeaderRightButton navigation={navigation} />,
           headerLeft: () => <HeaderLeftButton navigation={navigation} />,
