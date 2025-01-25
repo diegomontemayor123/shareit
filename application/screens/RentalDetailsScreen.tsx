@@ -69,7 +69,7 @@ function RentalDetailsScreen({ route, navigation }: any) {
   useFocusEffect(
     React.useCallback(() => {
       fetchCommentUsersandRental();
-    }, [rentalId, rental.userId])
+    }, [rentalId, rental.userId, userDetails])
   );
 
   const handleChange = (item: any, navigation: any) => {
