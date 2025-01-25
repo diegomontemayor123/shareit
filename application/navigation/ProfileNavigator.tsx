@@ -19,7 +19,6 @@ const ProfileNavigator: any = () => (
     <Stack.Screen name="RentalDetails" component={RentalDetailsScreen} />
     <Stack.Screen name="Edit" component={RentalEditScreen} />
     <Stack.Screen name="Users Rentals" component={UsersRentalsScreen} />
-
   </Stack.Navigator>
 );
 

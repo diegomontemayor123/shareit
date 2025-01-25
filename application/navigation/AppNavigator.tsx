@@ -10,7 +10,7 @@ import SearchScreen from "../screens/SearchScreen";
 import ProfileNavigator from "./ProfileNavigator";
 import { HeaderLeftButton, HeaderRightButton } from "../components/HeaderButtons";
 import colors from "../config/colors";
-import MyCookBook from "../screens/MyGear"
+import MyWishlist from "../screens/MyWishlist"
 import AllRentalsScreen from "../screens/AllRentalsScreen"
 import ContactsScreen from '../screens/ContactsScreen'
 
@@ -63,7 +63,7 @@ const MainTab: any = () => {
       />
       <Tab.Screen
         name="Gear"
-        component={MyCookBook}
+        component={MyWishlist}
         options={({ navigation }) => ({
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="hiking" color={color} size={size} />
