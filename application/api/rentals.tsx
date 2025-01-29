@@ -8,7 +8,7 @@ interface Rental {
     icon: string;
     backgroundColor: string;
   };
-  availdates: string
+  bookings: string
   description: string;
   user: {
     email: string;
@@ -48,7 +48,7 @@ const addRental = async (
   data.append("categoryId", rental.category.value);
   data.append("categoryIcon", rental.category.icon)
   data.append("categoryColor", rental.category.backgroundColor)
-  data.append("availdates", rental.availdates)
+  data.append("bookings", JSON.stringify(rental.bookings))
   data.append("description", rental.description);
   data.append("userId", user._id)
   data.append("likesCount", (rental.likesCount || 0).toString())
@@ -88,7 +88,7 @@ const editRental = async (rentalId: string, newRentalInfo: Rental, onUploadProgr
   data.append("categoryId", newRentalInfo.category.value == null ? "" : newRentalInfo.category.value);
   data.append("categoryIcon", newRentalInfo.category.icon == null ? "" : newRentalInfo.category.icon)
   data.append("categoryColor", newRentalInfo.category.backgroundColor == null ? "" : newRentalInfo.category.backgroundColor)
-  data.append("availdates", newRentalInfo.availdates)
+  data.append("bookings", JSON.stringify(newRentalInfo.bookings))
   data.append("description", newRentalInfo.description);
 
   if (newRentalInfo.images) {

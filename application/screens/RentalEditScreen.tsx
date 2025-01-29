@@ -9,35 +9,21 @@ import FormImagePicker from "../components/forms/FormImagePicker";
 import UploadScreen from "./UploadScreen";
 import useSubmitRental from "../hooks/useSubmitRental";
 import { categories, getCategoryLabelByValue } from "../config/categories";
-
-const validationSchema = Yup.object().shape({
-  title: Yup.string().required().min(1).label("Title"),
-  dailyPrice: Yup.number().required().min(.001, "Please input Daily Price.").max(10000).label("Daily Price"),
-  availdates: Yup.string().required().label("Availability"),
-  description: Yup.string().required().label("Description"),
-  category: Yup.object().required().nullable().label("Category"),
-  images: Yup.array().min(1, "Please select at least one image."),
-});
+import FormDatePicker from "../components/forms/FormDatePicker";
+import AppText from "../components/AppText";
+import defaultStyles from "../config/styles";
 
 const editValidation = Yup.object().shape({
   images: Yup.array().min(1, "Please select at least one image."),
 });
 
-interface RentalEditScreenProps {
-  navigation: any;
-  route: any
-}
-interface RentalFormValues {
-  name?: string
-  title: string;
-  dailyPrice: string;
-  availdates: string;
-  description: string;
-  category: any;
-}
-function RentalEditScreen({ navigation, route }: RentalEditScreenProps) {
+
+function RentalEditScreen({ navigation, route }: any) {
   const { handleSubmit, uploadVisible, progress } = useSubmitRental({ navigation });
   const [rental, setRental] = useState(route.params || null)
+
+  const parsedBookings = rental.bookings ? JSON.parse(rental.bookings) : null;
+  const bookingDate = parsedBookings?.date || "";
 
   useFocusEffect(
     React.useCallback(
@@ -57,13 +43,13 @@ function RentalEditScreen({ navigation, route }: RentalEditScreenProps) {
             initialValues={{
               title: "",
               dailyPrice: "",
-              availdates: "",
+              bookings: "",
               description: "",
               category: "",
               images: rental?.images?.map((image: any) => image.url) || []
-            } as RentalFormValues}
-            onSubmit={(values: any, { resetForm }: any) => handleSubmit(values, { resetForm }, rental?._id)}
-            validationSchema={rental ? editValidation : validationSchema}
+            } as any}
+            onSubmit={(values: any, { resetForm }: any) => handleSubmit(values, { resetForm }, rental._id)}
+            validationSchema={editValidation}
           >
             <FormImagePicker name="images"
               placeholderUrls={rental?.images?.map((image: any) => image.url) || []} />
@@ -94,21 +80,14 @@ function RentalEditScreen({ navigation, route }: RentalEditScreenProps) {
             <FormField
               maxLength={1000}
               multiline
-              name="availdates"
-              numberOfLines={10}
-              placeholder={rental?.availdates || "Availability - Please separate each date with a period '.'"}
-              blurOnSubmit
-              onSubmitEditing={Keyboard.dismiss}
-            />
-            <FormField
-              maxLength={1000}
-              multiline
               name="description"
               numberOfLines={10}
-              placeholder={rental?.description || "Rental - Please separate each step with a period '.'"}
+              placeholder={rental?.description || "Description"}
               blurOnSubmit
               onSubmitEditing={Keyboard.dismiss}
             />
+            <AppText style={defaultStyles.text}>Blocked Dates</AppText>
+            <FormDatePicker name="bookings" placeholder={bookingDate} />
             <SubmitButton title={rental ? "Done" : "Done"} />
           </Form>
         </Screen>

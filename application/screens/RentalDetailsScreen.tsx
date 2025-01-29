@@ -17,6 +17,7 @@ import rentalsApi from "../api/rentals";
 import { useFocusEffect } from "@react-navigation/native";
 import colors from "../config/colors";
 import messagesApi from "../api/messages";
+import AppButton from "../components/Button";
 
 const { width } = Dimensions.get('window');
 function RentalDetailsScreen({ route, navigation }: any) {
@@ -51,7 +52,6 @@ function RentalDetailsScreen({ route, navigation }: any) {
     }
     setUserDetails(details);
   };
-
 
   useFocusEffect(
     React.useCallback(() => {
@@ -111,8 +111,6 @@ function RentalDetailsScreen({ route, navigation }: any) {
     } catch (error) { alert("An unexpected error occurred."); }
   };
 
-
-
   return (
     <KeyboardAvoidingView
       behavior="position"
@@ -140,10 +138,8 @@ function RentalDetailsScreen({ route, navigation }: any) {
             <MaterialCommunityIcons name="comment" size={30} color={colors.light} />
           </TouchableWithoutFeedback>
         </View>
-
         <RentalImages images={rental.images} width={width} />
         <View style={styles.detailsContainer}>
-
           <RentalHeader
             rentalCount={rentalCount}
             navigation={navigation}
@@ -152,15 +148,13 @@ function RentalDetailsScreen({ route, navigation }: any) {
           <Text style={styles.header}>Description</Text>
           <ItemDescription description={rental.description} />
           <Text style={styles.header}>Availability</Text>
-
-
+          <AppButton title="Book Gear" onPress={() => console.log('press')} />
         </View></ScrollView>
 
       <Modal visible={showModal} animationType="slide"><Screen>
         <View style={{ padding: 15 }}>
           <TouchableWithoutFeedback onPress={() => {
             setShowModal(false)
-
           }}>
             <MaterialCommunityIcons name="close" size={30} />
           </TouchableWithoutFeedback></View>
@@ -176,7 +170,7 @@ function RentalDetailsScreen({ route, navigation }: any) {
             return (
               <Entry
                 title={displayUser.name}
-                icon3={"share"}
+                icon3={"email"}
                 icon3Function={
                   async () => {
                     const result = await messagesApi.sendMessage(`${rental.title} by ${rentalUser.name}`, user._id, displayUser._id, rental, null) as any;
@@ -190,11 +184,8 @@ function RentalDetailsScreen({ route, navigation }: any) {
                 subTitle={item.message}
                 onPress={() => {
                   navigation.navigate(
-
                     'Users Rentals',
-                    { userId: item.user },
-                  );
-                  setShowModal(false)
+                    { userId: item.user },); setShowModal(false)
 
                 }}
                 renderRightActions={(item.user != user._id && user._id != rental.userId) ? () => null : () => (

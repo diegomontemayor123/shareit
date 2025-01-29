@@ -29,7 +29,7 @@ export default function useSubmitRental({ navigation }: Props) {
       setUploadVisible(false);
       const response: any = await rentalsApi.getRentals() as any
       const updatedRental = response.data.find((r: any) => r._id === (rentalId || result.data._id));
-
+      console.log('updatedRental ', updatedRental)
       if (!updatedRental) {
         return Alert.alert("Could not fetch the updated rental from the server");
       }
