@@ -4,9 +4,7 @@ import rentalsApi from "../api/rentals";
 import useApi from './useApi';
 import useAuth from '../auth/useAuth';
 
-type FilterFn = (rentals: any[]) => any[];
-
-export default function useRentalActions(filterFn: FilterFn) {
+export default function useRentalActions(filterFn?: any) {
   const getRentalsApi = useApi(rentalsApi.getRentals);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [filteredRentals, setFilteredRentals] = useState<any[]>([]);

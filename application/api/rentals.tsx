@@ -1,46 +1,8 @@
 import client from "./client";
 
-interface Rental {
-  title: string;
-  dailyPrice: string;
-  category: {
-    value: string;
-    icon: string;
-    backgroundColor: string;
-  };
-  bookings: string
-  description: string;
-  user: {
-    email: string;
-    name: string;
-  };
-  likesCount?: number;
-  likerIds?: string[]
-  bookmarkIds?: string[]
-  images: string[];
-  location?: {
-    latitude: number;
-    longitude: number;
-  };
-}
-
-interface User {
-  email: string;
-  name: string;
-  _id: string
-}
-
-type OnUploadProgress = (progress: number) => void;
-
 const endpoint = "/rentals";
 const getRentals = () => client.get(endpoint);
-
-
-const addRental = async (
-  rental: Rental,
-  onUploadProgress: OnUploadProgress,
-  user: User
-) => {
+const addRental = async (rental: any, onUploadProgress: any, user: any) => {
 
   const data = new FormData();
   data.append("title", rental.title);
@@ -55,11 +17,9 @@ const addRental = async (
   data.append("likerIds", JSON.stringify(rental.likerIds || []))
   data.append("bookmarkIds", JSON.stringify(rental.bookmarkIds || []))
 
-  rental.images.forEach((image, index) =>
+  rental.images.forEach((image: any, index: any) =>
     data.append("images", {
-      name: `image${index}`,
-      type: "image/jpeg",
-      uri: image,
+      name: `image${index}`, type: "image/jpeg", uri: image,
     } as any)
   );
 
@@ -74,31 +34,25 @@ const addRental = async (
   for (let progress = 0; progress <= 1; progress += 0.1) {
     await simulateProgress();
     onUploadProgress(progress);
-  }
-
-  return client.post(endpoint, data, {
+  } return client.post(endpoint, data, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
 };
-
-const editRental = async (rentalId: string, newRentalInfo: Rental, onUploadProgress: OnUploadProgress,) => {
+const editRental = async (rentalId: string, newRentalInfo: any, onUploadProgress: any,) => {
   const data = new FormData();
-  data.append("title", newRentalInfo.title);
-  data.append("dailyPrice", newRentalInfo.dailyPrice);
-  data.append("categoryId", newRentalInfo.category.value == null ? "" : newRentalInfo.category.value);
-  data.append("categoryIcon", newRentalInfo.category.icon == null ? "" : newRentalInfo.category.icon)
-  data.append("categoryColor", newRentalInfo.category.backgroundColor == null ? "" : newRentalInfo.category.backgroundColor)
-  data.append("bookings", JSON.stringify(newRentalInfo.bookings))
-  data.append("description", newRentalInfo.description);
+  data.append("title", newRentalInfo?.title || "");
+  data.append("dailyPrice", newRentalInfo?.dailyPrice || "");
+  data.append("categoryId", newRentalInfo.category?.value || "");
+  data.append("categoryIcon", newRentalInfo.category?.icon || "")
+  data.append("categoryColor", newRentalInfo.category?.backgroundColor || "")
+  data.append("bookings", JSON.stringify(newRentalInfo?.bookings) || "")
+  data.append("description", newRentalInfo?.description || "");
 
   if (newRentalInfo.images) {
-    newRentalInfo.images.forEach((image, index) =>
+    newRentalInfo.images.forEach((image: any, index: any) =>
       data.append("images", {
-        name: `image${index}`,
-        type: "image/jpeg",
-        uri: image,
-      } as any)
-    );
+        name: `image${index}`, type: "image/jpeg", uri: image,
+      } as any))
   }
 
   const simulateProgress = () => {
@@ -108,7 +62,7 @@ const editRental = async (rentalId: string, newRentalInfo: Rental, onUploadProgr
   };
   for (let progress = 0; progress <= 1; progress += 0.1) {
     await simulateProgress();
-    onUploadProgress(progress);
+    onUploadProgress(progress)
   }
 
   client.post(`${endpoint}/${rentalId}`, data, {
@@ -116,9 +70,7 @@ const editRental = async (rentalId: string, newRentalInfo: Rental, onUploadProgr
   });
 };
 
-
 const deleteRental = (id: string) => client.delete(`${endpoint}/${id}`);
-
 const deleteComment = (id: number, commentId: string) => {
   return client.delete(`${endpoint}/${id}/comment/${commentId}`)
 }

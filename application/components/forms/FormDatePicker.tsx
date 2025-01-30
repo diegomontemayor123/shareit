@@ -25,7 +25,7 @@ const FormDatePicker: React.FC<any> = ({ name, placeholder }) => {
         setSelectedDates(updatedSelectedDates);
 
         const updatedPlaceholder = isPlaceholder ?
-            newPlaceholder.filter(d => d.date !== date) : newPlaceholder
+            newPlaceholder.filter(d => d.date !== date || d.userId !== user._id) : newPlaceholder
         setNewPlaceholder(updatedPlaceholder)
 
         const datesWithUser = [
@@ -34,6 +34,7 @@ const FormDatePicker: React.FC<any> = ({ name, placeholder }) => {
         ]
 
         setFieldValue(name, datesWithUser)
+        console.log('dateswithuser ', datesWithUser)
     };
 
     const markedDates = selectedDates.reduce((acc, date) => {

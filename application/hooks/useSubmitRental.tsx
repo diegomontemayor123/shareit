@@ -4,19 +4,18 @@ import useAuth from "../auth/useAuth";
 import useLocation from "./useLocation";
 import { Alert } from "react-native";
 
-interface Props {
-  navigation: any;
-}
+interface Props { navigation: any }
 export default function useSubmitRental({ navigation }: Props) {
   const [uploadVisible, setUploadVisible] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const { user } = useAuth();
   const location = useLocation();
 
-  const handleSubmit = async (rental: any, { resetForm }: { resetForm: () => void }, rentalId?: string) => {
+  const handleSubmit = async (rental: any, { resetForm }: any, rentalId?: string) => {
     setProgress(0);
     setUploadVisible(true);
     try {
+
       let result: any
       if (rentalId) {
         await rentalsApi.editRental(rentalId, { ...rental, location },

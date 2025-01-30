@@ -17,14 +17,15 @@ import rentalsApi from "../api/rentals";
 import { useFocusEffect } from "@react-navigation/native";
 import colors from "../config/colors";
 import messagesApi from "../api/messages";
-import AppButton from "../components/Button";
 import FormDatePicker from "../components/forms/FormDatePicker";
+import useSubmitRental from "../hooks/useSubmitRental";
+import UploadScreen from "./UploadScreen";
 
 const { width } = Dimensions.get('window');
 function RentalDetailsScreen({ route, navigation }: any) {
   const rentalId = route.params._id
   const { user } = useAuth()
-  const [updatedUser, setUpdatedUser] = useState<any>({})
+  const { handleSubmit, uploadVisible, progress } = useSubmitRental({ navigation });
   const [rentalUser, setRentalUser] = useState<{ [_id: string]: string }>({});
   const [rental, setRental] = useState<any>(route.params);
   const [userDetails, setUserDetails] = useState<{ [key: string]: any }>({});
@@ -34,12 +35,10 @@ function RentalDetailsScreen({ route, navigation }: any) {
 
   const fetchCommentUsersandRental = async () => {
     const userData = await getUserbyId(rental?.userId);
-    const updatedUserData = await getUserbyId(user._id)
     const response: any = await rentalsApi.getRentals() as any;
     const updatedRental = response.data.find((r: any) => r._id === rentalId);
     setRental(updatedRental);
     setRentalUser(userData);
-    setUpdatedUser(updatedUserData)
 
     const userIds = new Set<string>();
     rental?.comments.forEach((comment: any) => {
@@ -65,38 +64,26 @@ function RentalDetailsScreen({ route, navigation }: any) {
       {
         text: "Edit Rental",
         onPress: async () => {
-          try {
-            navigation.navigate("Edit", item)
-          } catch (error) {
-            alert("An unexpected error occurred.");
-          }
+          try { navigation.navigate("Edit", item) } catch (error) { alert("An unexpected error occurred.") }
         },
-      },
-      {
-        text: "Delete",
-        onPress: async () => {
+      }, {
+        text: "Delete", onPress: async () => {
           try {
             const result = await rentalsApi.deleteRental(item.id);
-            if (!result.ok) {
-              return alert("Could not delete the rental.");
-            }
+            if (!result.ok) { return alert("Could not delete the rental.") }
             navigation.navigate('My Gear')
-          } catch (error) {
-            alert("An unexpected error occurred.");
-          }
+          } catch (error) { alert("An unexpected error occurred.") }
         },
       },
-      { text: "Cancel" }
-    ]);
+      { text: "Cancel" }])
   };
 
-  const handleSubmit = async (values: any, { resetForm }: { resetForm: () => void }) => {
+  const handleSubmitComment = async (values: any, { resetForm }: { resetForm: () => void }) => {
     const result = await rentalsApi.addComment(rentalId, user._id, values.comment)
     if (result.ok) {
       await fetchCommentUsersandRental()
       resetForm()
-    }
-    else {
+    } else {
       Alert.alert("Could not post comment.")
       resetForm()
     }
@@ -113,10 +100,7 @@ function RentalDetailsScreen({ route, navigation }: any) {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior="position"
-      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 100}
-    >
+    <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 100}>
       <ScrollView>
         {user._id == rentalUser._id && (
           <View style={styles.Button}>
@@ -149,10 +133,15 @@ function RentalDetailsScreen({ route, navigation }: any) {
           <Text style={styles.header}>Description</Text>
           <ItemDescription description={rental?.description} />
           <Text style={styles.header}>Availability</Text>
-
-
-          <AppButton title="Book Gear" onPress={() => console.log('press')} />
-        </View></ScrollView>
+          <UploadScreen
+            progress={progress}
+            visible={uploadVisible}
+          />
+          <Form initialValues={{ bookings: "" } as any}
+            onSubmit={(values: any, { resetForm }: any) => handleSubmit(values, { resetForm }, rental._id)}>
+            <FormDatePicker name="bookings" placeholder={rental ? JSON.parse(rental.bookings) : ""} />
+            <SubmitButton title={"Book Gear"} />
+          </Form></View></ScrollView>
 
       <Modal visible={showModal} animationType="slide"><Screen>
         <View style={{ padding: 15 }}>
@@ -186,10 +175,7 @@ function RentalDetailsScreen({ route, navigation }: any) {
                 }
                 subTitle={item.message}
                 onPress={() => {
-                  navigation.navigate(
-                    'Users Rentals',
-                    { userId: item.user },); setShowModal(false)
-
+                  navigation.navigate('Users Rentals', { userId: item.user },); setShowModal(false)
                 }}
                 renderRightActions={(item.user != user._id && user._id != rental?.userId) ? () => null : () => (
                   <EntryDeleteAction onPress={() => handleDelete(rental?._id, item._id)} />
@@ -206,7 +192,7 @@ function RentalDetailsScreen({ route, navigation }: any) {
           ItemSeparatorComponent={EntrySeparator} />
         <View style={{ padding: 10 }}>
           <Text style={styles.header}>Add Comment</Text>
-          <Form initialValues={{ comment: '' }} onSubmit={handleSubmit}>
+          <Form initialValues={{ comment: '' }} onSubmit={handleSubmitComment}>
             <FormField autoCorrect={true} icon="comment" name="comment"
               placeholder="Type a comment here." blurOnSubmit={true} />
             <SubmitButton title="Post Comment" />

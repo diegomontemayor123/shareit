@@ -7,19 +7,8 @@ import Avatar from "../Avatar";
 import colors from "../../config/colors";
 import { getUserbyId } from "../../api/users"
 
-
-interface RentalHeaderProps {
-  rentalCount: number;
-  navigation: any;
-  rental?: any
-}
-
-const RentalHeader: React.FC<RentalHeaderProps> = ({
-  rentalCount,
-  navigation,
-  rental
-
-}) => {
+const RentalHeader: React.FC<any> = ({
+  rentalCount, navigation, rental }) => {
   const [rentalUser, setRentalUser] = useState({ _id: "", name: "", images: { url: null, thumbnailUrl: null } })
   useEffect(() => {
     const fetchImages = async () => {
