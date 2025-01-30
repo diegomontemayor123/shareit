@@ -22,9 +22,6 @@ function RentalEditScreen({ navigation, route }: any) {
   const { handleSubmit, uploadVisible, progress } = useSubmitRental({ navigation });
   const [rental, setRental] = useState(route.params || null)
 
-  const parsedBookings = rental.bookings ? JSON.parse(rental.bookings) : null;
-  const bookingDate = parsedBookings?.date || "";
-
   useFocusEffect(
     React.useCallback(
       () => {
@@ -87,7 +84,7 @@ function RentalEditScreen({ navigation, route }: any) {
               onSubmitEditing={Keyboard.dismiss}
             />
             <AppText style={defaultStyles.text}>Blocked Dates</AppText>
-            <FormDatePicker name="bookings" placeholder={bookingDate} />
+            <FormDatePicker name="bookings" placeholder={JSON.parse(rental.bookings)} />
             <SubmitButton title={rental ? "Done" : "Done"} />
           </Form>
         </Screen>

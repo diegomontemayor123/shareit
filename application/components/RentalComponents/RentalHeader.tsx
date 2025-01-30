@@ -23,29 +23,29 @@ const RentalHeader: React.FC<RentalHeaderProps> = ({
   const [rentalUser, setRentalUser] = useState({ _id: "", name: "", images: { url: null, thumbnailUrl: null } })
   useEffect(() => {
     const fetchImages = async () => {
-      const result = await getUserbyId(rental.userId)
+      const result = await getUserbyId(rental?.userId)
       setRentalUser(result)
     }
     fetchImages()
-  }, [rental.userId])
-  const createdAt = () => new Date(parseInt(rental._id.toString().substring(0, 8), 16) * 1000).toString().substring(4, 15)
+  }, [rental?.userId])
+  const createdAt = () => new Date(parseInt(rental?._id.toString().substring(0, 8), 16) * 1000).toString().substring(4, 15)
 
   return (
     <>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>{rental.title}</Text>
-        <Icon backgroundColor={rental.categoryColor} name={rental.categoryIcon} size={35} />
+        <Text style={styles.title}>{rental?.title}</Text>
+        <Icon backgroundColor={rental?.categoryColor} name={rental?.categoryIcon} size={35} />
       </View>
       <View style={styles.titleContainer}>
-        <Text style={styles.dailyPrice}>${rental.dailyPrice} / day</Text>
+        <Text style={styles.dailyPrice}>${rental?.dailyPrice} / day</Text>
         <Text style={{ fontSize: 12 }}>{createdAt()}</Text>
       </View>
       <View>
         <Entry
           IconComponent={
             <Avatar
-              firstName={rentalUser.name.split(" ")[0]}
-              lastName={rentalUser.name.split(" ")[1] || ""}
+              firstName={rentalUser.name?.split(" ")[0]}
+              lastName={rentalUser.name?.split(" ")[1] || ""}
               size={55}
               imageUrl={rentalUser.images?.url || null}
               thumbnailUrl={rentalUser.images?.thumbnailUrl || null}

@@ -18,6 +18,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import colors from "../config/colors";
 import messagesApi from "../api/messages";
 import AppButton from "../components/Button";
+import FormDatePicker from "../components/forms/FormDatePicker";
 
 const { width } = Dimensions.get('window');
 function RentalDetailsScreen({ route, navigation }: any) {
@@ -28,11 +29,11 @@ function RentalDetailsScreen({ route, navigation }: any) {
   const [rental, setRental] = useState<any>(route.params);
   const [userDetails, setUserDetails] = useState<{ [key: string]: any }>({});
   const [showModal, setShowModal] = useState<boolean>(false);
-  const rentalCount = useRentalCount(rental.userId);
+  const rentalCount = useRentalCount(rental?.userId || null);
   const scrollRef = useRef<any>(null)
 
   const fetchCommentUsersandRental = async () => {
-    const userData = await getUserbyId(rental.userId);
+    const userData = await getUserbyId(rental?.userId);
     const updatedUserData = await getUserbyId(user._id)
     const response: any = await rentalsApi.getRentals() as any;
     const updatedRental = response.data.find((r: any) => r._id === rentalId);
@@ -56,7 +57,7 @@ function RentalDetailsScreen({ route, navigation }: any) {
   useFocusEffect(
     React.useCallback(() => {
       fetchCommentUsersandRental();
-    }, [rentalId, rental.userId, userDetails])
+    }, [rentalId, rental?.userId, userDetails])
   );
 
   const handleChange = (item: any, navigation: any) => {
@@ -79,7 +80,7 @@ function RentalDetailsScreen({ route, navigation }: any) {
             if (!result.ok) {
               return alert("Could not delete the rental.");
             }
-            navigation.navigate("MyGear")
+            navigation.navigate('My Gear')
           } catch (error) {
             alert("An unexpected error occurred.");
           }
@@ -138,7 +139,7 @@ function RentalDetailsScreen({ route, navigation }: any) {
             <MaterialCommunityIcons name="comment" size={30} color={colors.light} />
           </TouchableWithoutFeedback>
         </View>
-        <RentalImages images={rental.images} width={width} />
+        <RentalImages images={rental?.images} width={width} />
         <View style={styles.detailsContainer}>
           <RentalHeader
             rentalCount={rentalCount}
@@ -146,8 +147,10 @@ function RentalDetailsScreen({ route, navigation }: any) {
             rental={rental}
           />
           <Text style={styles.header}>Description</Text>
-          <ItemDescription description={rental.description} />
+          <ItemDescription description={rental?.description} />
           <Text style={styles.header}>Availability</Text>
+
+
           <AppButton title="Book Gear" onPress={() => console.log('press')} />
         </View></ScrollView>
 
@@ -159,7 +162,7 @@ function RentalDetailsScreen({ route, navigation }: any) {
             <MaterialCommunityIcons name="close" size={30} />
           </TouchableWithoutFeedback></View>
 
-        <FlatList data={rental.comments}
+        <FlatList data={rental?.comments}
           keyExtractor={(comment) => `${comment._id}`}
           ref={scrollRef}
           onContentSizeChange={() => scrollRef.current.scrollToEnd()}
@@ -173,7 +176,7 @@ function RentalDetailsScreen({ route, navigation }: any) {
                 icon3={"email"}
                 icon3Function={
                   async () => {
-                    const result = await messagesApi.sendMessage(`${rental.title} by ${rentalUser.name}`, user._id, displayUser._id, rental, null) as any;
+                    const result = await messagesApi.sendMessage(`${rental?.title} by ${rentalUser.name}`, user._id, displayUser._id, rental, null) as any;
                     if (!result.ok) { return Alert.alert("Error", "Could not send the message.") }
                     navigation.navigate(
                       "Chat", { ...result.data } as any,
@@ -188,8 +191,8 @@ function RentalDetailsScreen({ route, navigation }: any) {
                     { userId: item.user },); setShowModal(false)
 
                 }}
-                renderRightActions={(item.user != user._id && user._id != rental.userId) ? () => null : () => (
-                  <EntryDeleteAction onPress={() => handleDelete(rental._id, item._id)} />
+                renderRightActions={(item.user != user._id && user._id != rental?.userId) ? () => null : () => (
+                  <EntryDeleteAction onPress={() => handleDelete(rental?._id, item._id)} />
                 )}
                 IconComponent={
                   <Avatar

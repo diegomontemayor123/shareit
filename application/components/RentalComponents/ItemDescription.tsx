@@ -9,7 +9,7 @@ interface ItemDescriptionProps {
 }
 
 const ItemDescription: React.FC<ItemDescriptionProps> = ({ description }) => {
-  const descriptionSteps = description.split('. ').filter(step => step.trim() !== '');
+  const descriptionSteps = description?.split('. ').filter(step => step.trim() !== '') || []
 
   return (
     <View style={styles.description}>
