@@ -9,29 +9,30 @@ import useAuth from '../../auth/useAuth';
 const FormDatePicker: React.FC<any> = ({ name, placeholder }) => {
     const { errors, setFieldValue, touched } = useFormikContext<any>();
     const [selectedDates, setSelectedDates] = useState<string[]>([]);
-    const [newPlaceholder, setNewPlaceholder] = useState<string[]>(placeholder || []);
+    const [newPlaceholder, setNewPlaceholder] = useState<any[]>(placeholder || []);
     const { user } = useAuth()
     const bookingDates = newPlaceholder ? newPlaceholder.map((booking: any) => booking.date) : []
 
+
     const handleDateSelect = (date: string) => {
-        const updatedSelectedDates = selectedDates.includes(date) ?
+        const isSelected = selectedDates.includes(date)
+        const isPlaceholder = newPlaceholder.some(item => item.date === date)
+
+        const updatedSelectedDates = isSelected ?
             selectedDates.filter(d => d !== date) :
-            newPlaceholder.includes(date) ?
-                [...selectedDates] : [...selectedDates, date]
+            isPlaceholder ?
+                selectedDates : [...selectedDates, date]
         setSelectedDates(updatedSelectedDates);
 
-        const updatedPlaceholder = newPlaceholder.includes(date) ?
-            newPlaceholder.filter(d => d !== date) : [...newPlaceholder]
+        const updatedPlaceholder = isPlaceholder ?
+            newPlaceholder.filter(d => d.date !== date) : newPlaceholder
         setNewPlaceholder(updatedPlaceholder)
 
         const datesWithUser = [
             ...updatedSelectedDates.map(d => ({ date: d, userId: user._id })),
-            ...newPlaceholder
+            ...updatedPlaceholder.map((d: any) => ({ date: d.date, userId: d.userId }))
         ]
-        console.log('includesdate', newPlaceholder.includes(date))
-        console.log('selectedDates', selectedDates,)
-        console.log('newplaceholder', newPlaceholder,)
-        console.log('dateswithuser ', datesWithUser)
+
         setFieldValue(name, datesWithUser)
     };
 
@@ -39,7 +40,6 @@ const FormDatePicker: React.FC<any> = ({ name, placeholder }) => {
         acc[date] = { selected: true, selectedColor: colors.primary };
         return acc
     }, {} as any);
-
 
     const placeholderMarkedDates = bookingDates.reduce((acc: any, date: any) => {
         acc[date] = { selected: true, selectedColor: colors.secondary };

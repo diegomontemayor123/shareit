@@ -42,7 +42,7 @@ function RentalDetailsScreen({ route, navigation }: any) {
     setUpdatedUser(updatedUserData)
 
     const userIds = new Set<string>();
-    rental.comments.forEach((comment: any) => {
+    rental?.comments.forEach((comment: any) => {
       userIds.add(comment.user);
     });
 
