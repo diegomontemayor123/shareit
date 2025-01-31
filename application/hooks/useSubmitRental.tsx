@@ -4,8 +4,7 @@ import useAuth from "../auth/useAuth";
 import useLocation from "./useLocation";
 import { Alert } from "react-native";
 
-interface Props { navigation: any }
-export default function useSubmitRental({ navigation }: Props) {
+export default function useSubmitRental({ navigation }: any) {
   const [uploadVisible, setUploadVisible] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
   const { user } = useAuth();
