@@ -6,27 +6,20 @@ import { Searchbar } from 'react-native-paper';
 function SearchScreen({ navigation }: any) {
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
-  const [users, setUsers] = useState<any>(null)
 
   const filterSearch = (rentals: any) => {
     const searchLower = search.toLowerCase();
-    let matchedUserId: string | undefined;
-    if (users) {
-      matchedUserId = Object.keys(users).find((userId) =>
-        users[userId].toLowerCase().includes(searchLower))
-    }
+
     return rentals.filter((rental: any) =>
       selectedCategory
         ? rental.categoryId === selectedCategory.value &&
-        (rental.title.toLowerCase().includes(searchLower) ||
-          rental.userId.toLowerCase() === matchedUserId)
-        : (rental.title.toLowerCase().includes(searchLower) ||
-          rental.userId.toLowerCase() === matchedUserId))
+        (rental.title.toLowerCase().includes(searchLower))
+        : (rental.title.toLowerCase().includes(searchLower)))
   }
 
   return (
     <><Searchbar style={styles.search}
-      placeholder="Search Rentals or Users"
+      placeholder="Search Rentals"
       onChangeText={setSearch}
       value={search}
       placeholderTextColor={colors.medium}
@@ -37,7 +30,6 @@ function SearchScreen({ navigation }: any) {
         errorMessage="Couldn't retrieve the rentals."
         emptyMessage="No rentals available."
         onCategoryChange={setSelectedCategory}
-        onUsersChange={setUsers}
       /></>)
 }
 const styles = StyleSheet.create({

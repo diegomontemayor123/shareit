@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import ActivityIndicator from "../components/ActivityIndicator";
 import Button from "../components/Button";
@@ -13,7 +13,7 @@ import SorterFilter from "../components/SorterFilter";
 import { getUserbyId } from "../api/users";
 import { useFocusEffect, useRoute } from '@react-navigation/native';
 
-function RentalsScreen({ filterFn, errorMessage, emptyMessage, navigation, onCategoryChange, onUsersChange = () => { }, profilePage = false }: any) {
+function RentalsScreen({ filterFn, errorMessage, emptyMessage, navigation, onCategoryChange, profilePage = false }: any) {
   const getRentalsApi = useApi(rentalsApi.getRentals);
   const { user } = useAuth();
   const [selectedSort, setSelectedSort] = useState<any>()
@@ -29,19 +29,10 @@ function RentalsScreen({ filterFn, errorMessage, emptyMessage, navigation, onCat
     }
   }, [getRentalsApi.data, filterFn]);
 
-  const prevFilteredRentals = useRef(filteredRentals);
-  useEffect(() => {
-    if (filteredRentals.length > 0) {
-      if (JSON.stringify(filteredRentals) !== JSON.stringify(prevFilteredRentals.current)) {
-        fetchUsers();
-        prevFilteredRentals.current = filteredRentals
-      }
-    }
-  }, [filteredRentals]);
-
   useFocusEffect(
     React.useCallback(() => {
       handleRefresh()
+      fetchUsers()
     }, [])
   );
 
@@ -89,9 +80,7 @@ function RentalsScreen({ filterFn, errorMessage, emptyMessage, navigation, onCat
     const usersMap: { [_id: string]: string } = {};
     usersData.forEach((userData, index) => {
       usersMap[_ids[index]] = userData.name;
-    });
-    setUsers(usersMap);
-    if (onUsersChange) onUsersChange(usersMap)
+    }); setUsers(usersMap);
   };
 
   const getSortedRentals = () => {
