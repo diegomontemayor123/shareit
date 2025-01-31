@@ -7,23 +7,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Icon from "./Icon";
 import RentalLikes from "./RentalComponents/RentalLikes";
 
-interface SlideProps {
-  title: string
-  subTitle?: string
-  subTitle2?: string
-  category: string
-  color: string
-  imageUrl: string
-  onPress: () => void
-  thumbnailUrl: string
-  showBookmark: boolean
-  likesCount: number
-  addLike: () => void
-  addBookmark: () => void
-  profilePage: boolean
-}
-
-const Slide: React.FC<SlideProps> = ({ title, subTitle, subTitle2, category, color, imageUrl, onPress, thumbnailUrl, likesCount, addLike, addBookmark, showBookmark, profilePage }) => {
+const Slide: React.FC<any> = ({ title, subTitle, subTitle2, category, color, imageUrl, onPress, thumbnailUrl, likesCount, addLike, addBookmark, showBookmark, profilePage }) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.Slide}>
@@ -33,17 +17,13 @@ const Slide: React.FC<SlideProps> = ({ title, subTitle, subTitle2, category, col
           preview={{ uri: thumbnailUrl }}
           uri={imageUrl}
         />
-
         <TouchableOpacity onPress={addBookmark} style={styles.Button}>
           {showBookmark ?
             <MaterialCommunityIcons name="bookmark" size={30} color={colors.light} />
             : <MaterialCommunityIcons name="bookmark-outline" size={30} color={colors.light} />
           }
         </TouchableOpacity>
-
-
         <RentalLikes likesCount={likesCount} addLike={addLike} />
-
         <View style={styles.detailsContainer}>
           <View style={styles.titleContainer}>
             <Text style={styles.title} >
@@ -68,7 +48,6 @@ const Slide: React.FC<SlideProps> = ({ title, subTitle, subTitle2, category, col
     </TouchableWithoutFeedback>
   );
 }
-
 const styles = StyleSheet.create({
   Slide: {
     borderRadius: 10,
@@ -121,7 +100,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexWrap: 'wrap',
     fontSize: 17
-
   },
 });
 
