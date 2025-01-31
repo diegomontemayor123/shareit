@@ -3,13 +3,12 @@ import { createBottomTabNavigator, } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ChatScreen from "../screens/ChatScreen";
-import RentalAddScreen from "../screens/RentalAddScreen"
 import useNotifications from "../hooks/useNotifications";
 import SearchNavigator from "./SearchNavigator"
 import { HeaderLeftButton, HeaderRightButton } from "../components/HeaderButtons";
 import colors from "../config/colors";
 import MyWishlist from "../screens/MyWishlist"
-import AllRentalsScreen from "../screens/AllRentalsScreen"
+import MyRentalsScreen from "../screens/MyRentalsScreen"
 import ContactsScreen from '../screens/ContactsScreen'
 import MyGearScreen from "../screens/MyGearScreen";
 
@@ -35,8 +34,6 @@ const AppNavigator: any = () => (
         headerStyle: { backgroundColor: colors.light },
         headerRight: () => <HeaderRightButton navigation={navigation} />
       })} />
-
-
   </Stack.Navigator>
 );
 
@@ -76,15 +73,15 @@ const MainTab: any = () => {
         })}
       />
       <Tab.Screen
-        name="Rentals"
-        component={AllRentalsScreen}
+        name="My Rentals"
+        component={MyRentalsScreen}
         options={({ navigation }) => ({
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="view-list-outline" color={color} size={size} />
           ),
           headerShown: true,
           title: "",
-          tabBarLabel: "Rentals(FEED)",
+          tabBarLabel: "My Rentals",
           headerStyle: { backgroundColor: colors.light },
           headerRight: () => <HeaderRightButton navigation={navigation} />,
           headerLeft: () => <HeaderLeftButton navigation={navigation} />,

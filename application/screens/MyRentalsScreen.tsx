@@ -7,7 +7,7 @@ import { Alert } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { getUserbyId } from "../api/users";
 
-function MyGearScreen({ navigation, isMyGear = true }: any) {
+function MyRentalsScreen({ navigation }: any) {
   const { user, logOut } = useAuth();
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const [profileUser, setProfileUser] = useState<any>(user)
@@ -19,10 +19,14 @@ function MyGearScreen({ navigation, isMyGear = true }: any) {
   const handleCategoryChange = (category: any) => {
     setSelectedCategory(category);
   };
-  const filterMyGear = (rentals: any[]) => {
-    return rentals.filter((rental) => selectedCategory ?
-      (isMyGear ? rental.userId === user._id : rental.bookmarkIds.includes(user._id)) && rental.categoryId == selectedCategory.value
-      : (isMyGear ? rental.userId === user._id : rental.bookmarkIds.includes(user._id)));
+  const filterMyRentals = (rentals: any[]) => {
+    return rentals.filter((rental) => {
+      const bookings = JSON.parse(rental.bookings);
+      const isUserInBookings = bookings?.some((booking: any) => booking.userId === user._id);
+      return selectedCategory
+        ? isUserInBookings && rental.categoryId == selectedCategory.value
+        : isUserInBookings;
+    });
   };
 
   useFocusEffect(
@@ -59,14 +63,14 @@ function MyGearScreen({ navigation, isMyGear = true }: any) {
             thumbnailUrl={profileUser.images?.thumbnailUrl || null}
           />} />
       <RentalsScreen
-        filterFn={filterMyGear}
+        filterFn={filterMyRentals}
         onCategoryChange={handleCategoryChange}
-        profilePage={true} navigation={navigation}
+        profilePage={false} navigation={navigation}
         errorMessage={"Could not retrieve your rentals."}
-        emptyMessage={isMyGear ? "You don't have any gear yet." : "You don't have any gear saved yet."}
+        emptyMessage={"You don't have any rentals booked yet."}
       />
     </>
   );
 }
 
-export default MyGearScreen;
+export default MyRentalsScreen;

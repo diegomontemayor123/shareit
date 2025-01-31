@@ -5,7 +5,5 @@ function MyWishlist({ navigation }: any) {
   return (
     <MyGearScreen navigation={navigation} isMyGear={false} />
   )
-
-
 }
 export default MyWishlist

@@ -14,20 +14,16 @@ function SearchScreen({ navigation }: any) {
   const handleSearchChange = (query: any) => {
     setSearch(query);
   };
-
   const handleUsersChange = (usersMap: { [_id: string]: string }) => {
-    setUsers(usersMap);
-  };
-
+    setUsers(usersMap)
+  }
   const filterSearch = (rentals: any) => {
     let matchedUserId: string | undefined;
     if (users) {
       matchedUserId = Object.keys(users).find((userId) =>
-        users[userId].toLowerCase().includes(search.toLowerCase())
-      );
+        users[userId].toLowerCase().includes(search.toLowerCase()))
     }
     return rentals.filter((rental: any) =>
-
       selectedCategory
         ? rental.categoryId == selectedCategory.value
         && (rental.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -58,9 +54,8 @@ function SearchScreen({ navigation }: any) {
 
 const styles = StyleSheet.create({
   search: {
-    marginTop: 10,
     marginHorizontal: 5,
-    backgroundColor: colors.light,
+    backgroundColor: colors.white,
     color: colors.medium,
     borderRadius: 10
   },

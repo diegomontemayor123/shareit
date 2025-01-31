@@ -15,8 +15,6 @@ import { getUserbyId } from "../api/users";
 import { useFocusEffect } from '@react-navigation/native';
 import { useRef } from "react";
 
-
-
 function RentalsScreen({ filterFn, errorMessage, emptyMessage, navigation, onCategoryChange, onUsersChange = () => { }, profilePage = false }: any) {
   const { handleAddLike, handleAddBookmark, handleRefresh, refreshing, filteredRentals } = useRentalActions(filterFn);
   const getRentalsApi = useApi(rentalsApi.getRentals);

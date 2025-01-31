@@ -28,8 +28,6 @@ export default function useRentalActions(filterFn?: any) {
     setRefreshing(false);
   };
 
-
-
   const handleAddLike = async (id: number) => {
     const result = await rentalsApi.addLike(id, user._id);
     const data = result.data as any;

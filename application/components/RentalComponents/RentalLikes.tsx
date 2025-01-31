@@ -13,7 +13,7 @@ const RentalLikes: React.FC<RentalLikesProps> = ({ likesCount, addLike }) => (
   <View style={styles.likesContainer}>
     <TouchableOpacity onPress={addLike} style={styles.likes}>
       {likesCount > 0 && <Text style={styles.likesCount}>{likesCount}</Text>}
-      <MaterialCommunityIcons name="heart" size={35} color={"red"} />
+      <MaterialCommunityIcons name="star" size={35} color={'#FFD700'} />
     </TouchableOpacity>
   </View>
 );
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   },
   likesCount: {
     position: 'absolute',
-    color: colors.white,
+    color: colors.primary,
     fontWeight: 'bold',
     fontSize: 12,
     textAlign: 'center',
