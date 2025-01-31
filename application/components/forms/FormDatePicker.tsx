@@ -32,9 +32,7 @@ const FormDatePicker: React.FC<any> = ({ name, placeholder }) => {
             ...updatedSelectedDates.map(d => ({ date: d, userId: user._id })),
             ...updatedPlaceholder.map((d: any) => ({ date: d.date, userId: d.userId }))
         ]
-
         setFieldValue(name, datesWithUser)
-        console.log('dateswithuser ', datesWithUser)
     };
 
     const markedDates = selectedDates.reduce((acc, date) => {

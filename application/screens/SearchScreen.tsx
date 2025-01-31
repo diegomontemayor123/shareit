@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 import colors from "../config/colors";
 import RentalsScreen from "./RentalsScreen";
 import { Searchbar } from 'react-native-paper';
-
 function SearchScreen({ navigation }: any) {
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
@@ -20,20 +19,14 @@ function SearchScreen({ navigation }: any) {
     setUsers(usersMap);
   };
 
-
   const filterSearch = (rentals: any) => {
-
-
-
     let matchedUserId: string | undefined;
     if (users) {
       matchedUserId = Object.keys(users).find((userId) =>
         users[userId].toLowerCase().includes(search.toLowerCase())
       );
     }
-
     return rentals.filter((rental: any) =>
-
 
       selectedCategory
         ? rental.categoryId == selectedCategory.value
@@ -54,7 +47,6 @@ function SearchScreen({ navigation }: any) {
       <RentalsScreen
         filterFn={filterSearch}
         navigation={navigation}
-        searchPage={search.length > 0 ? false : true}
         errorMessage="Couldn't retrieve the rentals."
         emptyMessage="No rentals available."
         onCategoryChange={handleCategoryChange}

@@ -17,9 +17,8 @@ import rentalsApi from "../api/rentals";
 import { useFocusEffect } from "@react-navigation/native";
 import colors from "../config/colors";
 import messagesApi from "../api/messages";
-import FormDatePicker from "../components/forms/FormDatePicker";
 import useSubmitRental from "../hooks/useSubmitRental";
-import UploadScreen from "./UploadScreen";
+import AppButton from "../components/Button";
 
 const { width } = Dimensions.get('window');
 function RentalDetailsScreen({ route, navigation }: any) {
@@ -132,16 +131,10 @@ function RentalDetailsScreen({ route, navigation }: any) {
           />
           <Text style={styles.header}>Description</Text>
           <ItemDescription description={rental?.description} />
-          <Text style={styles.header}>Availability</Text>
-          <UploadScreen
-            progress={progress}
-            visible={uploadVisible}
-          />
-          <Form initialValues={{ bookings: "" } as any}
-            onSubmit={(values: any, { resetForm }: any) => handleSubmit(values, { resetForm }, rental._id)}>
-            <FormDatePicker name="bookings" placeholder={rental ? JSON.parse(rental.bookings) : ""} />
-            <SubmitButton title={"Book Gear"} />
-          </Form></View></ScrollView>
+          <AppButton title="Check Availability" onPress={() => { navigation.navigate("Booking Edit", rental) }} />
+
+
+        </View></ScrollView>
 
       <Modal visible={showModal} animationType="slide"><Screen>
         <View style={{ padding: 15 }}>

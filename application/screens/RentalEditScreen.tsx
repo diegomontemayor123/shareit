@@ -84,7 +84,7 @@ function RentalEditScreen({ navigation, route }: any) {
               onSubmitEditing={Keyboard.dismiss}
             />
             <AppText style={defaultStyles.text}>Blocked Dates</AppText>
-            <FormDatePicker name="bookings" placeholder={JSON.parse(rental.bookings)} />
+            <FormDatePicker name="bookings" placeholder={rental ? JSON.parse(rental.bookings) : null} />
             <SubmitButton title={"Done"} />
           </Form>
         </Screen>

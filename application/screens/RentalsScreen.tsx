@@ -15,28 +15,9 @@ import { getUserbyId } from "../api/users";
 import { useFocusEffect } from '@react-navigation/native';
 import { useRef } from "react";
 
-interface Rental {
-  id: number;
-  title: string;
-  dailyPrice: string;
-  categoryIcon: string;
-  categoryColor: string;
-  images: { url: string; thumbnailUrl: string }[];
-  likesCount: number;
-}
 
-interface RentalsProps {
-  filterFn: (rentals: Rental[]) => Rental[];
-  errorMessage: string;
-  emptyMessage: string;
-  navigation: any;
-  onCategoryChange: any
-  onUsersChange?: (users: any) => void;
-  profilePage?: boolean
-  searchPage?: boolean
-}
 
-function RentalsScreen({ filterFn, errorMessage, emptyMessage, navigation, onCategoryChange, onUsersChange = () => { }, profilePage = false, searchPage = false }: RentalsProps) {
+function RentalsScreen({ filterFn, errorMessage, emptyMessage, navigation, onCategoryChange, onUsersChange = () => { }, profilePage = false }: any) {
   const { handleAddLike, handleAddBookmark, handleRefresh, refreshing, filteredRentals } = useRentalActions(filterFn);
   const getRentalsApi = useApi(rentalsApi.getRentals);
   const { user } = useAuth();
@@ -70,7 +51,6 @@ function RentalsScreen({ filterFn, errorMessage, emptyMessage, navigation, onCat
 
   useFocusEffect(
     React.useCallback(() => {
-      getRentalsApi.request();
       handleRefresh()
     }, [])
   );
@@ -126,7 +106,7 @@ function RentalsScreen({ filterFn, errorMessage, emptyMessage, navigation, onCat
             const userName = users[item.userId]
             return (
               <View style={profilePage ? styles.slideContainer : null}>
-                {searchPage ? null :
+                {
                   <Slide
                     profilePage={profilePage}
                     title={item.title}
